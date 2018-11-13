@@ -8,7 +8,7 @@ public class TypingscoreController {
 
     @RequestMapping("/")
     public String index() {
-        return "this is Spring Boot sample2.";
+        return "this is Spring Boot sample3.";
     }
 
 }
