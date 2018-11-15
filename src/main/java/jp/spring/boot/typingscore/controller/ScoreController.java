@@ -107,7 +107,7 @@ public class ScoreController {
 		System.out.println(committime);
 		ScoreId id = new ScoreId();
 		id.setUsername(username);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SS");
 		Date convCommittime = null;
 		//
 		try {
