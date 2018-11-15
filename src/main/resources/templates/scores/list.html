@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>スコア一覧画面</title>
+	<link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+  </head>
+  <body>
+	score list page.(HTML)
+	
+	    <table>
+	    <tr>
+	    <th>ユーザ名</th>
+      	<th>スコア</th>
+      	<th>入力時間（秒）</th>
+      	<th>入力ミス（回）</th>
+      	<th>日時</th>
+      	<th></th>
+      	<th></th>
+	    </tr>
+      <tr th:each="score : ${scores}">
+      	
+        <td th:text="${score.username}">user</td>
+        <td th:text="${score.point}">0</td>
+        <td th:text="${score.inputtime}">0</td>
+        <td th:text="${score.misstype}">0</td>
+        <td th:text="${#dates.format(score.committime,'yyyy/MM/dd-k:mm:ss')}">yyyy/mm/dd-00:00:00</td>
+        <td>
+          <form th:action="@{/scores/edit}" method="post">
+            <input type="submit" name="form" value="編集" />
+            <input type="hidden" name="username" th:value="${score.username}"/>
+            <input type="hidden" name="committime" th:value="${score.committime}"/>
+          </form>
+        </td>
+        <td>
+          <form th:action="@{/scores/delete}" method="post">
+            <input type="submit" name="form" value="削除" />
+            <input type="hidden" name="username" th:value="${score.username}"/>
+            <input type="hidden" name="committime" th:value="${score.committime}"/>
+          </form>
+        </td>
+      </tr>
+    </table>
+	
+	<p><a th:href="@{/scores/add}">登録画面</a></p>
+  </body>
+</html>
