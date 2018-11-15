@@ -4,7 +4,9 @@
   <head>
     <meta charset="UTF-8" />
     <title>スコア登録画面</title>
-	<link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.mincss" th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
+	<!-- <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/> -->
   </head>
   <body>
     <form th:action="@{/scores/create}" th:object="${scoreForm}" method="post">

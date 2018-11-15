@@ -1,5 +1,6 @@
 package jp.spring.boot.typingscore.form;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.validation.constraints.Min;

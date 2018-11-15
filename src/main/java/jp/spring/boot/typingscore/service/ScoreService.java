@@ -1,5 +1,6 @@
 package jp.spring.boot.typingscore.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +52,7 @@ public class ScoreService {
 		  scoreBean.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
 		  
 		  scoreRepository.save(scoreBean);
+		  
 		  return scoreForm;
 	  }
 	  
