@@ -8,6 +8,30 @@
 	<link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
   </head>
   <body>
-	score edit page.(HTML)
+  	<h2>■スコア編集画面</h2>
+  
+    <form th:action="@{/scores/editprocess}" th:object="${scoreForm}" method="post">
+      <table>
+        <tr><td>ユーザ名:</td><td>
+        	<input type="text" name="username" th:field="*{username}" th:errorclass="error-input" />
+        	<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-messages">error!</span>
+		</td></tr>
+        <tr><td>入力時間（秒）：</td><td>
+        	<input type="text" name="inputtime" th:field="*{inputtime}" th:errorclass="error-input" />
+        	<span th:if="${#fields.hasErrors('inputtime')}" th:errors="*{inputtime}" class="error-messages">error!</span>
+		</td></tr>
+        <tr><td>ミスタイプ数（回）：</td><td>
+        	<input type="text" name="misstype" th:field="*{misstype}" th:errorclass="error-input" />
+        	<span th:if="${#fields.hasErrors('misstype')}" th:errors="*{misstype}" class="error-messages">error!</span>
+		</td></tr>
+        <tr><td>テスト用：</td><td>
+        	<input type="text" name="committime" th:field="*{committime}" th:errorclass="error-input" />
+        	<span th:if="${#fields.hasErrors('committime')}" th:errors="*{committime}" class="error-messages">error!</span>
+		</td></tr>
+      </table>
+      <input type="hidden" name="committime" th:field="*{committime}" th:value="*{committime}"/>
+      <input type="submit" value="変更" />
+      <input type="hidden" name="oldusername" th:value="${username}"/>
+    </form>
   </body>
 </html>

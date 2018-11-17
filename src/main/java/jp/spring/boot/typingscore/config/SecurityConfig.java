@@ -33,18 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-					.antMatchers("/loginForm").permitAll()
+					.antMatchers("/login").permitAll()
 					.anyRequest().authenticated()
 				.and()
 				.formLogin()
-				.loginProcessingUrl("/login")
-				.loginPage("/loginForm")
-				.failureUrl("/loginForm?error")
+				.loginProcessingUrl("/loginprocess")
+				.loginPage("/login")
+				.failureUrl("/login?error")
 				.defaultSuccessUrl("/scores", true)
 				.usernameParameter("username").passwordParameter("password")
 		.and()
 			.logout()
-				.logoutSuccessUrl("/loginForm");
+				.logoutSuccessUrl("/login");
 	}
 	
 	@Bean

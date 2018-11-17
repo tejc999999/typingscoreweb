@@ -7,11 +7,14 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +37,13 @@ public class ScoreController {
 	@Autowired
 	ScoreService scoreService;
 
+    @InitBinder
+    public void dateBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+        CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
+        binder.registerCustomEditor(Date.class, editor);
+    }
+	
 	/**
 	 * ModelにFormを初期セットする
 	 * 
@@ -44,14 +54,6 @@ public class ScoreController {
 		return new ScoreForm();
 	}
 
-	@PostMapping(path="create")
-	String create(@Validated ScoreForm form, BindingResult result, Model model) {
-		if(result.hasErrors()) {
-			 return "redirect:/scores";
-		}
-		scoreService.create(form);
-		return "redirect:/scores";
-	}
 
 	/**
 	 * スコア登録画面へ遷移する
@@ -62,6 +64,25 @@ public class ScoreController {
     public String add() {
         return "scores/add";
     }
+    
+    /**
+     * スコア登録処理
+     * 
+     * @param form エラーチェック対象スコアForm
+     * @param result　エラーチェック結果
+     * @param model スコア格納用モデル
+     * @return
+     */
+	@PostMapping(path="create")
+	String create(@Validated ScoreForm form, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			 return "redirect:/scores";
+		}
+
+
+		scoreService.create(form);
+		return "redirect:/scores";
+	}
     
     /**
      * 競技者用スコア一覧画面へ遷移する
@@ -76,7 +97,7 @@ public class ScoreController {
     /**
      * 管理用スコア一覧画面へ遷移する
      * 
-     * @param model 結果一覧格納用モデル
+     * @param model スコア一覧格納用モデル
      * @return 遷移先ビュー
      */
 	@GetMapping
@@ -88,11 +109,91 @@ public class ScoreController {
 	/**
 	 * スコア編集画面へ遷移する
 	 * 
+	 * @param username ユーザ名
+	 * @param committime 登録日時
+	 * @param スコア格納用モデル
+	 * 
 	 * @return 遷移先ビュー
 	 */
     @PostMapping(path="edit")
-    public String editlist() {
+    public String edit(@RequestParam String username, @RequestParam String committime, Model model) {
+    	ScoreId id = new ScoreId();
+    	id.setUsername(username);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+		Date convCommittime = null;
+		//
+		try {
+			convCommittime = format.parse(committime);
+		} catch (ParseException e) {
+			convCommittime = new Date();
+			e.printStackTrace();
+		}
+    	id.setCommittime(convCommittime);
+    	ScoreForm form = scoreService.findById(id);
+    	model.addAttribute("scoreForm", form);
+    	model.addAttribute("username", username);
+    	model.addAttribute("committime", committime);
+    	System.out.println("DEBUG1-form:" + form);
+    	System.out.println("DEBUG1-form-committime:" + form.getCommittime());
+    	System.out.println("DEBUG1-form-username:" + form.getUsername());
+    	System.out.println("DEBUG1-form-inputtime:" + form.getInputtime());
+    	System.out.println("DEBUG1-form-misstype:" + form.getMisstype());
+    	System.out.println("DEBUG1-form-point:" + form.getPoint());
         return "scores/edit";
+    }
+
+	/**
+	 * スコア編集処理
+	 * 
+	 * @param oldusername 旧ユーザ名
+	 * @param form スコアForm
+	 * @return 遷移先ビュー
+	 */
+    @PostMapping(path="editprocess")
+    public String editprocess(@RequestParam String oldusername, @RequestParam String committime, @Validated ScoreForm form, BindingResult result, Model model) {
+    	System.out.println("DEBUG2:");
+    	System.out.println("DEBUG2-oldusername:" + oldusername);
+    	System.out.println("DEBUG2-committime:" + committime);
+    	System.out.println("DEBUG2-form:" + form);
+    	System.out.println("DEBUG2-form-committime:" + form.getCommittime());
+    	System.out.println("DEBUG2-form-username:" + form.getUsername());
+    	System.out.println("DEBUG2-form-inputtime:" + form.getInputtime());
+    	System.out.println("DEBUG2-form-misstype:" + form.getMisstype());
+    	System.out.println("DEBUG2-form-point:" + form.getPoint());
+    	
+    	if(result.hasErrors()) {
+        	System.out.println("DEBUG1:" + result.getAllErrors());    	
+			 return "redirect:/scores";
+		}
+    	System.out.println("DEBUG2:");
+    	ScoreId id = new ScoreId();
+    	id.setUsername(oldusername);;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+		Date convCommittime = null;
+    	System.out.println("DEBUG3:");
+		//
+		try {
+			convCommittime = format.parse(committime);
+		} catch (ParseException e) {
+			convCommittime = new Date();
+			e.printStackTrace();
+		}
+    	System.out.println("DEBUG4:");
+		id.setCommittime(convCommittime);
+
+    	System.out.println("edit-oldusername:" + oldusername);
+    	System.out.println("edit-committime:" + committime);    	
+    	System.out.println("edit-form-username:" + form.getUsername());
+    	System.out.println("edit-form-committime:" + form.getCommittime());
+
+    	// 変更不可能項目（登録日時）を旧データからコピー
+    	form.setCommittime(id.getCommittime());
+    	
+    	// 更新（識別情報自体を更新する場合があるので、旧データを削除してから更新（新規作成もあり））
+    	scoreService.delete(id);
+		scoreService.update(form);
+    	System.out.println("DEBUG5:");
+		return "redirect:/scores";
     }
 
     /**
@@ -107,7 +208,7 @@ public class ScoreController {
 		System.out.println(committime);
 		ScoreId id = new ScoreId();
 		id.setUsername(username);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SS");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 		Date convCommittime = null;
 		//
 		try {
