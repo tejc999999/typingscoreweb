@@ -7,27 +7,38 @@
 	<title>スコア登録画面</title>
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.mincss" th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
-	<!-- <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/> -->
+	<link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
   </head>
   <body>
-  	<h2>■スコア登録画面</h2>
+	<h2 class="form-signin-heading">スコア登録画面</h2>
   
-    <form th:action="@{/scores/create}" th:object="${scoreForm}" method="post">
-      <table>
-        <tr><td>ユーザ名:</td><td>
-        	<input type="text" name="username" th:field="*{username}" th:errorclass="error-input" />
+    <form class="form-horizontal" th:action="@{/scores/create}" th:object="${scoreForm}" method="post">
+		<div class="form-group">
+        	<label class="control-label col-sm-2">ユーザ名</label>
+    	    <div class="col-sm-4">
+	        	<input class="form-control" type="text" name="username" th:field="*{username}" th:errorclass="error-input" />
+        	</div>
         	<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-messages">error!</span>
-		</td></tr>
-        <tr><td>入力時間（秒）：</td><td>
-        	<input type="text" name="inputtime" th:field="*{inputtime}" th:errorclass="error-input" />
+        </div>
+        <div class="form-group">
+    	    <label class="control-label col-sm-2">入力時間（秒）</label>
+    	    <div class="col-sm-4">
+	        	<input class="form-control" type="number" name="inputtime" th:field="*{inputtime}" th:errorclass="error-input" />
+        	</div>
         	<span th:if="${#fields.hasErrors('inputtime')}" th:errors="*{inputtime}" class="error-messages">error!</span>
-		</td></tr>
-        <tr><td>ミスタイプ数（回）：</td><td>
-        	<input type="text" name="misstype" th:field="*{misstype}" th:errorclass="error-input" />
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2">ミスタイプ数（回）</label>
+    	    <div class="col-sm-4">
+	        	<input class="form-control" type="number" name="misstype" th:field="*{misstype}" th:errorclass="error-input" />
+	        </div>
         	<span th:if="${#fields.hasErrors('misstype')}" th:errors="*{misstype}" class="error-messages">error!</span>
-		</td></tr>
-      </table>
-      <input type="submit" value="登録" />
+		</div>
+		<div class="form-group">
+    	    <div class="col-sm-offset-2 col-sm-4">
+		      <input class="btn btn-lg btn-primary btn-block" type="submit" value="登録" />
+		    </div>
+		</div>
     </form>
   </body>
 </html>

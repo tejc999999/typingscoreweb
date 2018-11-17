@@ -4,7 +4,10 @@ package jp.spring.boot.typingscore.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -102,7 +105,11 @@ public class ScoreController {
      */
 	@GetMapping
 	String list(Model model) {
-		model.addAttribute("scores", scoreService.findAll());
+
+		List<ScoreForm> list = scoreService.findAllOrderByCommittime();
+		
+		model.addAttribute("scores", list);
+		
 	    return "scores/list";
 	}
 	
@@ -132,13 +139,6 @@ public class ScoreController {
     	ScoreForm form = scoreService.findById(id);
     	model.addAttribute("scoreForm", form);
     	model.addAttribute("username", username);
-    	model.addAttribute("committime", committime);
-    	System.out.println("DEBUG1-form:" + form);
-    	System.out.println("DEBUG1-form-committime:" + form.getCommittime());
-    	System.out.println("DEBUG1-form-username:" + form.getUsername());
-    	System.out.println("DEBUG1-form-inputtime:" + form.getInputtime());
-    	System.out.println("DEBUG1-form-misstype:" + form.getMisstype());
-    	System.out.println("DEBUG1-form-point:" + form.getPoint());
         return "scores/edit";
     }
 
@@ -150,41 +150,14 @@ public class ScoreController {
 	 * @return 遷移先ビュー
 	 */
     @PostMapping(path="editprocess")
-    public String editprocess(@RequestParam String oldusername, @RequestParam String committime, @Validated ScoreForm form, BindingResult result, Model model) {
-    	System.out.println("DEBUG2:");
-    	System.out.println("DEBUG2-oldusername:" + oldusername);
-    	System.out.println("DEBUG2-committime:" + committime);
-    	System.out.println("DEBUG2-form:" + form);
-    	System.out.println("DEBUG2-form-committime:" + form.getCommittime());
-    	System.out.println("DEBUG2-form-username:" + form.getUsername());
-    	System.out.println("DEBUG2-form-inputtime:" + form.getInputtime());
-    	System.out.println("DEBUG2-form-misstype:" + form.getMisstype());
-    	System.out.println("DEBUG2-form-point:" + form.getPoint());
+    public String editprocess(@RequestParam String oldusername,/* @RequestParam String committime,*/ @Validated ScoreForm form, BindingResult result, Model model) {
     	
     	if(result.hasErrors()) {
-        	System.out.println("DEBUG1:" + result.getAllErrors());    	
 			 return "redirect:/scores";
 		}
-    	System.out.println("DEBUG2:");
     	ScoreId id = new ScoreId();
     	id.setUsername(oldusername);;
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		Date convCommittime = null;
-    	System.out.println("DEBUG3:");
-		//
-		try {
-			convCommittime = format.parse(committime);
-		} catch (ParseException e) {
-			convCommittime = new Date();
-			e.printStackTrace();
-		}
-    	System.out.println("DEBUG4:");
-		id.setCommittime(convCommittime);
-
-    	System.out.println("edit-oldusername:" + oldusername);
-    	System.out.println("edit-committime:" + committime);    	
-    	System.out.println("edit-form-username:" + form.getUsername());
-    	System.out.println("edit-form-committime:" + form.getCommittime());
+		id.setCommittime(form.getCommittime());
 
     	// 変更不可能項目（登録日時）を旧データからコピー
     	form.setCommittime(id.getCommittime());
@@ -192,7 +165,6 @@ public class ScoreController {
     	// 更新（識別情報自体を更新する場合があるので、旧データを削除してから更新（新規作成もあり））
     	scoreService.delete(id);
 		scoreService.update(form);
-    	System.out.println("DEBUG5:");
 		return "redirect:/scores";
     }
 

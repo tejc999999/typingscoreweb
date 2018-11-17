@@ -50,10 +50,6 @@ public class ScoreService {
 		  // 点数：入力時間＋（ミスタイプ数×２）
 		  scoreBean.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
 		  
-			
-	    	System.out.println("create-bean-username:" + scoreBean.getId().getUsername());
-	    	System.out.println("create-bean-committime:" + scoreBean.getId().getCommittime());
-		  
 		  scoreRepository.save(scoreBean);
 		  
 		  return scoreForm;
@@ -115,6 +111,25 @@ public class ScoreService {
 	   */
 	  public List<ScoreForm> findAll() {
 		  List<ScoreBean> beanList =scoreRepository.findAll();
+		  List<ScoreForm> formList = new ArrayList<ScoreForm>();
+		  for(ScoreBean scoreBean: beanList) {
+			  ScoreForm scoreForm = new ScoreForm();
+			  scoreForm.setUsername(scoreBean.getId().getUsername());
+			  scoreForm.setCommittime(scoreBean.getId().getCommittime());
+			  BeanUtils.copyProperties(scoreBean, scoreForm);
+		      formList.add(scoreForm);
+		  }
+		  return formList;
+	  }
+	  
+	  /**
+	   * スコアデータ全件取得（登録日時の遅い順にソート）
+	   * 
+	   * @return スコアデータ全件
+	   */
+	  public List<ScoreForm> findAllOrderByCommittime() {
+
+		  List<ScoreBean> beanList =scoreRepository.findAllByOrderById_CommittimeDesc();
 		  List<ScoreForm> formList = new ArrayList<ScoreForm>();
 		  for(ScoreBean scoreBean: beanList) {
 			  ScoreForm scoreForm = new ScoreForm();
