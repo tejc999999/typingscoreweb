@@ -140,6 +140,25 @@ public class ScoreService {
 		  }
 		  return formList;
 	  }
+	  
+	  /**
+	   * スコアデータ全件取得（スコア順にソート）
+	   * 
+	   * @return スコアデータ全件
+	   */
+	  public List<ScoreForm> findAllOrderByPoint() {
+
+		  List<ScoreBean> beanList =scoreRepository.findAllByOrderByPoint();
+		  List<ScoreForm> formList = new ArrayList<ScoreForm>();
+		  for(ScoreBean scoreBean: beanList) {
+			  ScoreForm scoreForm = new ScoreForm();
+			  scoreForm.setUsername(scoreBean.getId().getUsername());
+			  scoreForm.setCommittime(scoreBean.getId().getCommittime());
+			  BeanUtils.copyProperties(scoreBean, scoreForm);
+		      formList.add(scoreForm);
+		  }
+		  return formList;
+	  }
 
 	  /**
 	   * スコアデータ削除

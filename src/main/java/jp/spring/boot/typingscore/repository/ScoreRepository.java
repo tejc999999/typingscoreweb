@@ -15,4 +15,11 @@ public interface ScoreRepository extends JpaRepository<ScoreBean, ScoreId>{
 	 * @return
 	 */
 	List<ScoreBean> findAllByOrderById_CommittimeDesc();
+
+	/**
+	 * スコアで並べ替えて全件取得
+	 * 
+	 * @return
+	 */
+	List<ScoreBean> findAllByOrderByPoint();
 }

@@ -5,9 +5,31 @@
     <meta charset="UTF-8" />
    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>スコア一覧画面（ランキング表示）</title>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.mincss" th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
 	<link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
   </head>
   <body>
-	score ranking page.(HTML)
+	<h2 class="form-signin-heading">スコア一覧画面</h2>
+  	<table class="table table-striped table-bordered table-responsive">
+  		<tr>
+	      	<th class="col-sm-1"></th>
+	      	<th class="col-sm-2">順位</th>
+	      	<th class="col-sm-2">スコア</th>
+	      	<th class="col-sm-2">入力時間（秒）</th>
+	      	<th class="col-sm-2">入力ミス（回）</th>
+		    <th class="col-sm-2">ユーザ名</th>
+	      	<th class="col-sm-1"></th>
+	    </tr>
+	    <tr th:each="score, scoreStat : ${scores}">
+	        <td></td>
+	      	<td th:text="${scoreStat.index} + 1 + '/' + ${scoreStat.size} + '位'"></td>
+	        <td th:text="${score.point}">0</td>
+	        <td th:text="${score.inputtime}">0</td>
+	        <td th:text="${score.misstype}">0</td>
+	        <td th:text="${score.username}">user</td>
+	        <td></td>
+	   </tr>
+    </table>
   </body>
 </html>

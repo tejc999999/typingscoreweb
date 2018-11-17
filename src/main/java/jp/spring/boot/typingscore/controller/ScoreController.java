@@ -90,10 +90,16 @@ public class ScoreController {
     /**
      * 競技者用スコア一覧画面へ遷移する
      * 
+     * @param model スコア一覧格納用モデル
      * @return 遷移先ビュー
      */
     @GetMapping(path="view")
-    public String view() {
+    public String view(Model model) {
+    	
+		List<ScoreForm> list = scoreService.findAllOrderByPoint();
+		
+		model.addAttribute("scores", list);
+    	
         return "scores/view";
     }
 
