@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,11 +15,12 @@ import lombok.NoArgsConstructor;
 public class ScoreForm {
 
 	@NotNull
+	@NotBlank(message="必須入力です。")
 	private String username;
-	@Min(0)
+	@Min(value=0, message="{value} 以下は入力できません。")
 	@NotNull
     private int inputtime;
-	@Min(0)
+	@Min(value=0, message="{value} 以下は入力できません。")
 	@NotNull
     private int misstype;
 	

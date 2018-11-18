@@ -43,7 +43,7 @@ public class ScoreController {
 	@Autowired
 	ScoreService scoreService;
 
-    @InitBinder
+	@InitBinder
     public void dateBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
@@ -82,7 +82,7 @@ public class ScoreController {
 	@PostMapping(path="create")
 	String create(@RequestParam String overlapFlg, @Validated ScoreForm form, BindingResult result, Model model) {
 		if(result.hasErrors()) {
-			 return "redirect:/scores";
+			 return "scores/add";
 		}
 
 		// ユーザ名重複チェックが済んでいない場合、ユーザ名重複チェック
@@ -201,7 +201,7 @@ public class ScoreController {
     public String editprocess(@RequestParam String oldusername,/* @RequestParam String committime,*/ @Validated ScoreForm form, BindingResult result, Model model) {
     	
     	if(result.hasErrors()) {
-			 return "redirect:/scores";
+			 return "scores/edit";
 		}
     	ScoreId id = new ScoreId();
     	id.setUsername(oldusername);;

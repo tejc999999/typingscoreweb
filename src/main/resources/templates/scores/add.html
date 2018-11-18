@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>スコア登録画面</title>
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.mincss" th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
 	<link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
   </head>
   <body>
@@ -14,8 +14,8 @@
   
     <form class="form-horizontal" th:action="@{/scores/create}" th:object="${scoreForm}" method="post">
 
-		<div th:if="${overlapFlg}">
-        	<p class="error-messages">ユーザ名が重複していますが、登録してよろしいですか？</p>
+		<div th:if="${overlapFlg}" class="alert alert-danger">
+			ユーザ名が重複していますが、登録してよろしいですか？
         	<input type="hidden" name="overlapFlg" th:value="${overlapFlg}"/>
 		</div>
 		<div th:unless="${overlapFlg}">
