@@ -3,9 +3,7 @@ package jp.spring.boot.typingscore.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +45,7 @@ public class ScoreController {
 
     @InitBinder
     public void dateBinder(WebDataBinder binder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
         binder.registerCustomEditor(Date.class, editor);
     }
@@ -95,7 +93,6 @@ public class ScoreController {
 				return "scores/add";
 			}
 		}
-
 		scoreService.create(form);
 		return "redirect:/scores";
 	}
@@ -177,9 +174,8 @@ public class ScoreController {
     public String edit(@RequestParam String username, @RequestParam String committime, Model model) {
     	ScoreId id = new ScoreId();
     	id.setUsername(username);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date convCommittime = null;
-		//
 		try {
 			convCommittime = format.parse(committime);
 		} catch (ParseException e) {
@@ -187,6 +183,7 @@ public class ScoreController {
 			e.printStackTrace();
 		}
     	id.setCommittime(convCommittime);
+    	    	
     	ScoreForm form = scoreService.findById(id);
     	model.addAttribute("scoreForm", form);
     	model.addAttribute("username", username);
@@ -230,7 +227,7 @@ public class ScoreController {
 	String delete(@RequestParam String username, @RequestParam String committime) {
 		ScoreId id = new ScoreId();
 		id.setUsername(username);
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date convCommittime = null;
 		//
 		try {
@@ -244,15 +241,4 @@ public class ScoreController {
 
 	    return "redirect:/scores";
 	}
-	
-//	/**
-//	 * スコア編集画面の戻るボタン処理
-//	 * 
-//	 * @return 遷移先ビュー
-//	 */
-//	@PostMapping(path = "edit", params = "goToTop")
-//	String goToTop() {
-//	    return "redirect:/scores/list";
-//	}
-
 }

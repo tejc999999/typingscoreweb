@@ -1,5 +1,7 @@
 package jp.spring.boot.typingscore.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,13 +35,21 @@ public class ScoreService {
 	   * @return 登録したスコアデータ
 	   */
 	  public ScoreForm create(ScoreForm scoreForm) {
-		  
 		  // 複合主キーを作成
 		  ScoreId scoreId = new ScoreId();
 		  // ユーザ名
 		  scoreId.setUsername(scoreForm.getUsername());
-		  // 登録時間：現在の日時情報を登録
-		  scoreId.setCommittime(new Date());
+		  // 登録時間：現在の日時情報を登録(ミリ秒を無効化するため、フォーマット指定）
+		  Date now = new Date(); // 現在時刻
+		  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		  Date convCommittime = null;
+		  try {
+			  convCommittime = format.parse(format.format(now));
+		  } catch (ParseException e) {
+				convCommittime = new Date();
+				e.printStackTrace();
+		  }
+		  scoreId.setCommittime(convCommittime);
 		  ScoreBean scoreBean = new ScoreBean();
 		  // 複合主キーを登録
 		  scoreBean.setId(scoreId);
