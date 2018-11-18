@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
 
 import jp.spring.boot.typingscore.db.ScoreId;
 import jp.spring.boot.typingscore.form.ScoreForm;
+import jp.spring.boot.typingscore.form.ScoreRankForm;
 import jp.spring.boot.typingscore.service.ScoreService;
 
 /**
@@ -77,11 +82,19 @@ public class ScoreController {
      * @return
      */
 	@PostMapping(path="create")
-	String create(@Validated ScoreForm form, BindingResult result, Model model) {
+	String create(@RequestParam String overlapFlg, @Validated ScoreForm form, BindingResult result, Model model) {
 		if(result.hasErrors()) {
 			 return "redirect:/scores";
 		}
 
+		// ユーザ名重複チェックが済んでいない場合、ユーザ名重複チェック
+		if(!"true".equals(overlapFlg)) {
+			if(scoreService.findUsernameOverlap(form.getUsername())) {
+				// ユーザ名が重複しているので、重複チェック済みとして一旦登録画面に戻す
+				model.addAttribute("overlapFlg", "true");
+				return "scores/add";
+			}
+		}
 
 		scoreService.create(form);
 		return "redirect:/scores";
@@ -103,6 +116,38 @@ public class ScoreController {
         return "scores/view";
     }
 
+    /**
+     * 競技者用スコア一覧画面のランキング情報Ajax更新用
+     * 
+     * @param param
+     * @return
+     */
+    @GetMapping(path="/scoreload", produces="text/plain;charset=UTF-8")
+    @ResponseBody
+    public String scoreLoad() {
+    	
+		List<ScoreForm> list = scoreService.findAllOrderByPoint();
+
+    	Gson gson = new Gson();
+    	List<ScoreRankForm> rankList = new ArrayList<ScoreRankForm>();
+    	List<String> checkUserNameList = new ArrayList<String>();
+    	int rankNum = 1;
+    	for(ScoreForm form : list) {
+    		// １ユーザは１回だけ（一人のランクは１つだけ）
+    		// 重複するユーザ名の場合はスコアの良い方だけをリストに追加する
+    		if(!checkUserNameList.contains(form.getUsername())) { 
+	    		ScoreRankForm rankForm = new ScoreRankForm();
+	    		BeanUtils.copyProperties(form, rankForm);
+	    		rankForm.setRank(rankNum++);
+	    		rankForm.setBlank("");
+	    		rankList.add(rankForm);
+	    		checkUserNameList.add(form.getUsername());
+    		}
+    	}
+
+    	return gson.toJson(rankList);
+    }
+    
     /**
      * 管理用スコア一覧画面へ遷移する
      * 
@@ -183,7 +228,6 @@ public class ScoreController {
      */
 	@PostMapping(path = "delete")
 	String delete(@RequestParam String username, @RequestParam String committime) {
-		System.out.println(committime);
 		ScoreId id = new ScoreId();
 		id.setUsername(username);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");

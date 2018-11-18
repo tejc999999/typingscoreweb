@@ -161,6 +161,23 @@ public class ScoreService {
 	  }
 
 	  /**
+	   * ユーザ名重複無しスコアデータ取得
+	   * 
+	   * @return ユーザ名重複無しスコアデータ
+	   */
+	  public boolean findUsernameOverlap(String username) {
+
+		  List<String> beanList =scoreRepository.findUsernameOverlap();
+		  for(String inUsername: beanList) {
+			  if(inUsername.equals(username)) {
+				  return true;
+			  }
+		  }
+
+		  return false;
+	  }
+	  
+	  /**
 	   * スコアデータ削除
 	   * 
 	   * @param id スコアデータ識別情報

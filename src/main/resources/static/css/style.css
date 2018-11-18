@@ -11,3 +11,15 @@ margin-left: 5px;
 .error-messages {
 color: #b94a48;
 }
+.firstRow {
+	 background:#ffa500;
+	 font-size : 24px;
+}
+.secondRow {
+	 background:#ffd700;
+	 font-size : 20px;
+}
+.thirdRow {
+	 background:#f0e68c;
+	 font-size : 16px;
+}
