@@ -93,8 +93,54 @@ public class ScoreController {
 				return "scores/add";
 			}
 		}
-		scoreService.create(form);
-		return "redirect:/scores";
+		ScoreForm createScoreForm = scoreService.create(form);
+//		return "redirect:/scores";
+
+		// 今回のランク
+		int rank = 0;
+		// 過去を含めた最高ランク
+		int maxRank = 0;
+//		// 過去を含めた最高ポイント
+//		int maxPoint = createScoreForm.getPoint();
+		// 挑戦回数
+		int tryCnt = 0;
+		
+		List<ScoreForm> list = scoreService.findAllOrderByPoint();
+    	List<ScoreRankForm> rankList = new ArrayList<ScoreRankForm>();
+    	List<String> checkUserNameList = new ArrayList<String>();
+    	int rankNum = 1;
+    	for(ScoreForm tempForm : list) {
+    		// １ユーザは１回だけ（一人のランクは１つだけ）
+    		// 重複するユーザ名の場合はスコアの良い方だけをリストに追加する
+    		if(!checkUserNameList.contains(tempForm.getUsername())) { 
+	    		ScoreRankForm rankForm = new ScoreRankForm();
+	    		BeanUtils.copyProperties(tempForm, rankForm);
+	    		rankForm.setRank(rankNum++);
+	    		rankForm.setBlank("");
+	    		rankList.add(rankForm);
+	    		checkUserNameList.add(tempForm.getUsername());
+    		}
+    		
+    		// 過去の同名の成績があれば、最高ポイントを保持する
+    		if(createScoreForm.getUsername().equals(tempForm.getUsername())) {
+    			tryCnt++;
+    			if(tryCnt == 1) {
+    				// 初回（最高成績）のみ順位を保持
+    				maxRank = rankNum - 1;
+    			}
+    		}
+    		// 今回のランクを格納
+    		if(createScoreForm.getUsername().equals(tempForm.getUsername()) && createScoreForm.getCommittime().equals(tempForm.getCommittime())) {
+    			rank = rankNum - 1;
+    		}
+    	}
+		
+		model.addAttribute("tryCnt", tryCnt);
+		model.addAttribute("rank", rank);
+		model.addAttribute("maxRank", maxRank);
+//		model.addAttribute("maxPoint", maxPoint);
+		model.addAttribute("rankNum", rankNum - 1);
+		return "scores/addcomp";
 	}
     
     /**

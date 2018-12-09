@@ -23,3 +23,9 @@ color: #b94a48;
 	 background:#f0e68c;
 	 font-size : 16px;
 }
+.addcompResultMessage {
+	margin-top: 30px;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: blue;
+}

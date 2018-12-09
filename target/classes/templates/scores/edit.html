@@ -42,5 +42,10 @@
        	<input type="hidden" name="committime" th:field="*{committime}" th:value="*{committime}"/>
       	<input type="hidden" name="oldusername" th:value="${username}"/>
     </form>
+    <div class="col-sm-offset-1 col-sm-4">
+		<form th:action="@{/scores/view}" method="GET">
+   		    <input class="btn btn-lg btn-primary btn-block" type="submit" name="form" value="管理用一覧画面" />
+	    </form>
+    </div>
   </body>
 </html>

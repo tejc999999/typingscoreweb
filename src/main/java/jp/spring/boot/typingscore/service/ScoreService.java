@@ -60,8 +60,9 @@ public class ScoreService {
 		  // 点数：入力時間＋（ミスタイプ数×２）
 		  scoreBean.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
 		  
-		  scoreRepository.save(scoreBean);
-		  
+		  scoreBean = scoreRepository.save(scoreBean);
+		  scoreForm.setCommittime(scoreBean.getId().getCommittime());
+
 		  return scoreForm;
 	  }
 	  
