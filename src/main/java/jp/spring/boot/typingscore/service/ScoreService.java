@@ -62,6 +62,7 @@ public class ScoreService {
 		  
 		  scoreBean = scoreRepository.save(scoreBean);
 		  scoreForm.setCommittime(scoreBean.getId().getCommittime());
+		  scoreForm.setPoint(scoreBean.getPoint());
 
 		  return scoreForm;
 	  }

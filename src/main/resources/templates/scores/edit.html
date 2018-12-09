@@ -1,51 +1,63 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
+<head>
     <meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>スコア編集画面</title>
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
 	<link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
-  </head>
+</head>
   <body>
-	<h2 class="form-signin-heading">スコア編集画面</h2>
-  
-    <form class="form-horizontal" th:action="@{/scores/editprocess}" th:object="${scoreForm}" method="post">
-		<div class="form-group">
-        	<label class="control-label col-sm-2">ユーザ名</label>
-    	    <div class="col-sm-4">
-	        	<input class="form-control" type="text" name="username" th:field="*{username}" th:errorclass="error-input" />
-        	</div>
-        	<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-messages">error!</span>
-        </div>
-        <div class="form-group">
-    	    <label class="control-label col-sm-2">入力時間（秒）</label>
-    	    <div class="col-sm-4">
-	        	<input class="form-control" type="number" name="inputtime" th:field="*{inputtime}" th:errorclass="error-input" />
-        	</div>
-        	<span th:if="${#fields.hasErrors('inputtime')}" th:errors="*{inputtime}" class="error-messages">error!</span>
-		</div>
-		<div class="form-group">
-			<label class="control-label col-sm-2">ミスタイプ数（回）</label>
-    	    <div class="col-sm-4">
-	        	<input class="form-control" type="number" name="misstype" th:field="*{misstype}" th:errorclass="error-input" />
+	<header>
+  		<div id="nav">
+    		<ul>
+    		    <li><a th:href="@{/scores/add}">スコア登録画面</a></li>
+    		    <li><a th:href="@{/scores/}">管理用一覧画面</a></li> 	
+    		    <li><a th:href="@{/scores/view}">表示用一覧画面</a></li> 
+    		    <li><a th:href="@{/users}">ログインユーザ管理</a></li> 
+    		</ul> 
+		</div> 
+  	</header>
+ 	<div class="content">
+		<h2 class="form-signin-heading">スコア編集画面</h2>
+	  
+	    <form class="form-horizontal" th:action="@{/scores/editprocess}" th:object="${scoreForm}" method="post">
+			<div class="form-group">
+	        	<label class="control-label col-sm-2">ユーザ名</label>
+	    	    <div class="col-sm-4">
+		        	<input class="form-control" type="text" name="username" th:field="*{username}" th:errorclass="error-input" />
+	        	</div>
+	        	<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-messages">error!</span>
 	        </div>
-        	<span th:if="${#fields.hasErrors('misstype')}" th:errors="*{misstype}" class="error-messages">error!</span>
-		</div>
-		<div class="form-group">
-    	    <div class="col-sm-offset-2 col-sm-4">
-		      <input class="btn btn-lg btn-primary btn-block" type="submit" value="変更" />
-		    </div>
-		</div>
-       	<input type="hidden" name="committime" th:field="*{committime}" th:value="*{committime}"/>
-      	<input type="hidden" name="oldusername" th:value="${username}"/>
-    </form>
-    <div class="col-sm-offset-1 col-sm-4">
-		<form th:action="@{/scores/view}" method="GET">
-   		    <input class="btn btn-lg btn-primary btn-block" type="submit" name="form" value="管理用一覧画面" />
+	        <div class="form-group">
+	    	    <label class="control-label col-sm-2">入力時間（秒）</label>
+	    	    <div class="col-sm-4">
+		        	<input class="form-control" type="number" name="inputtime" th:field="*{inputtime}" th:errorclass="error-input" />
+	        	</div>
+	        	<span th:if="${#fields.hasErrors('inputtime')}" th:errors="*{inputtime}" class="error-messages">error!</span>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">ミスタイプ数（回）</label>
+	    	    <div class="col-sm-4">
+		        	<input class="form-control" type="number" name="misstype" th:field="*{misstype}" th:errorclass="error-input" />
+		        </div>
+	        	<span th:if="${#fields.hasErrors('misstype')}" th:errors="*{misstype}" class="error-messages">error!</span>
+			</div>
+			<div class="form-group">
+	    	    <div class="col-sm-offset-2 col-sm-4">
+			      <input class="btn btn-lg btn-primary btn-block" type="submit" value="変更" />
+			    </div>
+			</div>
+	       	<input type="hidden" name="committime" th:field="*{committime}" th:value="*{committime}"/>
+	      	<input type="hidden" name="oldusername" th:value="${username}"/>
 	    </form>
-    </div>
+	    <div class="col-sm-offset-1 col-sm-4">
+			<form th:action="@{/scores/view}" method="GET">
+	   		    <input class="btn btn-lg btn-primary btn-block" type="submit" name="form" value="管理用一覧画面" />
+		    </form>
+	    </div>
+	</div>
   </body>
 </html>

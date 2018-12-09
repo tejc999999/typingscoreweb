@@ -25,9 +25,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import jp.spring.boot.typingscore.db.ScoreId;
 import jp.spring.boot.typingscore.form.ScoreForm;
 import jp.spring.boot.typingscore.form.ScoreRankForm;
+import jp.spring.boot.typingscore.form.ScoreResultForm;
 import jp.spring.boot.typingscore.service.ScoreService;
 
 /**
@@ -100,8 +102,8 @@ public class ScoreController {
 		int rank = 0;
 		// 過去を含めた最高ランク
 		int maxRank = 0;
-//		// 過去を含めた最高ポイント
-//		int maxPoint = createScoreForm.getPoint();
+		// 過去を含めた最高ポイント
+		int maxPoint = createScoreForm.getPoint();
 		// 挑戦回数
 		int tryCnt = 0;
 		
@@ -125,8 +127,9 @@ public class ScoreController {
     		if(createScoreForm.getUsername().equals(tempForm.getUsername())) {
     			tryCnt++;
     			if(tryCnt == 1) {
-    				// 初回（最高成績）のみ順位を保持
+    				// 初回（最高成績）のみ順位とポイントを保持
     				maxRank = rankNum - 1;
+    				maxPoint = tempForm.getPoint();
     			}
     		}
     		// 今回のランクを格納
@@ -135,11 +138,15 @@ public class ScoreController {
     		}
     	}
 		
-		model.addAttribute("tryCnt", tryCnt);
-		model.addAttribute("rank", rank);
-		model.addAttribute("maxRank", maxRank);
-//		model.addAttribute("maxPoint", maxPoint);
-		model.addAttribute("rankNum", rankNum - 1);
+    	ScoreResultForm scoreResultForm = new ScoreResultForm();
+    	BeanUtils.copyProperties(createScoreForm, scoreResultForm);
+    	scoreResultForm.setTryCnt(tryCnt);
+    	scoreResultForm.setRank(rank);
+    	scoreResultForm.setMaxRank(maxRank);
+    	scoreResultForm.setRankNum(rankNum - 1);
+    	scoreResultForm.setMaxPoint(maxPoint);
+    	
+		model.addAttribute("resultform", scoreResultForm);
 		return "scores/addcomp";
 	}
     

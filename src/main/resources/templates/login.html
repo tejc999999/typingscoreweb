@@ -6,28 +6,41 @@
 		<title>ログインフォーム</title>
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
+		<link rel="stylesheet" type="text/css" href="../static/css/style.css" th:href="@{/css/style.css}"/>
 	</head>
-	<body>
+  <body>
+  	<header>
+  		<div id="nav">
+    		<ul>
+    		    <li><a th:href="@{/scores/add}">スコア登録画面</a></li>
+    		    <li><a th:href="@{/scores/}">管理用一覧画面</a></li> 	
+    		    <li><a th:href="@{/scores/view}">表示用一覧画面</a></li> 
+    		    <li><a th:href="@{/users}">ログインユーザ管理</a></li> 
+    		</ul> 
+		</div> 
+  	</header>
+ 	<div class="content">
 		<h2 class="form-signin-heading">ログイン画面</h2>
 		<form class="form-horizontal" method="post" th:action="@{/loginprocess}" >
 			<div th:if="${param.error}" class="alert alert-danger">
 				ユーザー名またはパスワードが正しくありません。
 			</div>
 			<div class="form-group">
-	    	    <div class="col-sm-offset-1 col-sm-4">
+		   	    <div class="col-sm-offset-1 col-sm-4">
 					<input type="text" class="form-control" name="username" placeholder="Username" required="required" autofocus="autofocus" />
 				</div>
 			</div>
 			<div class="form-group">
-	    	    <div class="col-sm-offset-1 col-sm-4">
+		   	    <div class="col-sm-offset-1 col-sm-4">
 					<input type="password" class="form-control" name="password" placeholder="Password" required="required" />
 				</div>
 			</div>
 			<div class="form-group">
-	    	    <div class="col-sm-offset-1 col-sm-4">
+		   	    <div class="col-sm-offset-1 col-sm-4">
 					<button class="btn btn-lg btn-primary btn-block" type="submit">ログイン</button>
 				</div>
 			</div>
 		</form>
-	</body>
+	</div>
+</body>
 </html>

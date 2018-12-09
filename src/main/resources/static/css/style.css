@@ -29,3 +29,27 @@ color: #b94a48;
 	font-weight: bold;
 	color: blue;
 }
+#nav{
+    background-color: #444;	
+    padding: 3px;	
+} 
+#nav ul{
+    padding: 0px; 	
+    margin: 0px;
+} 
+#nav ul li {
+    display: inline; 	
+    margin-right: 1em;
+} 
+#nav ul li a { 
+    font-family: "Trebuchet MS", sans-serif; 
+    text-decoration: none;
+    color: #fff; 	 
+} 
+
+#nav ul li a:hover{ 
+    border-bottom: dotted 1px #fff;	 
+}
+.form-group {
+	width: 100%;
+}
