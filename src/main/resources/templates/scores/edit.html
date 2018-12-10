@@ -39,7 +39,7 @@
 	        	<span th:if="${#fields.hasErrors('inputtime')}" th:errors="*{inputtime}" class="error-messages">error!</span>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">ミスタイプ数（回）</label>
+				<label class="control-label col-sm-2">入力ミス（回）</label>
 	    	    <div class="col-sm-4">
 		        	<input class="form-control" type="number" name="misstype" th:field="*{misstype}" th:errorclass="error-input" />
 		        </div>
@@ -53,11 +53,6 @@
 	       	<input type="hidden" name="committime" th:field="*{committime}" th:value="*{committime}"/>
 	      	<input type="hidden" name="oldusername" th:value="${username}"/>
 	    </form>
-	    <div class="col-sm-offset-1 col-sm-4">
-			<form th:action="@{/scores/view}" method="GET">
-	   		    <input class="btn btn-lg btn-primary btn-block" type="submit" name="form" value="管理用一覧画面" />
-		    </form>
-	    </div>
 	</div>
   </body>
 </html>

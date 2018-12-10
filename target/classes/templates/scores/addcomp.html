@@ -27,7 +27,7 @@
 				<p th:text="${resultform.username} + 'さんは' + ${resultform.tryCnt} + '回目の挑戦です。'" style="font-family: 'M PLUS Rounded 1c';">挑戦回数</p>
 			</div>
 			<div class="col-sm-offset-1 col-sm-11">
-				<p th:text="'入力時間：' + ${resultform.inputtime} + '秒、ミスタイプ数：' + ${resultform.misstype} + '回。'" style="font-family: 'M PLUS Rounded 1c';">入力時間、ミスタイプ数</p>
+				<p th:text="'入力時間：' + ${resultform.inputtime} + '秒、入力ミス：' + ${resultform.misstype} + '回。'" style="font-family: 'M PLUS Rounded 1c';">入力時間、ミスタイプ数</p>
 			</div>
 			<div class="col-sm-offset-1 col-sm-11">
 				<p th:text="'あなたの今回の順位は' + ${resultform.rank} + ' / ' + ${resultform.rankNum} + '位です。（スコア：' +  ${resultform.point} + '）'" style="font-family: 'M PLUS Rounded 1c';">今回の順位</p>

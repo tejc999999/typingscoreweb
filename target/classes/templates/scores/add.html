@@ -46,7 +46,7 @@
 	        	<span th:if="${#fields.hasErrors('inputtime')}" th:errors="*{inputtime}" class="error-messages">error!</span>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">ミスタイプ数（回）</label>
+				<label class="control-label col-sm-2">入力ミス（回）</label>
 	    	    <div class="col-sm-4">
 		        	<input class="form-control" type="number" name="misstype" th:field="*{misstype}" th:errorclass="error-input" />
 		        </div>
