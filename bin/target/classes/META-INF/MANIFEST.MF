@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: typingscore
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: user01-m
+Implementation-Vendor-Id: jp.spring.boot.typingscore
+Build-Jdk: 1.8.0_161
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/typingscore
+Created-By: Maven Integration for Eclipse
+

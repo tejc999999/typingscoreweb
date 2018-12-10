@@ -1,0 +1,7 @@
+---
+applications:
+ - name: typingscore
+   random-route: true
+   path: target/typingscore-0.0.1-SNAPSHOT.jar
+   memory: 256M
+   instances: 1

@@ -27,10 +27,10 @@ $(function() {
               "columns": [
                   { data: "blank" },
                   { data: "rank" },
+                  { data: "username" },
                   { data: "point" },
                   { data: "inputtime" },
                   { data: "misstype" },
-                  { data: "username" },
                   { data: "blank" },
               ],
               "columnDefs": [

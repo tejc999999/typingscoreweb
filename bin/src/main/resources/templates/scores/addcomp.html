@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>スコア登録完了画面</title>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
+	<link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+	<link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">  </head>
+  <body>
+	<header>
+  		<div id="nav">
+    		<ul>
+    		    <li><a th:href="@{/scores/add}">スコア登録画面</a></li>
+    		    <li><a th:href="@{/scores/}">管理用一覧画面</a></li> 	
+    		    <li><a th:href="@{/scores/view}">表示用一覧画面</a></li> 
+    		    <li><a th:href="@{/users}">ログインユーザ管理</a></li> 
+    		</ul> 
+		</div> 
+  	</header>
+ 	<div class="content">
+		<h2 class="form-signin-heading">スコア登録完了画面</h2>	
+		<div class="row addcompResultMessage" style="font-family: 'Nico Moji';">
+			<div class="col-sm-offset-1 col-sm-11">
+				<p th:text="${resultform.username} + 'さんは' + ${resultform.tryCnt} + '回目の挑戦です。'" style="font-family: 'M PLUS Rounded 1c';">挑戦回数</p>
+			</div>
+			<div class="col-sm-offset-1 col-sm-11">
+				<p th:text="'入力時間：' + ${resultform.inputtime} + '秒、ミスタイプ数：' + ${resultform.misstype} + '回。'" style="font-family: 'M PLUS Rounded 1c';">入力時間、ミスタイプ数</p>
+			</div>
+			<div class="col-sm-offset-1 col-sm-11">
+				<p th:text="'あなたの今回の順位は' + ${resultform.rank} + ' / ' + ${resultform.rankNum} + '位です。（スコア：' +  ${resultform.point} + '）'" style="font-family: 'M PLUS Rounded 1c';">今回の順位</p>
+			</div>
+			<div class="col-sm-offset-1 col-sm-11">
+				<p th:text="'あなたの最高の順位は' + ${resultform.maxRank} + ' / ' + ${resultform.rankNum} + '位です。（スコア：' +  ${resultform.maxPoint} + '）'" style="font-family: 'M PLUS Rounded 1c';">最高順位</p>
+			</div>
+		</div>
+	</div>
+  </body>
+</html>
