@@ -1,0 +1,125 @@
+body {
+	background-color: #000000;
+	color: #ffffff;
+	font-size: 20px;
+	font-family: "M PLUS Rounded 1c";
+	font-style: oblique;
+}
+
+table, tr, th, td {
+	border: none;
+	background: #000000;
+	color: #ffffff;
+	border-collapse: collapse;
+	margin: 0 auto;
+	border-bottom: 2px solid #0000ff;
+}
+
+td, th {
+	padding: 10px;
+}
+
+#rank {
+	background-color: #ffffff;
+	color: #000000;
+}
+
+.blankcell {
+	background: #000000;
+}
+
+.firstRow {
+}
+.secondRow {
+}
+
+.thirdRow {
+}
+
+.comment {
+  position: relative;
+  display: inline-block;
+  margin: 1.5em 0;
+  padding: 7px 10px;
+  min-width: 120px;
+  max-width: 100%;
+  color: #555;
+  font-size: 16px;
+  background: #FFF;
+  border: solid 3px #555;
+  box-sizing: border-box;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.comment:before{
+  content: "";
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  margin-left: -15px;
+  border: 12px solid transparent;
+  border-top: 12px solid #FFF;
+  z-index: 2;
+}
+
+.comment:after{
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  margin-left: -17px;
+  border: 14px solid transparent;
+  border-top: 14px solid #555;
+  z-index: 1;
+}
+
+.comment p {
+	margin: 0;
+	padding: 0;
+}
+
+.charactor {
+	width: 400px;
+	height: 400px;
+}
+
+.imageview {
+	text-align: center;
+}
+
+.borderless {
+	border: none;
+}
+
+.center {
+	text-align: center;
+}
+
+.content {
+	display: flex;
+}
+
+.viewarea {
+	flex: 1 1 auto;
+	margin: 5px;
+	margin-top: 200px;
+}
+
+.rankarea {
+	flex: 1 1 auto;
+	margin: 5px;
+}
+
+.icon {
+	widht: 30px;
+	height: 30px;
+}
+
+.numalign {
+	text-align: right;
+}
+
+.stralign {
+	text-align: left;
+}

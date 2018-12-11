@@ -1,5 +1,5 @@
 $(function() {
-  var POLLLING_INVERVAL_TIME_IN_MILLIS = 10000;//10s
+  var POLLLING_INVERVAL_TIME_IN_MILLIS = 10000;// 10s
   (function polling() {
 	    if(!document.hidden) {
 	    	test();
@@ -35,17 +35,43 @@ $(function() {
               ],
               "columnDefs": [
                   { targets: 0, width: 60 },
-                  { targets: 1, width: 180 },
+                  { targets: 1, width: 10 },
+                  { targets: 6, width: 60 },
                   {targets:'_all',className : 'dt-head-center'},
               ],
               "createdRow": function(row, data, dataIndex) {
             	  if(dataIndex == 0) {
-            		  $(row).find("td").addClass('firstRow');
+                	  $(row).find("td").eq(0).addClass('blankcell');
+                	  $(row).find("td").eq(1).addClass('firstRow numalign');
+                	  $(row).find("td").eq(2).addClass('firstRow stralign');
+                	  $(row).find("td").eq(3).addClass('firstRow numalign');
+                	  $(row).find("td").eq(4).addClass('firstRow numalign');
+                	  $(row).find("td").eq(5).addClass('firstRow numalign');
+                	  $(row).find("td").eq(6).addClass('blankcell');
             	  } else if(dataIndex == 1) {
-            		  $(row).find("td").addClass('secondRow');
+                	  $(row).find("td").eq(0).addClass('blankcell');
+                	  $(row).find("td").eq(1).addClass('secondRow numalign');
+                	  $(row).find("td").eq(2).addClass('secondRow stralign');
+                	  $(row).find("td").eq(3).addClass('secondRow numalign');
+                	  $(row).find("td").eq(4).addClass('secondRow numalign');
+                	  $(row).find("td").eq(5).addClass('secondRow numalign');
+                	  $(row).find("td").eq(6).addClass('blankcell');
             	  } else if(dataIndex == 2) {
-            		  $(row).find("td").addClass('thirdRow');
+                	  $(row).find("td").eq(0).addClass('blankcell');
+                	  $(row).find("td").eq(1).addClass('thirdRow numalign');
+                	  $(row).find("td").eq(2).addClass('thirdRow stralign');
+                	  $(row).find("td").eq(3).addClass('thirdRow numalign');
+                	  $(row).find("td").eq(4).addClass('thirdRow numalign');
+                	  $(row).find("td").eq(5).addClass('thirdRow numalign');
+                	  $(row).find("td").eq(6).addClass('blankcell');
             	  }
+            	  $(row).find("td").eq(0).addClass('blankcell');
+            	  $(row).find("td").eq(1).addClass('numalign');
+            	  $(row).find("td").eq(2).addClass('stralign');
+            	  $(row).find("td").eq(3).addClass('numalign');
+            	  $(row).find("td").eq(4).addClass('numalign');
+            	  $(row).find("td").eq(5).addClass('numalign');
+            	  $(row).find("td").eq(6).addClass('blankcell');
               }
           });
       })
@@ -71,15 +97,13 @@ $(function() {
   }).done(function(list) {
 	  
 
-/*	  <tr th:each="score, scoreStat : ${scores}">
-        <td></td>
-      	<td th:text="${scoreStat.index} + 1 + '/' + ${scoreStat.size} + '位'"></td>
-        <td th:text="${score.point}">0</td>
-        <td th:text="${score.inputtime}">0</td>
-        <td th:text="${score.misstype}">0</td>
-        <td th:text="${score.username}">user</td>
-        <td></td>
-   </tr>*/
+/*
+ * <tr th:each="score, scoreStat : ${scores}"> <td></td>
+ * <td th:text="${scoreStat.index} + 1 + '/' + ${scoreStat.size} + '位'"></td>
+ * <td th:text="${score.point}">0</td> <td th:text="${score.inputtime}">0</td>
+ * <td th:text="${score.misstype}">0</td> <td th:text="${score.username}">user</td>
+ * <td></td> </tr>
+ */
 	  console.log(list);
 	  var response = "";
 	  for(var form of list) {

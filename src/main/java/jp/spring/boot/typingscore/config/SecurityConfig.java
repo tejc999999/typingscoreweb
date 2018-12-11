@@ -1,11 +1,8 @@
 package jp.spring.boot.typingscore.config;
 
-import java.util.regex.Pattern;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,13 +16,12 @@ import jp.spring.boot.typingscore.service.UserService;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserService userService;
-    
-    @Value("${spring.h2.console.enabled:false}")
-    private boolean springH2ConsoleEnabled;
+	@Autowired
+	private UserService userService;
 
-    
+	@Value("${spring.h2.console.enabled:false}")
+	private boolean springH2ConsoleEnabled;
+
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/webjars/**", "/css/**");
@@ -33,12 +29,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		UserForm form = new UserForm();
 		form.setUsername("jcjcjc");
 		form.setPassword("212121");
-        userService.create(form);
+		userService.create(form);
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
+
 //		if(springH2ConsoleEnabled) {
 //			http
 //			.authorizeRequests()
@@ -46,23 +42,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //			http.csrf().disable();
 //	        http.headers().frameOptions().disable();
 //		} else {
-			http
-			.authorizeRequests()
-					.antMatchers("/login").permitAll()
-					.anyRequest().authenticated()
-				.and()
-				.formLogin()
-				.loginProcessingUrl("/loginprocess")
-				.loginPage("/login")
-				.failureUrl("/login?error")
-				.defaultSuccessUrl("/scores", true)
-				.usernameParameter("username").passwordParameter("password")
-		.and()
-			.logout()
-				.logoutSuccessUrl("/login");
+		http.authorizeRequests().antMatchers("/login").permitAll().anyRequest().authenticated().and().formLogin()
+				.loginProcessingUrl("/loginprocess").loginPage("/login").failureUrl("/login?error")
+				.defaultSuccessUrl("/scores", true).usernameParameter("username").passwordParameter("password").and()
+				.logout().logoutSuccessUrl("/login");
 //		}
 	}
-	
+
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new Pbkdf2PasswordEncoder();

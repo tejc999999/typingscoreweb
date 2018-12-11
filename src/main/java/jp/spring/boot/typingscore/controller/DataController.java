@@ -19,12 +19,9 @@ public class DataController {
 	 * 
 	 * @return 遷移先ビュー
 	 */
-    @GetMapping()
-    public String test() {
-    	
-    	
-    	
-    	
-        return "datas/test";
-    }
+	@GetMapping()
+	public String test() {
+
+		return "datas/test";
+	}
 }

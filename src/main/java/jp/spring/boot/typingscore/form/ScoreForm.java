@@ -1,6 +1,5 @@
 package jp.spring.boot.typingscore.form;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.validation.constraints.Min;
@@ -15,17 +14,17 @@ import lombok.NoArgsConstructor;
 public class ScoreForm {
 
 	@NotNull
-	@NotBlank(message="必須入力です。")
+	@NotBlank(message = "必須入力です。")
 	private String username;
-	@Min(value=0, message="{value} 以下は入力できません。")
+	@Min(value = 0, message = "{value} 以下は入力できません。")
 	@NotNull
-    private int inputtime;
-	@Min(value=0, message="{value} 以下は入力できません。")
+	private int inputtime;
+	@Min(value = 0, message = "{value} 以下は入力できません。")
 	@NotNull
-    private int misstype;
-	
+	private int misstype;
+
 	private int point;
-	
+
 	private Date committime;
 
 }

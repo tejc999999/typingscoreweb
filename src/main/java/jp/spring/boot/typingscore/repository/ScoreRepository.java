@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import jp.spring.boot.typingscore.bean.ScoreBean;
 import jp.spring.boot.typingscore.db.ScoreId;
 
-public interface ScoreRepository extends JpaRepository<ScoreBean, ScoreId>{	
+public interface ScoreRepository extends JpaRepository<ScoreBean, ScoreId> {
 
 	/**
 	 * ユーザ名一覧取得
@@ -17,7 +17,7 @@ public interface ScoreRepository extends JpaRepository<ScoreBean, ScoreId>{
 	 */
 	@Query(value = "select new java.lang.String(s.id.username) from ScoreBean s group by s.id.username")
 	List<String> findUsernameOverlap();
-	
+
 	/**
 	 * 登録日時で並べ替えて全件取得
 	 * 

@@ -17,22 +17,22 @@ public class ScoreResultForm {
 
 	private int inputtime;
 
-    private int misstype;
-	
+	private int misstype;
+
 	private int point;
-	
+
 	private Date committime;
-	
+
 	/**
 	 * 挑戦回数
 	 */
 	private int tryCnt;
-	
+
 	/**
 	 * ランキング順位
 	 */
 	private int rank;
-	
+
 	/**
 	 * 最大ランキング順位
 	 */
@@ -42,7 +42,7 @@ public class ScoreResultForm {
 	 * 合計ランキング者数
 	 */
 	private int rankNum;
-	
+
 	/**
 	 * 最高ポイント
 	 */

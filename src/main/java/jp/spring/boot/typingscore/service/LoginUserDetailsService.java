@@ -17,11 +17,11 @@ public class LoginUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserBean> opt = userRepository.findById(username);
-        UserBean user = opt.orElseThrow(() -> new UsernameNotFoundException("The requested user is not found."));
-        return new LoginUserDetails(user);
+		Optional<UserBean> opt = userRepository.findById(username);
+		UserBean user = opt.orElseThrow(() -> new UsernameNotFoundException("The requested user is not found."));
+		return new LoginUserDetails(user);
 	}
 }

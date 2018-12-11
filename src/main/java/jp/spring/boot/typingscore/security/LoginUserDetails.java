@@ -11,9 +11,8 @@ public class LoginUserDetails extends User {
 
 	private final UserBean user;
 
-    public LoginUserDetails(UserBean userBean) {
-        super(userBean.getUsername(), userBean.getPassword(),
-        		AuthorityUtils.createAuthorityList("ROLE_USER"));
-        this.user = userBean;
-    }
+	public LoginUserDetails(UserBean userBean) {
+		super(userBean.getUsername(), userBean.getPassword(), AuthorityUtils.createAuthorityList("ROLE_USER"));
+		this.user = userBean;
+	}
 }

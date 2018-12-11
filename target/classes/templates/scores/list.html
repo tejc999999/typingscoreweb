@@ -1,59 +1,65 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>スコア一覧画面</title>
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
-	<link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
-  </head>
-  <body>
-  	<header>
-  		<div id="nav">
-    		<ul>
-    		    <li><a th:href="@{/scores/add}">スコア登録画面</a></li>
-    		    <li><a th:href="@{/scores/}">管理用一覧画面</a></li> 	
-    		    <li><a th:href="@{/scores/view}">表示用一覧画面</a></li> 
-    		    <li><a th:href="@{/users}">ログインユーザ管理</a></li> 
-    		</ul> 
-		</div> 
-  	</header>
- 	<div class="content">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スコア一覧画面</title>
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
+<link rel="stylesheet" type="text/css" href="../../static/css/style.css"
+	th:href="@{/css/style.css}" />
+</head>
+<body>
+	<header>
+		<div id="nav">
+			<ul>
+				<li><a th:href="@{/scores/add}">スコア登録画面</a></li>
+				<li><a th:href="@{/scores/}">管理用一覧画面</a></li>
+				<li><a th:href="@{/scores/view}">表示用一覧画面</a></li>
+				<li><a th:href="@{/users}">ログインユーザ管理</a></li>
+			</ul>
+		</div>
+	</header>
+	<div class="content">
 		<h2 class="form-signin-heading">スコア一覧画面</h2>
-		    <table class="table table-striped table-bordered table-responsive">
-			    <tr>
-				    <th class="col-sm-2">ユーザ名</th>
-			      	<th class="col-sm-2">スコア</th>
-			      	<th class="col-sm-2">入力時間（秒）</th>
-			      	<th class="col-sm-2">入力ミス（回）</th>
-			      	<th class="col-sm-2">日時</th>
-			      	<th class="col-sm-1"></th>
-			      	<th class="col-sm-1"></th>
-			    </tr>
-		      	<tr th:each="score : ${scores}">
-			        <td th:text="${score.username}">user</td>
-			        <td th:text="${score.point}">0</td>
-			        <td th:text="${score.inputtime}">0</td>
-			        <td th:text="${score.misstype}">0</td>
-			        <td th:text="${#dates.format(score.committime,'yyyy/MM/dd k:mm:ss')}">yyyy/mm/dd-00:00:00</td>
-			        <td>
-			          <form th:action="@{/scores/edit}" method="post">
-			            <input type="submit" name="form" value="編集" />
-			            <input type="hidden" name="username" th:value="${score.username}"/>
-			            <input type="hidden" name="committime" th:value="${score.committime}"/>
-			          </form>
-			        </td>
-			        <td>
-			          <form th:action="@{/scores/delete}" method="post">
-			            <input type="submit" name="form" value="削除" />
-			            <input type="hidden" name="username" th:value="${score.username}"/>
-			            <input type="hidden" name="committime" th:value="${score.committime}"/>
-			          </form>
-			        </td>
-				</tr>
-	    	</table>
-	    </div>
-  	</body>
+		<table class="table table-striped table-bordered table-responsive">
+			<tr>
+				<th class="col-sm-2">ユーザ名</th>
+				<th class="col-sm-2">スコア</th>
+				<th class="col-sm-2">入力時間（秒）</th>
+				<th class="col-sm-2">入力ミス（回）</th>
+				<th class="col-sm-2">日時</th>
+				<th class="col-sm-1"></th>
+				<th class="col-sm-1"></th>
+			</tr>
+			<tr th:each="score : ${scores}">
+				<td th:text="${score.username}">user</td>
+				<td th:text="${score.point}">0</td>
+				<td th:text="${score.inputtime}">0</td>
+				<td th:text="${score.misstype}">0</td>
+				<td
+					th:text="${#dates.format(score.committime,'yyyy/MM/dd k:mm:ss')}">yyyy/mm/dd-00:00:00</td>
+				<td>
+					<form th:action="@{/scores/edit}" method="post">
+						<input type="submit" name="form" value="編集" /> <input
+							type="hidden" name="username" th:value="${score.username}" /> <input
+							type="hidden" name="committime" th:value="${score.committime}" />
+					</form>
+				</td>
+				<td>
+					<form th:action="@{/scores/delete}" method="post">
+						<input type="submit" name="form" value="削除" /> <input
+							type="hidden" name="username" th:value="${score.username}" /> <input
+							type="hidden" name="committime" th:value="${score.committime}" />
+					</form>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
 </html>

@@ -2,7 +2,6 @@ package jp.spring.boot.typingscore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,18 +23,18 @@ import jp.spring.boot.typingscore.service.UserService;
 public class UserController {
 
 	@Autowired
-    UserService userService;
-	
+	UserService userService;
+
 	/**
 	 * ModelにFormを初期セットする
 	 * 
 	 * @return UserForm
 	 */
-	@ModelAttribute 
+	@ModelAttribute
 	UserForm setUpForm() {
 		return new UserForm();
 	}
-	
+
 	/**
 	 * ユーザ登録画面へ遷移する
 	 * 
@@ -43,19 +42,19 @@ public class UserController {
 	 */
 	@GetMapping
 	String add() {
-	    return "users/add";
+		return "users/add";
 	}
 
 	/**
 	 * ユーザ登録
 	 * 
-	 * @param form エラーチェック対象
+	 * @param form   エラーチェック対象
 	 * @param result エラーチェック結果
 	 * @return 遷移先ビュー
 	 */
-	@PostMapping(path="create")
-	String create(@Validated UserForm form, BindingResult result/*, Model model*/) {
-		if(result.hasErrors()) {
+	@PostMapping(path = "create")
+	String create(@Validated UserForm form, BindingResult result/* , Model model */) {
+		if (result.hasErrors()) {
 			return add();
 		}
 		userService.create(form);

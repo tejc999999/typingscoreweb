@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class UserBean {
 
-    @Id
-    private String username;
+	@Id
+	private String username;
 
-    @JsonIgnore
-    private String password;
+	@JsonIgnore
+	private String password;
 
 }
