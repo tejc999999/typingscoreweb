@@ -54,7 +54,7 @@
 					<tbody>
 						<tr>
 							<td class="numalign rank"><p
-									th:text="${resultform.maxRank} + ' / ' + ${resultform.rankNum} "
+									th:text="${resultform.rank} + ' / ' + ${resultform.rankNum} "
 									style="font-family: 'M PLUS Rounded 1c'; margin-left: 10px;"></td>
 							<td class="stralign rank"><p
 							 	th:text="${resultform.username}"
@@ -87,7 +87,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td class="numalign rank"><p th:text="${resultform.rank} + ' / ' + ${resultform.rankNum}"></td>
+							<td class="numalign rank"><p th:text="${resultform.maxRank} + ' / ' + ${resultform.rankNum}"></td>
 							<td class="stralign rank"><p th:text="${resultform.username}">〇〇</p></td>
 							<td class="numalign score"><p th:text="${resultform.maxPoint}" class="score-p"></td>
 							<td class="numalign score-time"><p th:text="${resultform.maxInputtime}" class="score-time-p"></td>
