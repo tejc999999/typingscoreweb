@@ -11,11 +11,19 @@
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
 	th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
+<link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
+
 <link rel="stylesheet" type="text/css" href="../../static/css/style.css"
 	th:href="@{/css/style.css}" />
 <link rel="stylesheet" type="text/css" href="../../static/css/style.css"
-	th:href="@{/css/rankstyle.css}" />
-<link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
+	th:href="@{/css/viewstyle.css}" />
+<link rel="stylesheet" type="text/css" href="../../static/css/style.css"
+	th:href="@{/css/swing.css}" />
+<link rel="stylesheet" type="text/css" href="../../static/css/style.css"
+	th:href="@{/css/blinking.css}" />
+<link rel="stylesheet" type="text/css" href="../../static/css/style.css"
+	th:href="@{/css/tremble.css}" />
+
 <script type="text/javascript"
 	th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
 <!--     <script type="text/javascript" th:src="@{/webjars/1.9.4-2/datatables-1.9.4-2.jar}"></script> -->
@@ -25,79 +33,84 @@
 </head>
 <body>
 	<!--  		<h2 class="form-signin-heading">スコア一覧画面</h2>-->
-	<div class="content">
-		<div class="viewarea">
-			<div class="imageview">
-				<div class="comment">
-					<p>
-					年に１回、新入生を対象としたタイピングコンテストを実施しています。<br>
-					学内最高ランクの猛者を超えるタイピングができるか！？<br>
-					H30新入生の成績は以下です。<br>
-					</p>
-				</div>
-				<div>
-					<img th:src="@{/img/charactor.png}" class="charactor" />
-				</div>
-			</div>
-			<table>
-					<thead>
-						<tr>
-							<th class="col-sm-1" style="border:none;"></th>
-							<th class="col-sm-2 numalign" style="border:none;">rank</th>
-							<th class="col-sm-2 stralign" style="border:none;">user name</th>
-							<th class="col-sm-2 numalign" style="border:none;">score</th>
-							<th class="col-sm-2 numalign" style="border:none;">input time</th>
-							<th class="col-sm-2 numalign" style="border:none;">miss type</th>
-							<th class="col-sm-1" style="border:none;"></th>
-						</tr>
-					</thead>
-					<tbody>
-					<tr>
-				        <td></td>
-				      	<td class="numalign">1</td>
-				        <td class="stralign">○○学科</td>
-				        <td class="numalign">0</td>
-				        <td class="numalign">0</td>
-				        <td class="numalign">0</td>
-				        <td></td>
-				    </tr>
-					<tr>
-				        <td></td>
-				      	<td class="numalign">2</td>
-				        <td class="stralign">○○学科</td>
-				        <td class="numalign">0</td>
-				        <td class="numalign">0</td>
-				        <td class="numalign">0</td>
-				        <td></td>
-				    </tr>
-					<tr>
-				        <td></td>
-				      	<td class="numalign">3</td>
-				        <td class="stralign">○○学科</td>
-				        <td class="numalign">0</td>
-				        <td class="numalign">0</td>
-				        <td class="numalign">0</td>
-				        <td></td>
-				    </tr>
-					</tbody>
-				</table>
-		</div>
+        <div class="content">
+            <div class="viewarea">
+                <div class="imageview">
+                    <div class="swing">
+                        <img th:src="@{/img/sign.png}" style="width: 400px; height: 300px;">
+                    </div>
+                    <div class="comment">
+                        <p>年に１回、新入生を対象としたタイピングコンテストを実施しています。
+                        <br>学内最高ランクの猛者を超えるタイピングができるか！？
+                        <br>H30新入生の成績は以下です。
+                        <br>
+                        </p>
+                    </div>
+                    <div>
+                        <span class="tremble">
+                        <img th:src="@{/img/charactor.png}" class="charactor">
+                        </span>
+                    </div>
+                </div>
+                <table>
+                    <!--<thead>
+                        <tr>
+                            <th class="col-sm-1" style="border:none;"></th>
+                            <th class="col-sm-2 numalign" style="border:none;">rank</th>
+                            <th class="col-sm-2 stralign" style="border:none;">user name</th>
+                            <th class="col-sm-2 numalign" style="border:none;">score</th>
+                            <th class="col-sm-2 numalign" style="border:none;">input time</th>
+                            <th class="col-sm-2 numalign" style="border:none;">miss type</th>
+                            <th class="col-sm-1" style="border:none;"></th>
+                        </tr>
+                    </thead>-->
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td class="department">1</td>
+                            <td class="department">H30新入生</td>
+                            <td class="score">149</td>
+                            <td class="score-time">141</td>
+                            <td class="score-miss">4</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="department">2</td>
+                            <td class="department">H30新入生</td>
+                            <td class="score">153</td>
+                            <td class="score-time">151</td>
+                            <td class="score-miss">1</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="department">3</td>
+                            <td class="department">H30新入生</td>
+                            <td class="score">193</td>
+                            <td class="score-time">183</td>
+                            <td class="score-miss">5</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 		<div class="rankarea">
 			<div class="center">
-				<img th:src="@{/img/result_logo.gif}" />
+				<img th:src="@{/img/result_logo.png}" />
 			</div>
 			<div id="rank">
-				<table id="ranktable"
-					class="table table-striped table-responsive">
+				<table id="ranktable" style="width: 90%">
+					<!-- class="table table-striped table-responsive" -->
 					<thead>
 						<tr>
-							<th class="col-sm-1" style="border-bottom: 2px solid #0000ff;"></th>
-							<th class="col-sm-2 numalign" style="border-bottom: 2px solid #0000ff;">rank</th>
-							<th class="col-sm-2 stralign" style="border-bottom: 2px solid #0000ff;">user name</th>
-							<th class="col-sm-2 numalign" style="border-bottom: 2px solid #0000ff;">score</th>
-							<th class="col-sm-2 numalign" style="border-bottom: 2px solid #0000ff;">input time</th>
-							<th class="col-sm-2 numalign" style="border-bottom: 2px solid #0000ff;">miss type</th>
-							<th class="col-sm-1" style="border-bottom: 2px solid #0000ff;"></th>
+							<th class="col-sm-1" style="border-top: none; border-bottom: 2px solid #0000ff;"></th>
+							<th class="col-sm-1 numalign" style="border-top: none; border-bottom: 2px solid #0000ff;">rank</th>
+							<th class="col-sm-3 stralign" style="border-top: none; border-bottom: 2px solid #0000ff;">user name</th>
+							<th class="col-sm-2 numalign" style="border-top: none; border-bottom: 2px solid #0000ff;">score</th>
+							<th class="col-sm-2 numalign" style="border-top: none; border-bottom: 2px solid #0000ff;">input time</th>
+							<th class="col-sm-2 numalign" style="border-top: none; border-bottom: 2px solid #0000ff;">miss type</th>
+							<th class="col-sm-1" style="border-top: none; border-bottom: 2px solid #0000ff;"></th>
 						</tr>
 					</thead>
 					<tbody>

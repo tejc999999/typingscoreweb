@@ -100,6 +100,10 @@ public class ScoreController {
 		int maxRank = 0;
 		// 過去を含めた最高ポイント
 		int maxPoint = createScoreForm.getPoint();
+		// 過去を含めた最高ポイント時の入力時間
+		int maxInputTime = createScoreForm.getInputtime();
+		// 過去を含めた最高ポイント時のミスタイプ数
+		int maxMissType = createScoreForm.getMisstype();
 		// 挑戦回数
 		int tryCnt = 0;
 
@@ -140,6 +144,8 @@ public class ScoreController {
 					// 初回（最高成績）のみ順位とポイントを保持
 					maxRank = rankNum;
 					maxPoint = tempForm.getPoint();
+					maxInputTime = tempForm.getInputtime();
+					maxMissType = tempForm.getMisstype();
 				}
 			}
 			// 今回のランクを格納
@@ -156,6 +162,8 @@ public class ScoreController {
 		scoreResultForm.setMaxRank(maxRank);
 		scoreResultForm.setRankNum(rankNum + overlapRankNum);
 		scoreResultForm.setMaxPoint(maxPoint);
+		scoreResultForm.setMaxInputtime(maxInputTime);
+		scoreResultForm.setMaxMisstype(maxMissType);
 
 		model.addAttribute("resultform", scoreResultForm);
 		return "scores/addcomp";
@@ -215,13 +223,13 @@ public class ScoreController {
 				BeanUtils.copyProperties(form, rankForm);
 				rankForm.setRank(rankNum);
 				if(rankNum == 1) {
-					rankForm.setBlank("<img src=\"/img/gold.png\" class=\"icon\" />");
+					rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/gold.png\" class=\"icon\" /></span>");
 				} else if(rankNum == 2) {
-					rankForm.setBlank("<img src=\"/img/silver.png\" class=\"icon\" />");
+					rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/silver.png\" class=\"icon\" /></span>");
 				} else if(rankNum == 3) {
-					rankForm.setBlank("<img src=\"/img/bronze.png\" class=\"icon\" />");
+					rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/bronze.png\" class=\"icon\" /></span>");
 				} else if(rankNum < 6) {
-					rankForm.setBlank("<img src=\"/img/green.png\" class=\"icon\" />");
+					rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/green.png\" class=\"icon\" /></span>");
 				} else {
 					rankForm.setBlank("");
 				}

@@ -1,0 +1,76 @@
+/* basic */
+body {
+	background-color: #000000;
+	color: #ffffff;
+	font-family: "M PLUS Rounded 1c";
+	font-style: oblique;
+}
+
+table, tr, th, td {
+	border: none;
+	background: #000000;
+	color: #ffffff;
+	border-collapse: collapse;
+	margin: 0 auto;
+	border-bottom: 2px solid #0000ff;
+}
+
+td, th {
+	padding: 10px;
+}
+
+.title {
+	color: white;
+	font-size: 28px;
+}
+
+.tablehead {
+	font-size: 20px;	
+}
+
+/* structure */
+.data {
+	padding-bottom: 40px;
+}
+
+/* Ranking */
+.score {
+    vertical-align: bottom;
+    font-size: 20px;
+    padding-bottom: 0px;
+}
+
+.score-time {
+    vertical-align: bottom;
+    font-size: 14px;
+    padding-bottom: 0px;
+}
+
+.score-miss {
+    vertical-align: bottom;
+    font-size: 14px;
+    padding-bottom: 0px;
+}
+.rank {
+    font-weight: bold;
+    background:linear-gradient(180deg,#330867 0%,#1E00FF 70%,black 70%,black 100%);
+    vertical-align: top;
+    font-size: 18px;
+    padding: auto 1px;
+}
+.score-p::before {
+	content: "score:";
+}
+.score-time-p::before {
+	content: "time:";
+}
+.score-miss-p::before {
+	content: "miss:";
+}
+.numalign {
+	text-align: right;
+}
+
+.stralign {
+    text-align: left;
+}

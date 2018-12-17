@@ -33,45 +33,32 @@ $(function() {
                   { data: "misstype" },
                   { data: "blank" },
               ],
-              "columnDefs": [
-                  { targets: 0, width: 60 },
-                  { targets: 1, width: 10 },
-                  { targets: 6, width: 60 },
-                  {targets:'_all',className : 'dt-head-center'},
-              ],
+      		"columnDefs": [
+    			// 2列目(0から始まるため1になっています)の幅を100pxにする
+    			{ targets: 1, width: 4 },
+    		],
+//              "columnDefs": [
+//                  { targets: 0, width: 20 },
+//                  { targets: 1, width: 10 },
+//                  { targets: 6, width: 20 },
+//                  {targets:'_all',className : 'dt-head-center'},
+//              ],
               "createdRow": function(row, data, dataIndex) {
+            	  $(row).find("td").eq(0).addClass('iconcell');
+            	  $(row).find("td").eq(6).addClass('iconcell');
             	  if(dataIndex == 0) {
-                	  $(row).find("td").eq(0).addClass('blankcell');
-                	  $(row).find("td").eq(1).addClass('firstRow numalign');
-                	  $(row).find("td").eq(2).addClass('firstRow stralign');
-                	  $(row).find("td").eq(3).addClass('firstRow numalign');
-                	  $(row).find("td").eq(4).addClass('firstRow numalign');
-                	  $(row).find("td").eq(5).addClass('firstRow numalign');
-                	  $(row).find("td").eq(6).addClass('blankcell');
-            	  } else if(dataIndex == 1) {
-                	  $(row).find("td").eq(0).addClass('blankcell');
-                	  $(row).find("td").eq(1).addClass('secondRow numalign');
-                	  $(row).find("td").eq(2).addClass('secondRow stralign');
-                	  $(row).find("td").eq(3).addClass('secondRow numalign');
-                	  $(row).find("td").eq(4).addClass('secondRow numalign');
-                	  $(row).find("td").eq(5).addClass('secondRow numalign');
-                	  $(row).find("td").eq(6).addClass('blankcell');
-            	  } else if(dataIndex == 2) {
-                	  $(row).find("td").eq(0).addClass('blankcell');
-                	  $(row).find("td").eq(1).addClass('thirdRow numalign');
-                	  $(row).find("td").eq(2).addClass('thirdRow stralign');
-                	  $(row).find("td").eq(3).addClass('thirdRow numalign');
-                	  $(row).find("td").eq(4).addClass('thirdRow numalign');
-                	  $(row).find("td").eq(5).addClass('thirdRow numalign');
-                	  $(row).find("td").eq(6).addClass('blankcell');
+                	  $(row).find("td").eq(1).addClass('numalign borderTopNone rank');
+                	  $(row).find("td").eq(2).addClass('stralign borderTopNone rank');
+                	  $(row).find("td").eq(3).addClass('numalign borderTopNone score');
+                	  $(row).find("td").eq(4).addClass('numalign borderTopNone score-time');
+                	  $(row).find("td").eq(5).addClass('numalign borderTopNone score-miss');
+            	  } else {
+                	  $(row).find("td").eq(1).addClass('numalign rank');
+                	  $(row).find("td").eq(2).addClass('stralign rank');
+                	  $(row).find("td").eq(3).addClass('numalign score');
+                	  $(row).find("td").eq(4).addClass('numalign score-time');
+                	  $(row).find("td").eq(5).addClass('numalign score-miss');
             	  }
-            	  $(row).find("td").eq(0).addClass('blankcell');
-            	  $(row).find("td").eq(1).addClass('numalign');
-            	  $(row).find("td").eq(2).addClass('stralign');
-            	  $(row).find("td").eq(3).addClass('numalign');
-            	  $(row).find("td").eq(4).addClass('numalign');
-            	  $(row).find("td").eq(5).addClass('numalign');
-            	  $(row).find("td").eq(6).addClass('blankcell');
               }
           });
       })
