@@ -13,6 +13,12 @@ import lombok.Data;
 @Embeddable
 @Data
 public class ScoreId implements Serializable {
+	
+	/**
+	 * シリアルバージョンUID
+	 */
+	private static final long serialVersionUID = 6790969058470310683L;
+	
 	@Embedded
 	private String username;
 	@Temporal(TemporalType.TIMESTAMP)

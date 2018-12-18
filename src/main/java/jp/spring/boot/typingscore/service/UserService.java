@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import jp.spring.boot.typingscore.bean.ScoreBean;
 import jp.spring.boot.typingscore.bean.UserBean;
-import jp.spring.boot.typingscore.db.ScoreId;
 import jp.spring.boot.typingscore.form.UserForm;
 import jp.spring.boot.typingscore.repository.UserRepository;
 

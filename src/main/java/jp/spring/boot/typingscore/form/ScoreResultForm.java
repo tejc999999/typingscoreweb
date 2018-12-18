@@ -2,10 +2,6 @@ package jp.spring.boot.typingscore.form;
 
 import java.util.Date;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

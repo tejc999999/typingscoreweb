@@ -46,11 +46,12 @@
 			</div>
 			<br>
 			<div class="col-sm-3 col-sm-offset-4 bottomobj">
-				<form th:action="@{/databases/upload/score.csv}" method="post"
-					enctype="multipart/form-data">
+				<form th:action="@{/databases/upload/scorecsv}" method="post" enctype="multipart/form-data"
+				  onSubmit="return confirmdialog('DB（スコア）をアップロードしますか？', 'DB（スコア）をアップロードしました', 'DB（スコア）アップロードをキャンセルしました');">
 
-					<label class="btn btn-lg btn-warning btn-block"> ファイル選択 <input
-						style="display: none;" type="file" name="upload_file" /><br />
+					<label class="btn btn-lg btn-warning btn-block"> ファイル選択
+					<input
+						style="display: none;" type="file" name="upload_file" required="required"/><br />
 					</label>
 					<button class="btn btn-lg btn-primary btn-block" type="submit">アップロード</button>
 				</form>
