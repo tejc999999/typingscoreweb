@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ユーザー登録画面</title>
+    <title>ログインユーザ管理画面</title>
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.mincss" th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
 	<link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
@@ -16,12 +16,14 @@
     		    <li><a th:href="@{/scores/add}">スコア登録画面</a></li>
     		    <li><a th:href="@{/scores/}">管理用一覧画面</a></li> 	
     		    <li><a th:href="@{/scores/view}">表示用一覧画面</a></li> 
-    		    <li><a th:href="@{/users}">ログインユーザ管理</a></li> 
+    		    <li><a th:href="@{/users}">ログインユーザ管理</a></li>
+    		    <li><a th:href="@{/databases}">データベース管理</a></li>
+				<li><a th:href="@{/logout}">ログアウト</a></li>
     		</ul> 
 		</div> 
   	</header>
  	<div class="content">
-	  	<h2 class="form-signin-heading">ユーザ登録画面</h2>
+	  	<h2 class="form-signin-heading">ログインユーザ管理画面</h2>
 	  	
 	    <form class="form-horizontal" th:action="@{/users/create}" th:object="${userForm}" method="post">
 	    

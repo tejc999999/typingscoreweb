@@ -200,4 +200,14 @@ public class ScoreService {
 		scoreBean.setId(id);
 		scoreRepository.delete(scoreBean);
 	}
+	
+	/**
+	 * スコアデータ全件削除
+	 * 
+	 */
+	public void deleteAll() {
+		
+		scoreRepository.deleteAll();
+	}
+	
 }

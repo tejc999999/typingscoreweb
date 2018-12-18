@@ -1,0 +1,14 @@
+.scorelabel {
+    position: relative;
+    height: 100px;
+}
+
+.userlabel {
+    position: relative;
+    height: 100px;
+}
+
+.bottomobj {
+	position: absolute;
+	bottom: 0px;
+}

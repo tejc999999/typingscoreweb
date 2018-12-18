@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import jp.spring.boot.typingscore.form.UserForm;
 import jp.spring.boot.typingscore.service.UserService;
@@ -45,7 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/login").permitAll().anyRequest().authenticated().and().formLogin()
 				.loginProcessingUrl("/loginprocess").loginPage("/login").failureUrl("/login?error")
 				.defaultSuccessUrl("/scores", true).usernameParameter("username").passwordParameter("password").and()
-				.logout().logoutSuccessUrl("/login");
+				.logout()
+				// .logoutUrl("/logout")
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutSuccessUrl("/login");
 //		}
 	}
 
