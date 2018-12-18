@@ -13,8 +13,6 @@
 	th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
 <link rel="stylesheet" type="text/css" href="../../static/css/style.css"
 	th:href="@{/css/style.css}" />
-<link rel="stylesheet" type="text/css" href="../../static/css/style.css"
-	th:href="@{/css/databasestyle.css}" />
 <script type="text/javascript" th:src="@{/js/confirmdialog.js}"></script>
 </head>
 <body>
@@ -37,27 +35,25 @@
 				<h3>データベース（スコア）</h3>
 			</div>
 		</div>
-		<div class="row scorelabel">
-			<div class="col-sm-3 col-sm-offset-1 bottomobj">
+		<br>
+		<div class="row">
+			<div class="col-sm-3 col-sm-offset-1">
 				<form th:action="@{/databases/download/score.csv}" method="get"
 					enctype="multipart/form-data">
 					<button class="btn btn-lg btn-primary btn-block" type="submit">ダウンロード</button>
 				</form>
 			</div>
-			<br>
-			<div class="col-sm-3 col-sm-offset-4 bottomobj">
+			<div class="col-sm-3">
 				<form th:action="@{/databases/upload/scorecsv}" method="post" enctype="multipart/form-data"
 				  onSubmit="return confirmdialog('DB（スコア）をアップロードしますか？', 'DB（スコア）をアップロードしました', 'DB（スコア）アップロードをキャンセルしました');">
-
+					<button class="btn btn-lg btn-primary btn-block" type="submit">アップロード</button>
 					<label class="btn btn-lg btn-warning btn-block"> ファイル選択
 					<input
 						style="display: none;" type="file" name="upload_file" required="required"/><br />
 					</label>
-					<button class="btn btn-lg btn-primary btn-block" type="submit">アップロード</button>
 				</form>
 			</div>
-			<br>
-			<div class="col-sm-3 col-sm-offset-7 bottomobj">
+			<div class="col-sm-3">
  				<form th:action="@{/databases/initdbscore}" method="get" onSubmit="return confirmdialog('DB（スコア）を初期化しますか？', 'DB（スコア）を初期化しました', 'DB（スコア）初期化をキャンセルしました');">
 					<button class="btn btn-lg btn-danger btn-block" type="submit">DB初期化</button>
 				</form>
@@ -69,8 +65,9 @@
 				<h3>データベース（ユーザ）</h3>
 			</div>
 		</div>
-		<div class="row userlabel">
-			<div class="col-sm-3 col-sm-offset-1 bottomobj">
+		<br>
+		<div class="row">
+			<div class="col-sm-3 col-sm-offset-1">
  				<form th:action="@{/databases/initdbdefaultuser}" method="get" onSubmit="return confirmdialog('初期ユーザを初期化しますか？', '初期ユーザを初期化しました', '初期ユーザ削除をキャンセルしました');">
 					<button class="btn btn-lg btn-danger btn-block" type="submit">初期ユーザ削除</button>
 				</form>
