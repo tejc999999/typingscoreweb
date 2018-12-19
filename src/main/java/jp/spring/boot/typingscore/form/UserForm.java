@@ -19,4 +19,7 @@ public class UserForm {
 	@NotBlank(message = "必須入力です。")
 	@Size(min = 6, max = 12, message = "{min} 文字以上 {max} 文字以下で入力してください。")
 	private String password;
+	@NotNull
+	@NotBlank(message = "必須選択です。")
+	private String role;
 }

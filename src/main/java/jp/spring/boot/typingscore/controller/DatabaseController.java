@@ -75,7 +75,7 @@ public class DatabaseController {
 	@GetMapping(path = "initdbdefaultuser")
 	public String initDbDefaultUser() {
 
-		userService.delete("jcjcjc");
+		userService.delete("demouser");
 
 		return "redirect:/databases";
 	}

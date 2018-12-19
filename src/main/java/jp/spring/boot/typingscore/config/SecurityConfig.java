@@ -7,11 +7,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import jp.spring.boot.typingscore.form.UserForm;
+import jp.spring.boot.typingscore.security.RoleName;
 import jp.spring.boot.typingscore.service.UserService;
 
 @EnableWebSecurity
@@ -28,8 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers("/webjars/**", "/css/**");
 		// 初回ログイン用ユーザ登録
 		UserForm form = new UserForm();
-		form.setUsername("jcjcjc");
-		form.setPassword("212121");
+		form.setUsername("demouser");
+		form.setPassword("password");
+		form.setRole(RoleName.ROLE_ADMIN.getString());
 		userService.create(form);
 	}
 
@@ -43,13 +46,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //			http.csrf().disable();
 //	        http.headers().frameOptions().disable();
 //		} else {
-		http.authorizeRequests().antMatchers("/login").permitAll().anyRequest().authenticated().and().formLogin()
+		http.authorizeRequests().
+				antMatchers("/users").hasRole(RoleName.ROLE_ADMIN.getString()).
+				antMatchers("/databases").hasRole(RoleName.ROLE_ADMIN.getString()).
+				antMatchers("/login").permitAll().anyRequest().authenticated().and().formLogin()
 				.loginProcessingUrl("/loginprocess").loginPage("/login").failureUrl("/login?error")
 				.defaultSuccessUrl("/scores", true).usernameParameter("username").passwordParameter("password").and()
 				.logout()
 				// .logoutUrl("/logout")
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/login");
+		
+		
+		
+		
 //		}
 	}
 

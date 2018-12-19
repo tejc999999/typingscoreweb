@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
   <head>
     <meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,8 +16,8 @@
     		    <li><a th:href="@{/scores/add}">スコア登録画面</a></li>
     		    <li><a th:href="@{/scores/}">管理用一覧画面</a></li> 	
     		    <li><a th:href="@{/scores/view}">表示用一覧画面</a></li> 
-    		    <li><a th:href="@{/users}">ログインユーザ管理</a></li>
-    		    <li><a th:href="@{/databases}">データベース管理</a></li>
+    		    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/users}">ログインユーザ管理</a></li>
+    		    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/databases}">データベース管理</a></li>
 				<li><a th:href="@{/logout}">ログアウト</a></li>
     		</ul> 
 		</div> 
@@ -40,6 +40,15 @@
 		        	<input class="form-control" type="text" name="password" th:field="*{password}" th:errorclass="error-input" />
 	        	</div>
 	        	<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-messages">error!</span>
+	        </div>
+			<div class="form-group">
+	        	<label class="control-label col-sm-2">権限</label>
+	    	    <div class="col-sm-4">
+	    	    	<select class="form-control" name="role">
+              			<option th:each="item : ${roleMapItems}" th:value="${item.key}" th:text="${item.value}" th:selected="${item.key} == ${selectedrole}" >プルダウン</option>
+		            </select>
+	        	</div>
+	        	<span th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="error-messages">error!</span>
 	        </div>
 	        
 			<div class="form-group">

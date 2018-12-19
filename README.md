@@ -10,8 +10,9 @@ Created for toolchain: https://console.bluemix.net/devops/toolchains/b3f378d0-a5
 
 ## 初期状態
 ログインユーザは以下のみ存在
-* ユーザID：jcjcjc
-* パスワード：212121
+* ユーザ：demouser
+* パスワード：password
+* 権限：管理者
 
 ## 主な機能
 * スコア登録
@@ -22,9 +23,10 @@ Created for toolchain: https://console.bluemix.net/devops/toolchains/b3f378d0-a5
 * スコアアップロード
 * スコアダウンロード
 * スコア全削除
-* ログイン
+* ログイン、ログアウト
 * ログインユーザ作成
 * 初期ログインユーザ削除
+* ユーザの管理権限（管理者or一般）
 
 ## 備考
 * ランキングは同一ユーザ名で最高スコアのもののみランキングに表示
