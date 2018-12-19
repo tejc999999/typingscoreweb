@@ -107,7 +107,6 @@ $(function() {
     });
   }
 });
-
 function escapeHtml(str){
 	  str = str.replace('&/g', '&amp;');
 	  str = str.replace('>/g', '&gt;');
