@@ -22,5 +22,7 @@ public class UserBean {
 
 	@JsonIgnore
 	private String password;
+	
+	private String role;
 
 }
