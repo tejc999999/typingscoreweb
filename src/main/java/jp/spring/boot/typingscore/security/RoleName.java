@@ -14,4 +14,8 @@ public enum RoleName {
     public String getString() {
         return this.str;
     }
+
+    public String getRoleLessString() {
+        return this.str.replace("ROLE_", "");
+    }
 }

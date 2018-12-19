@@ -47,8 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //	        http.headers().frameOptions().disable();
 //		} else {
 		http.authorizeRequests().
-				antMatchers("/users").hasRole(RoleName.ROLE_ADMIN.getString()).
-				antMatchers("/databases").hasRole(RoleName.ROLE_ADMIN.getString()).
+				antMatchers("/users").hasRole(RoleName.ROLE_ADMIN.getRoleLessString()).
+				antMatchers("/databases").hasRole(RoleName.ROLE_ADMIN.getRoleLessString()).
 				antMatchers("/login").permitAll().anyRequest().authenticated().and().formLogin()
 				.loginProcessingUrl("/loginprocess").loginPage("/login").failureUrl("/login?error")
 				.defaultSuccessUrl("/scores", true).usernameParameter("username").passwordParameter("password").and()
