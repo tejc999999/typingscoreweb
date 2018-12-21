@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,8 +20,8 @@
 			<ul>
 				<li><a th:href="@{/scores/add}">スコア登録画面</a></li>
 				<li><a th:href="@{/scores/}">管理用一覧画面</a></li>
-    		    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/users}">ログインユーザ管理</a></li>
-    		    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/databases}">データベース管理</a></li>
+				<li sec:authorize="hasRole('ADMIN')"><a th:href="@{/users}">ログインユーザ管理</a></li>
+				<li sec:authorize="hasRole('ADMIN')"><a th:href="@{/databases}">データベース管理</a></li>
 				<li><a th:href="@{/logout}">ログアウト</a></li>
 			</ul>
 		</div>

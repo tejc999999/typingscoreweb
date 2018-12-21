@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: jp.spring.boot.typingscore.TypingscoreApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.306 s - in jp.spring.boot.typingscore.TypingscoreApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.769 s - in jp.spring.boot.typingscore.TypingscoreApplicationTests
