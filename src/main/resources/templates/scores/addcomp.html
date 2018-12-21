@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,21 +22,21 @@
 <body>
 	<header>
 		<div id="nav">
-    		<ul>
-    		    <li><a th:href="@{/scores/add}">スコア登録画面</a></li>
-    		    <li><a th:href="@{/scores/}">管理用一覧画面</a></li> 	
-    		    <li><a th:href="@{/scores/view}">表示用一覧画面</a></li> 
-    		    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/users}">ログインユーザ管理</a></li>
-    		    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/databases}">データベース管理</a></li>
+			<ul>
+				<li><a th:href="@{/scores/add}">スコア登録画面</a></li>
+				<li><a th:href="@{/scores/}">管理用一覧画面</a></li>
+				<li><a th:href="@{/scores/view}">表示用一覧画面</a></li>
+				<li sec:authorize="hasRole('ADMIN')"><a th:href="@{/users}">ログインユーザ管理</a></li>
+				<li sec:authorize="hasRole('ADMIN')"><a th:href="@{/databases}">データベース管理</a></li>
 				<li><a th:href="@{/logout}">ログアウト</a></li>
-    		</ul> 
+			</ul>
 		</div>
 	</header>
 	<div class="container">
 		<div class="row">
 			<img th:src="@{/img/result.png}" />
 		</div>
-        <!-- 
+		<!-- 
         <div class="row">
 			<h2 class="form-signin-heading col-sm-12">スコア登録完了画面</h2>
 		</div> -->
@@ -59,17 +60,14 @@
 									th:text="${resultform.rank} + ' / ' + ${resultform.rankNum} "
 									style="font-family: 'M PLUS Rounded 1c'; margin-left: 10px;"></td>
 							<td class="stralign rank"><p
-							 	th:text="${resultform.username}"
+									th:text="${resultform.username}"
 									style="font-family: 'M PLUS Rounded 1c';">〇〇</p></td>
-							<td class="numalign score"><p
-							 		th:text="${resultform.point}"
-							 		class="score-p"></td>
+							<td class="numalign score"><p th:text="${resultform.point}"
+									class="score-p"></td>
 							<td class="numalign score-time"><p
-							 		th:text="${resultform.inputtime}"
-							 		class="score-time-p"></td>
+									th:text="${resultform.inputtime}" class="score-time-p"></td>
 							<td class="numalign score-miss"><p
-									th:text="${resultform.misstype}"
-									class="score-miss-p"></td>
+									th:text="${resultform.misstype}" class="score-miss-p"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -89,11 +87,16 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td class="numalign rank"><p th:text="${resultform.maxRank} + ' / ' + ${resultform.rankNum}"></td>
-							<td class="stralign rank"><p th:text="${resultform.username}">〇〇</p></td>
-							<td class="numalign score"><p th:text="${resultform.maxPoint}" class="score-p"></td>
-							<td class="numalign score-time"><p th:text="${resultform.maxInputtime}" class="score-time-p"></td>
-							<td class="numalign score-miss"><p th:text="${resultform.maxMisstype}" class="score-miss-p"></td>
+							<td class="numalign rank"><p
+									th:text="${resultform.maxRank} + ' / ' + ${resultform.rankNum}"></td>
+							<td class="stralign rank"><p
+									th:text="${resultform.username}">〇〇</p></td>
+							<td class="numalign score"><p
+									th:text="${resultform.maxPoint}" class="score-p"></td>
+							<td class="numalign score-time"><p
+									th:text="${resultform.maxInputtime}" class="score-time-p"></td>
+							<td class="numalign score-miss"><p
+									th:text="${resultform.maxMisstype}" class="score-miss-p"></td>
 						</tr>
 					</tbody>
 				</table>
