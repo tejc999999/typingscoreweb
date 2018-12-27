@@ -2,7 +2,7 @@
 applications:
  - name: typingscore
 #   random-route: true
-   host: simple-toolchain-20181219155421198
+   host: typingscoreweb-tejc999999
    path: target/typingscore-0.0.1-SNAPSHOT.jar
    memory: 256M
    instances: 1
