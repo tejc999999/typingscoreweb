@@ -1,6 +1,7 @@
 package jp.spring.boot.typingscore.db;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Embeddable;
@@ -21,6 +22,16 @@ public class ScoreId implements Serializable {
 	
 	@Embedded
 	private String username;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date committime;
+//	@Temporal(TemporalType.TIMESTAMP)
+	private Timestamp committime;
+	
+//	public void setCommittime(Date committime) {
+//		if(committime instanceof Timestamp) {
+//			System.out.println("CONVERT!");
+//			this.committime = new Date(committime.getTime());
+//		} else {
+//			System.out.println("not CONVERT!");
+//			this.committime = committime;
+//		}
+//	}
 }

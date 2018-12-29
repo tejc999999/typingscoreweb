@@ -7,13 +7,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import jp.spring.boot.typingscore.form.UserForm;
 import jp.spring.boot.typingscore.security.RoleName;
+import jp.spring.boot.typingscore.service.ScoreService;
 import jp.spring.boot.typingscore.service.UserService;
 
 @EnableWebSecurity
@@ -21,6 +21,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ScoreService scoreService;
 
 	@Value("${spring.h2.console.enabled:false}")
 	private boolean springH2ConsoleEnabled;
@@ -34,6 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		form.setPassword("password");
 		form.setRole(RoleName.ROLE_ADMIN.getString());
 		userService.create(form);
+		// Cloudant用インデックス作成
+		scoreService.init();
 	}
 
 	@Override

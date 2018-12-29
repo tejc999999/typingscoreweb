@@ -1,21 +1,21 @@
 package jp.spring.boot.typingscore.controller;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,12 +43,12 @@ public class ScoreController {
 	@Autowired
 	ScoreService scoreService;
 
-	@InitBinder
-	public void dateBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
-		binder.registerCustomEditor(Date.class, editor);
-	}
+//	@InitBinder
+//	public void dateBinder(WebDataBinder binder) {
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
+//		binder.registerCustomEditor(Date.class, editor);
+//	}
 
 	/**
 	 * ModelにFormを初期セットする
@@ -272,12 +272,12 @@ public class ScoreController {
 		ScoreId id = new ScoreId();
 		id.setUsername(username);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date convCommittime = null;
+		Timestamp convCommittime = null;
 		try {
-			convCommittime = format.parse(committime);
+			convCommittime = new Timestamp(format.parse(committime).getTime());
 		} catch (ParseException e) {
-			convCommittime = new Date();
 			e.printStackTrace();
+			return "scores/";
 		}
 		id.setCommittime(convCommittime);
 
@@ -303,15 +303,15 @@ public class ScoreController {
 		}
 		ScoreId id = new ScoreId();
 		id.setUsername(oldusername);
-		;
+
 		id.setCommittime(form.getCommittime());
 
 		// 変更不可能項目（登録日時）を旧データからコピー
 		form.setCommittime(id.getCommittime());
 
-		// 更新（識別情報自体を更新する場合があるので、旧データを削除してから更新（新規作成もあり））
+		// 更新（識別情報自体を更新する場合があるので、旧データを削除してから新規作成する）
 		scoreService.delete(id);
-		scoreService.update(form);
+		scoreService.create(form);
 		return "redirect:/scores";
 	}
 
@@ -327,17 +327,31 @@ public class ScoreController {
 		ScoreId id = new ScoreId();
 		id.setUsername(username);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date convCommittime = null;
+		Timestamp convCommittime = null;
 		//
 		try {
-			convCommittime = format.parse(committime);
+			convCommittime = new Timestamp(format.parse(committime).getTime());
 		} catch (ParseException e) {
-			convCommittime = new Date();
 			e.printStackTrace();
+			return "redirect:/scores";
 		}
 		id.setCommittime(convCommittime);
 		scoreService.delete(id);
 
 		return "redirect:/scores";
 	}
+	
+	public static void main(String[] args) {
+		System.out.println("==START==");
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date dateTruncateHour = DateUtils.truncate(now, Calendar.HOUR_OF_DAY);
+	    System.out.println("時分秒 を切り捨て : " + sdf.format(dateTruncateHour));
+	    System.out.println(now);
+	    System.out.println(dateTruncateHour.getClass());
+	    
+	    
+		System.out.println("===END===");
+	}
+	
 }
