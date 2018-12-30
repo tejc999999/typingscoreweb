@@ -1,5 +1,5 @@
 $(function() {
-  var POLLLING_INVERVAL_TIME_IN_MILLIS = 10000;//10s
+  var POLLLING_INVERVAL_TIME_IN_MILLIS = 10000;// 10s
   (function polling() {
 	    if(!document.hidden) {
 	    	test();
@@ -27,30 +27,43 @@ $(function() {
               "columns": [
                   { data: "blank" },
                   { data: "rank" },
+                  { data: "username" },
                   { data: "point" },
                   { data: "inputtime" },
                   { data: "misstype" },
-                  { data: "username" },
                   { data: "blank" },
               ],
-              "columnDefs": [
-                  { targets: 0, width: 60 },
-                  { targets: 1, width: 180 },
-                  {targets:'_all',className : 'dt-head-center'},
-              ],
+      		"columnDefs": [
+    			// 2列目(0から始まるため1になっています)の幅を100pxにする
+    			//{ targets: 1, width: 4 },
+    		],
+//              "columnDefs": [
+//                  { targets: 0, width: 20 },
+//                  { targets: 1, width: 10 },
+//                  { targets: 6, width: 20 },
+//                  {targets:'_all',className : 'dt-head-center'},
+//              ],
               "createdRow": function(row, data, dataIndex) {
+            	  $(row).find("td").eq(0).addClass('iconcell');
+            	  $(row).find("td").eq(6).addClass('iconcell');
             	  if(dataIndex == 0) {
-            		  $(row).find("td").addClass('firstRow');
-            	  } else if(dataIndex == 1) {
-            		  $(row).find("td").addClass('secondRow');
-            	  } else if(dataIndex == 2) {
-            		  $(row).find("td").addClass('thirdRow');
+                	  $(row).find("td").eq(1).addClass('numalign borderTopNone rank');
+                	  $(row).find("td").eq(2).addClass('stralign borderTopNone rank').text(escapeHtml($(row).find("td").eq(2).children().prop("outerHTML")));
+                	  $(row).find("td").eq(3).addClass('numalign borderTopNone score');
+                	  $(row).find("td").eq(4).addClass('numalign borderTopNone score-time');
+                	  $(row).find("td").eq(5).addClass('numalign borderTopNone score-miss');
+            	  } else {
+                	  $(row).find("td").eq(1).addClass('numalign rank');
+                	  $(row).find("td").eq(2).addClass('stralign rank');
+                	  $(row).find("td").eq(3).addClass('numalign score');
+                	  $(row).find("td").eq(4).addClass('numalign score-time');
+                	  $(row).find("td").eq(5).addClass('numalign score-miss');
             	  }
               }
           });
       })
   }
-  
+/*
   function Employee ( name, position, salary, office ) {
 	    this.name = name;
 	    this.position = position;
@@ -61,7 +74,7 @@ $(function() {
 	        return this._office;
 	    }
 	};
-  
+  */
   function getCountUp() {
     $.ajax({
     type : "GET",
@@ -71,15 +84,13 @@ $(function() {
   }).done(function(list) {
 	  
 
-/*	  <tr th:each="score, scoreStat : ${scores}">
-        <td></td>
-      	<td th:text="${scoreStat.index} + 1 + '/' + ${scoreStat.size} + '位'"></td>
-        <td th:text="${score.point}">0</td>
-        <td th:text="${score.inputtime}">0</td>
-        <td th:text="${score.misstype}">0</td>
-        <td th:text="${score.username}">user</td>
-        <td></td>
-   </tr>*/
+/*
+ * <tr th:each="score, scoreStat : ${scores}"> <td></td>
+ * <td th:text="${scoreStat.index} + 1 + '/' + ${scoreStat.size} + '位'"></td>
+ * <td th:text="${score.point}">0</td> <td th:text="${score.inputtime}">0</td>
+ * <td th:text="${score.misstype}">0</td> <td th:text="${score.username}">user</td>
+ * <td></td> </tr>
+ */
 	  console.log(list);
 	  var response = "";
 	  for(var form of list) {
@@ -96,3 +107,12 @@ $(function() {
     });
   }
 });
+function escapeHtml(str){
+	  str = str.replace('&/g', '&amp;');
+	  str = str.replace('>/g', '&gt;');
+	  str = str.replace('</g', '&lt;');
+	  str = str.replace('"/g', '&quot;');
+	  str = str.replace('\'/g', '&#x27;');
+	  str = str.replace('`/g', '&#x60;');
+	  return str;
+}

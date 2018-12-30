@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データベース管理画面</title>
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.mincss"
+	th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
+<link rel="stylesheet" type="text/css" href="../../static/css/style.css"
+	th:href="@{/css/style.css}" />
+<script type="text/javascript" th:src="@{/js/confirmdialog.js}"></script>
+</head>
+<body>
+	<header>
+		<div id="nav">
+			<ul>
+				<li><a th:href="@{/scores/add}" th:text="#{html.header.scoreaddpage}">add score page</a></li>
+				<li><a th:href="@{/scores/}" th:text="#{html.header.managelistpage}">manage list page</a></li>
+    		    <li><a th:href="@{/scores/view}" th:text="#{html.header.viewlistpage}">view list page</a></li> 
+				<li sec:authorize="hasRole('ADMIN')"><a th:href="@{/users}" th:text="#{html.header.manageloginuser}">manage loginuser</a></li>
+				<li sec:authorize="hasRole('ADMIN')"><a th:href="@{/databases}" th:text="#{html.header.managedatabase}">manage detabase</a></li>
+				<li><a th:href="@{/logout}" th:text="#{html.header.logout}">logout</a></li>
+			</ul>
+		</div>
+	</header>
+	<div class="content">
+		<h2>データベース管理画面</h2>
+		<div class="row">
+			<div class="col-sm-10 bg-info">
+				<h3>データベース（スコア）</h3>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-3 col-sm-offset-1">
+				<form th:action="@{/databases/download/score.csv}" method="get"
+					enctype="multipart/form-data">
+					<button class="btn btn-lg btn-primary btn-block" type="submit">ダウンロード</button>
+				</form>
+			</div>
+			<div class="col-sm-3">
+				<form th:action="@{/databases/upload/scorecsv}" method="post" enctype="multipart/form-data"
+				  onSubmit="return confirmdialog('DB（スコア）をアップロードしますか？', 'DB（スコア）をアップロードしました', 'DB（スコア）アップロードをキャンセルしました');">
+					<button class="btn btn-lg btn-primary btn-block" type="submit">アップロード</button>
+					<label class="btn btn-lg btn-warning btn-block"> ファイル選択
+					<input
+						style="display: none;" type="file" name="upload_file" required="required"/><br />
+					</label>
+				</form>
+			</div>
+			<div class="col-sm-3">
+ 				<form th:action="@{/databases/initdbscore}" method="get" onSubmit="return confirmdialog('DB（スコア）を初期化しますか？', 'DB（スコア）を初期化しました', 'DB（スコア）初期化をキャンセルしました');">
+					<button class="btn btn-lg btn-danger btn-block" type="submit">DB初期化</button>
+				</form>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-10 bg-danger">
+				<h3>データベース（ユーザ）</h3>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-3 col-sm-offset-1">
+ 				<form th:action="@{/databases/initdbdefaultuser}" method="get" onSubmit="return confirmdialog('初期ユーザを初期化しますか？', '初期ユーザを初期化しました', '初期ユーザ削除をキャンセルしました');">
+					<button class="btn btn-lg btn-danger btn-block" type="submit">初期ユーザ削除</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

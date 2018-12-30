@@ -1,0 +1,16 @@
+.tremble {
+    display: inline-block;
+    animation: vibration 1s infinite;
+}
+
+@keyframes vibration {
+    0% {transform: translateX(0px) translateY(0px) rotateZ(-1deg);}
+
+    25% {transform: translateX(2px) rotateZ(2deg)}
+
+    50% {transform: translateX(0px) translateY(20px) rotateZ(-1deg);}
+
+    75% {transform: translateX(2px) rotateZ(0deg)}
+
+    100% {transform: translateX(0px) translateY(0px) rotateZ(0deg);}
+}

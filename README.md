@@ -1,10 +1,11 @@
 # WEB system for typing performance management
 Character image (src / main / resources / img / charactor.png) of the grade display screen can be used without application for Japanese Tohoku companies only.
-In case of use by other companies, it is necessary to replace the image.
+In case of use by other companies, it is necessary to replace the image.  
+Since the notice image (src / main / resouces / img / sign.png) on the ranking display screen draws Japanese directly in the image, it does not correspond to the multilingual environment
 
 ## environment
 * framework: SpringBoot
-* language: java, html, css, javascript
+* language: java, html, css, javascript(datatables, ajax)
 * DB: IBM Cloudant or H2 database(No persistence)(If environment variable VCAP_SERVICES is not set, it operates in h2 database)
 * Library management: Maven
 
@@ -41,7 +42,7 @@ Login users exist only below
 * Initial login user deleted
 * User's administrative authority (administrator or general)
 * DB switching (IBM Cloudant or h2 database)
-* Multilingual support (Japanese / English) * Creating
+* Multilingual support (Japanese / English)
 
 ## Remarks
 * Only the highest score with the same user name ranking is displayed in ranking

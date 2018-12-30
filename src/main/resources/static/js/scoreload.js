@@ -11,7 +11,7 @@ $(function() {
 	  
       var modalesectiondata = null;
       $(function(){
-          // datatableの設定を変更
+          // Change datatable setting
           var modalesectiontable = $("#ranktable").DataTable({
         	  "bDestroy": true,
               "bPaginate": false,
@@ -34,7 +34,7 @@ $(function() {
                   { data: "blank" },
               ],
       		"columnDefs": [
-    			// 2列目(0から始まるため1になっています)の幅を100pxにする
+    			// Make the width of the second column (which is 1 because it starts from 0) to 100 px
     			//{ targets: 1, width: 4 },
     		],
 //              "columnDefs": [
