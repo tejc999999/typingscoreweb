@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ログインユーザ管理画面</title>
+<title th:text="#{html.users.add.pagetitle}">login user add page</title>
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
@@ -29,13 +29,13 @@
 		</div>
 	</header>
 	<div class="content">
-		<h2 class="form-signin-heading">ログインユーザ管理画面</h2>
+		<h2 class="form-signin-heading" th:text="#{html.users.add.title}">login user add page</h2>
 
 		<form class="form-horizontal" th:action="@{/users/create}"
 			th:object="${userForm}" method="post">
 
 			<div class="form-group">
-				<label class="control-label col-sm-2">ユーザID</label>
+				<label class="control-label col-sm-2" th:text="#{html.users.add.item.userid}">user id</label>
 				<div class="col-sm-4">
 					<input class="form-control" type="text" name="username"
 						th:field="*{username}" th:errorclass="error-input" />
@@ -44,7 +44,7 @@
 					th:errors="*{username}" class="error-messages">error!</span>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">パスワード</label>
+				<label class="control-label col-sm-2" th:text="#{html.users.add.item.password}">password</label>
 				<div class="col-sm-4">
 					<input class="form-control" type="password" name="password"
 						th:field="*{password}" th:errorclass="error-input" />
@@ -53,12 +53,12 @@
 					th:errors="*{password}" class="error-messages">error!</span>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">権限</label>
+				<label class="control-label col-sm-2" th:text="#{html.users.add.item.role}">role</label>
 				<div class="col-sm-4">
 					<select class="form-control" name="role">
 						<option th:each="item : ${roleMapItems}" th:value="${item.key}"
 							th:text="${item.value}"
-							th:selected="${item.key} == ${selectedrole}">プルダウン</option>
+							th:selected="${item.key} == ${selectedrole}">pull down</option>
 					</select>
 				</div>
 				<span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"
@@ -68,7 +68,7 @@
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-4">
 					<input class="btn btn-lg btn-primary btn-block" type="submit"
-						value="作成" />
+						th:value="#{html.users.add.btn.create}" />
 				</div>
 			</div>
 		</form>

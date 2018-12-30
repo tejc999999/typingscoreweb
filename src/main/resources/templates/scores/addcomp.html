@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>スコア登録完了画面</title>
+<title th:text="#{html.scores.addcomp.pagetitle}">score add comp page</title>
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
@@ -36,13 +36,10 @@
 		<div class="row">
 			<img th:src="@{/img/result.png}" />
 		</div>
-		<!-- 
-        <div class="row">
-			<h2 class="form-signin-heading col-sm-12">スコア登録完了画面</h2>
-		</div> -->
+
 		<div style="font-family: 'Nico Moji';">
 			<div class="row data">
-				<p th:text="'■' + ${resultform.tryCnt} + '回目'" class="title">■n回目</p>
+				<p th:text="'■' + ${resultform.tryCnt} + #{html.scores.addcomp.item.cnt} " class="title">■n回目</p>
 				<table style="width: 90%">
 					<!-- class="table table-striped table-responsive" -->
 					<thead>
@@ -73,7 +70,7 @@
 				</table>
 			</div>
 			<div class="row data">
-				<p class="title">■最高スコア</p>
+				<p class="title" th:text="#{html.scores.addcomp.item.maxscore}">■max score</p>
 				<table style="width: 90%">
 					<!-- class="table table-striped table-responsive" -->
 					<thead>
