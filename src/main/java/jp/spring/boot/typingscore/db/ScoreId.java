@@ -2,36 +2,37 @@ package jp.spring.boot.typingscore.db;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.Data;
 
+/**
+ * Composite primary key for score
+ * 
+ * @author tejc999999
+ *
+ */
 @Embeddable
 @Data
 public class ScoreId implements Serializable {
 	
 	/**
-	 * シリアルバージョンUID
+	 * Serial version UID.
 	 */
 	private static final long serialVersionUID = 6790969058470310683L;
-	
+
+	/**
+	 * user name.
+	 */
 	@Embedded
 	private String username;
+	
+	/**
+	 * commit time.
+	 */
 //	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp committime;
 	
-//	public void setCommittime(Date committime) {
-//		if(committime instanceof Timestamp) {
-//			System.out.println("CONVERT!");
-//			this.committime = new Date(committime.getTime());
-//		} else {
-//			System.out.println("not CONVERT!");
-//			this.committime = committime;
-//		}
-//	}
 }

@@ -16,17 +16,32 @@ import jp.spring.boot.typingscore.cloudant.store.VCAPHelper;
 import jp.spring.boot.typingscore.repository.UserRepository;
 import jp.spring.boot.typingscore.security.LoginUserDetails;
 
+/**
+ *  Login user service.
+ *  
+ * @author tejc999999
+ *
+ */
 @Service
 public class LoginUserDetailsService implements UserDetailsService {
 	
+	/**
+	 * user repository.
+	 */
 	@Autowired
 	UserRepository userRepository;
 
+	/**
+	 * Perform login authentication.
+	 * 
+	 * @param username user name.
+	 * @throws UsernameNotFoundException user name not found.
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserBean userbean = null;
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
+			// case: IBM Cloudant
 			UserStore userStore = UserStoreFactory.getInstance();
 			User user = userStore.get(username);
 			userbean = new UserBean();
@@ -34,7 +49,7 @@ public class LoginUserDetailsService implements UserDetailsService {
 			userbean.setPassword(user.getPassword());
 			userbean.setRole(user.getRole());
 		} else {
-			// H2データベースの処理
+			// case: h2 database
 			Optional<UserBean> opt = userRepository.findById(username);
 			userbean = opt.orElseThrow(() -> new UsernameNotFoundException("The requested user is not found."));
 		}

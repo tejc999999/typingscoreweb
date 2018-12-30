@@ -18,22 +18,25 @@ import jp.spring.boot.typingscore.security.RoleName;
 import jp.spring.boot.typingscore.service.UserService;
 
 /**
- * ユーザ用コントローラクラス
+ * Controller class for user function.
  * 
- * @author t.kawana
+ * @author tejc999999
  *
  */
 @Controller
 @RequestMapping("users")
 public class UserController {
 
+	/**
+	 * User service.
+	 */
 	@Autowired
 	UserService userService;
 
 	/**
-	 * ModelにFormを初期セットする
+	 * Initialize Form to Model.
 	 * 
-	 * @return UserForm
+	 * @return UserForm userform.
 	 */
 	@ModelAttribute
 	UserForm setUpForm() {
@@ -41,16 +44,16 @@ public class UserController {
 	}
 
 	/**
-	 * ユーザ登録画面へ遷移する
+	 * Transit to user registration screen.
 	 * 
-	 * @return 遷移先ビュー
+	 * @return Destination view.
 	 */
 	@GetMapping
 	String add(Model model) {
-		// ラジオボタンの選択肢
+		// Radio Button Options.
         Map<String, String> roleMap = new LinkedHashMap<String, String>();
-        roleMap.put(RoleName.ROLE_USER.getString(), "一般ユーザ");
-        roleMap.put(RoleName.ROLE_ADMIN.getString(), "管理者");
+        roleMap.put(RoleName.ROLE_USER.getString(), "user");
+        roleMap.put(RoleName.ROLE_ADMIN.getString(), "administrator");
         
         model.addAttribute("selectedrole", RoleName.ROLE_USER.getString());
         model.addAttribute("roleMapItems",roleMap);
@@ -59,11 +62,11 @@ public class UserController {
 	}
 
 	/**
-	 * ユーザ登録
+	 * Register a user
 	 * 
-	 * @param form   エラーチェック対象
-	 * @param result エラーチェック結果
-	 * @return 遷移先ビュー
+	 * @param form  Error check target.
+	 * @param result Error check result.
+	 * @return Destination view.
 	 */
 	@PostMapping(path = "create")
 	String create(@Validated UserForm form, BindingResult result , Model model) {

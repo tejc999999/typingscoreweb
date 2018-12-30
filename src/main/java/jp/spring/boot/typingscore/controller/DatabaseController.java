@@ -25,25 +25,31 @@ import jp.spring.boot.typingscore.service.ScoreService;
 import jp.spring.boot.typingscore.service.UserService;
 
 /**
- * データベース機能用コントローラクラス
+ * Controller class for database function.
  * 
- * @author t.kawana
+ * @author tejc999999
  *
  */
 @Controller
 @RequestMapping("databases")
 public class DatabaseController {
 
+	/**
+	 * Score Service.
+	 */
 	@Autowired
 	ScoreService scoreService;
 
+	/**
+	 * User Service.
+	 */
 	@Autowired
 	UserService userService;
 
 	/**
-	 * データベース管理画面表示
+	 * Display the database management screen.
 	 * 
-	 * @return 遷移先パス（データベース管理画面）
+	 * @return Transition destination path
 	 */
 	@GetMapping
 	public String view() {
@@ -52,9 +58,9 @@ public class DatabaseController {
 	}
 
 	/**
-	 * データベース初期化
+	 * Initialize the database.
 	 * 
-	 * @return 遷移先パス（データベース管理画面）
+	 * @return Transition destination path
 	 */
 	@GetMapping(path = "initdbscore")
 	public String initDbScore() {
@@ -65,11 +71,11 @@ public class DatabaseController {
 	}
 
 	/**
-	 * 初期ユーザ削除
+	 * Delete initial user.
 	 * 
-	 * @param form   エラーチェック対象
-	 * @param result エラーチェック結果
-	 * @return 遷移先ビュー
+	 * @param form   Error check target.
+	 * @param result Error check result.
+	 * @return Destination view.
 	 */
 	@GetMapping(path = "initdbdefaultuser")
 	public String initDbDefaultUser() {
@@ -80,9 +86,9 @@ public class DatabaseController {
 	}
 
 	/**
-	 * スコアデータ(CSV)ダウンロード
+	 * Download score data (CSV).
 	 * 
-	 * @return 遷移先ビュー
+	 * @return Destination view
 	 */
 	@GetMapping(value = "download/score.csv", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
 			+ "; charset=UTF-8; Content-Disposition: attachment")
@@ -98,15 +104,15 @@ public class DatabaseController {
 	}
 
 	/**
-	 * スコアデータ(CSV)アップロード
+	 * Upload score data (CSV)
 	 * 
-	 * @return 遷移先ビュー
+	 * @return Destination view
 	 */
 	@PostMapping(value = "upload/scorecsv")
 	public String setScoreCsv(@RequestParam("upload_file") MultipartFile file) throws JsonProcessingException {
 
 		if (file.isEmpty()) {
-			// 異常終了時の処理
+			// Processing at abnormal termination
 		} else {
 
 			try {

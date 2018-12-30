@@ -15,35 +15,43 @@ import jp.spring.boot.typingscore.cloudant.store.VCAPHelper;
 import jp.spring.boot.typingscore.form.UserForm;
 import jp.spring.boot.typingscore.repository.UserRepository;
 
+/**
+ * Login user Manage service.
+ * 
+ * @author tejc999999
+ *
+ */
 @Service
 public class UserService {
 
+	/**
+	 * user repository.
+	 */
 	@Autowired
 	UserRepository userRepository;
 
 	/**
-	 * ユーザ登録
+	 * Register a user.
 	 * 
-	 * @param userForm ユーザForm
-	 * @return 登録ユーザForm
+	 * @param userForm User Form.
+	 * @return Registered User Form.
 	 */
 	public UserForm create(UserForm userForm) {
-//		  bookForm.setId(bookRepository.getBookId());
 
-		// パスワードエンコード
+		// Password encoding
 		userForm.setPassword(new Pbkdf2PasswordEncoder().encode(userForm.getPassword()));
 
 		UserBean userBean = new UserBean();
 		BeanUtils.copyProperties(userForm, userBean);
-//		  bookRepository.create(bookBean);
+
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
+			// case: IBM Cloudant
 			UserStore userStore = UserStoreFactory.getInstance();
 			User existUser = null;
 			try {
 				existUser = userStore.get(userForm.getUsername());
 			} catch(NoDocumentException e) {
-				// ユーザが存在しない場合に発生するExceptionに対応
+				// Corresponds to Exception that occurs when the user does not exist
 			}
 			if(existUser == null) {
 				User user = new User();
@@ -54,28 +62,28 @@ public class UserService {
 				userStore.persist(user);
 			}
 		} else {
-			// H2データベースの処理
+			// case: h2 database
 			userRepository.save(userBean);
 		}
 		return userForm;
 	}
 	
 	/**
-	 * ユーザデータ削除
+	 * Delete user data.
 	 * 
-	 * @param username ユーザ名
+	 * @param username user name.
 	 */
 	public void delete(String username) {
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
+			// case: IBM Cloudant
 			UserStore userStore = UserStoreFactory.getInstance();
 			userStore.delete(username);
 			
 		} else {
 			UserBean userBean = new UserBean();
 			userBean.setUsername(username);
-			// H2データベースの処理
+			// case: h2 database.
 			userRepository.delete(userBean);
 		}
 	}

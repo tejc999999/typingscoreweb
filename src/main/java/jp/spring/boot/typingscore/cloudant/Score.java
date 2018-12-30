@@ -1,7 +1,6 @@
 package jp.spring.boot.typingscore.cloudant;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -45,12 +44,12 @@ public class Score extends CloudantObject {
 	 * point = inputtime + (misstype * 2)
 	 */
 	private Integer point = null;
-
+	
 	/**
 	 * Constructor.
-	 * 
 	 */
     public Score() {
         this.username = "";
     }
+
 }

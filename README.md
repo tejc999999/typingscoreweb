@@ -1,33 +1,48 @@
-# typingscore
-Created for toolchain: https://console.bluemix.net/devops/toolchains/b3f378d0-a560-4587-8191-2bbe02e8cfeb?env_id=ibm%3Ayp%3Aus-south
+# WEB system for typing performance management
+Character image (src / main / resources / img / charactor.png) of the grade display screen can be used without application for Japanese Tohoku companies only.
+In case of use by other companies, it is necessary to replace the image.
 
-# タイピング成績管理用WEBシステム
-成績表示画面のキャラクター画像（charactor.png）は東北企業のみ申請なし利用可のものを使用しているので注意が必要
+## environment
+* framework: SpringBoot
+* language: java, html, css, javascript
+* DB: IBM Cloudant or H2 database(No persistence)(If environment variable VCAP_SERVICES is not set, it operates in h2 database)
+* Library management: Maven
 
-## 環境
-* SpringBoot
-* H2データベース(永続化なし)
+## license
+Using Apache 2.0 licensed program for IBM Cloudant related process.
 
-## 初期状態
-ログインユーザは以下のみ存在
-* ユーザ：demouser
-* パスワード：password
-* 権限：管理者
+Licensed under the Apache License, Version 2.0 (the "License");  
+you may not use this file except in compliance with the License.  
+You may obtain a copy of the License at  
+http://www.apache.org/licenses/LICENSE-2.0  
+Unless required by applicable law or agreed to in writing, software  
+distributed under the License is distributed on an "AS IS" BASIS,  
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  
+See the License for the specific language governing permissions and  
+limitations under the License.
 
-## 主な機能
-* スコア登録
-* スコア編集
-* スコア削除
-* スコア一覧表
-* スコアランキング表示
-* スコアアップロード
-* スコアダウンロード
-* スコア全削除
-* ログイン、ログアウト
-* ログインユーザ作成
-* 初期ログインユーザ削除
-* ユーザの管理権限（管理者or一般）
+## default settings
+Login users exist only below  
+* User: demouser
+* Password: password
+* Role: Administrator
 
-## 備考
-* ランキングは同一ユーザ名で最高スコアのもののみランキングに表示
-* スコア＝入力時間＋（ミスタイプ数×２）、値が小さい方が上位
+## Main functions
+* Score registration
+* Score editing
+* Delete score
+* Score list
+* Score Ranking display
+* Score upload
+* Score download
+* Delete all scores
+* Login, logout
+* Create login user
+* Initial login user deleted
+* User's administrative authority (administrator or general)
+* DB switching (IBM Cloudant or h2 database)
+* Multilingual support (Japanese / English) * Creating
+
+## Remarks
+* Only the highest score with the same user name ranking is displayed in ranking
+* Score = input time + (number of mistypes × 2), whichever has a smaller value is higher

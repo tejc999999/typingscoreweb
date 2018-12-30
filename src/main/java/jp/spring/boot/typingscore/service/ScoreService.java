@@ -1,6 +1,7 @@
 package jp.spring.boot.typingscore.service;
 
 import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,45 +21,50 @@ import jp.spring.boot.typingscore.db.ScoreId;
 import jp.spring.boot.typingscore.form.ScoreForm;
 import jp.spring.boot.typingscore.repository.ScoreRepository;
 import org.apache.commons.lang.time.DateUtils;
+
 /**
- * スコアデータ サービスクラス
+ * Score service.
  * 
- * @author user01-m
+ * @author tejc999999
  *
  */
 @Service
 public class ScoreService {
 
+	/**
+	 * Score repository.
+	 */
 	@Autowired
 	ScoreRepository scoreRepository;
 
 	/**
-	 * スコアデータ登録
+	 * Register score data
 	 * 
-	 * @param scoreForm スコアデータForm
-	 * @return 登録したスコアデータ
+	 * @param scoreForm Score data Form
+	 * @return Registered score data
 	 */
 	public ScoreForm create(ScoreForm scoreForm) {
-		// 複合主キーを作成
+		// Create compound primary key
 		ScoreId scoreId = new ScoreId();
-		// ユーザ名
+
 		scoreId.setUsername(scoreForm.getUsername());
-		// 登録時間：H2 databaseがミリ秒を正しく処理できないため、ミリ秒切り捨て
+		// Registration time
+		// * Since H2 database can not correctly process milliseconds, it is truncated by milliseconds
 		Timestamp dateSecond = new Timestamp(DateUtils.truncate(new Date(), Calendar.SECOND).getTime());
 		scoreId.setCommittime(dateSecond);
 		
 		ScoreBean scoreBean = new ScoreBean();
-		// 複合主キーを登録
+		// Create compound primary key
 		scoreBean.setId(scoreId);
-		// 入力時間
+
 		scoreBean.setInputtime(scoreForm.getInputtime());
-		// ミスタイプ数を登録
 		scoreBean.setMisstype(scoreForm.getMisstype());
-		// 点数：入力時間＋（ミスタイプ数×２）
+
+		// point = inputtime + (misstype * 2)
 		scoreBean.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
+			// case: IBM Cloudant
 			
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 			Score score = new Score();
@@ -70,7 +76,7 @@ public class ScoreService {
 			score.setPoint(scoreBean.getPoint());
 			scoreStore.persist(score);
 		} else {
-			// H2データベースの処理
+			// case: h2 database
 			scoreBean = scoreRepository.save(scoreBean);
 		}
 		scoreForm.setCommittime(scoreBean.getId().getCommittime());
@@ -80,33 +86,31 @@ public class ScoreService {
 	}
 
 	/**
-	 * スコアデータ更新
+	 * Update score data
 	 * 
-	 * @param scoreForm スコアデータForm
-	 * @return 登録したスコアデータ
+	 * @param scoreForm Score data Form
+	 * @return Registered score data
 	 */
 	public ScoreForm update(ScoreForm scoreForm) {
 
-		// 複合主キーを作成
+		// Create composite primary key
 		ScoreId scoreId = new ScoreId();
-		// ユーザ名
 		scoreId.setUsername(scoreForm.getUsername());
-		// 登録時間
 		scoreId.setCommittime(scoreForm.getCommittime());
 
 		ScoreBean scoreBean = new ScoreBean();
-		// 複合主キーを登録
+		
+		// Register composite primary key
 		scoreBean.setId(scoreId);
-		// 入力時間
+
 		scoreBean.setInputtime(scoreForm.getInputtime());
-		// ミスタイプ数を登録
 		scoreBean.setMisstype(scoreForm.getMisstype());
-		// 点数：入力時間＋（ミスタイプ数×２）
+
+		// point = inputtime + (misstype * 2)
 		scoreBean.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
-			
+			// case: IBM Cloudant
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 			Score score = new Score();
 			score.set_id(scoreBean.getId().getUsername() + scoreBean.getId().getCommittime());
@@ -117,7 +121,7 @@ public class ScoreService {
 			score.setPoint(scoreBean.getPoint());
 			scoreStore.update(score.get_id(), score);
 		} else {
-			// H2データベースの処理
+			// case: h2 database
 			scoreRepository.save(scoreBean);
 		}
 
@@ -125,17 +129,16 @@ public class ScoreService {
 	}
 
 	/**
-	 * スコアデータ取得
+	 * Acquire score data.
 	 * 
-	 * @return スコアデータ
+	 * @return Score data.
 	 */
 	public ScoreForm findById(ScoreId id) {
 
 		ScoreForm form = new ScoreForm();
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
-			
+			// case: IBM Cloudant
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 			Score score = scoreStore.get(id.getUsername() + id.getCommittime());
 
@@ -145,7 +148,7 @@ public class ScoreService {
 			form.setMisstype(score.getMisstype());
 			form.setPoint(score.getPoint());
 		} else {
-			// H2データベースの処理
+			// case: h2 database
 			Optional<ScoreBean> opt = scoreRepository.findById(id);
 			opt.ifPresent(scoreBean -> {
 				form.setUsername(scoreBean.getId().getUsername());
@@ -158,16 +161,16 @@ public class ScoreService {
 	}
 
 	/**
-	 * スコアデータ全件取得
+	 * Acquire all score data
 	 * 
-	 * @return スコアデータ全件
+	 * @return All score data
 	 */
 	public List<ScoreForm> findAll() {
 		
 		List<ScoreBean> beanList = null;
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
+			// case: IBM Cloudant
 			beanList = new ArrayList<ScoreBean>();
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 	        for (Score doc : scoreStore.getAll()) {
@@ -175,6 +178,9 @@ public class ScoreService {
 	        	ScoreId scoreId = new ScoreId();
 	        	scoreId.setUsername(doc.getUsername());
 	        	scoreId.setCommittime(doc.getCommittime());
+	        	System.out.println("DEBUG1:" + scoreBean);
+	        	System.out.println("DEBUG2:" + doc);
+	        	System.out.println("DEBUG3:" + doc.getInputtime());
 	        	scoreBean.setId(scoreId);
 	        	scoreBean.setInputtime(doc.getInputtime());
 	        	scoreBean.setMisstype(doc.getMisstype());
@@ -183,7 +189,7 @@ public class ScoreService {
 	        	beanList.add(scoreBean);
 	        }
 		} else {
-			// H2データベースの処理
+			// case: h2 database
 			beanList = scoreRepository.findAll();
 		}
 		List<ScoreForm> formList = new ArrayList<ScoreForm>();
@@ -198,16 +204,17 @@ public class ScoreService {
 	}
 
 	/**
-	 * スコアデータ全件取得（登録日時の遅い順にソート）
+	 * Acquire all score data.
+	 *  (sorted in order of late registration date)
 	 * 
-	 * @return スコアデータ全件
+	 * @return All score data.
 	 */
 	public List<ScoreForm> findAllOrderByCommittime() {
 
 		List<ScoreBean> beanList = null;
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
+			// case: IBM Cloudant
 			beanList = new ArrayList<ScoreBean>();
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 	        for (Score doc : scoreStore.getAllOrderByCommittime()) {
@@ -224,14 +231,8 @@ public class ScoreService {
 	        }
 			
 		} else {
-			// H2データベースの処理
+			// case: h2 database
 			beanList = scoreRepository.findAllByOrderById_CommittimeDesc();
-			
-			// TimeStampをDateに変換
-			for(ScoreBean scoreBean: beanList) {
-				scoreBean.getId().setCommittime(scoreBean.getId().getCommittime());
-			}
-				
 		}
 		List<ScoreForm> formList = new ArrayList<ScoreForm>();
 		for (ScoreBean scoreBean : beanList) {
@@ -245,16 +246,16 @@ public class ScoreService {
 	}
 
 	/**
-	 * スコアデータ全件取得（スコア順にソート）
+	 * Acquire all score data (sort by score).
 	 * 
-	 * @return スコアデータ全件
+	 * @return All score data.
 	 */
 	public List<ScoreForm> findAllOrderByPoint() {
 
 		List<ScoreBean> beanList = null;
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
+			// case: IBM Cloudant
 			beanList = new ArrayList<ScoreBean>();
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 	        for (Score doc : scoreStore.getAllOrderByScore()) {
@@ -269,7 +270,7 @@ public class ScoreService {
 	        	beanList.add(scoreBean);
 	        }
 		} else {
-			// H2データベースの処理
+			// case: h2 database
 			beanList = scoreRepository.findAllByOrderByPoint();
 		}
 		List<ScoreForm> formList = new ArrayList<ScoreForm>();
@@ -284,14 +285,14 @@ public class ScoreService {
 	}
 
 	/**
-	 * ユーザ名重複無しスコアデータ取得
+	 * User name No duplication score data acquisition.
 	 * 
-	 * @return ユーザ名重複無しスコアデータ
+	 * @return User name No duplication score data.
 	 */
 	public boolean findUsernameOverlap(String username) {
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
+			// case: IBM Cloudant
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 			for (String inUsername : scoreStore.findUsernameOverlap()) {
 				if (inUsername.equals(username)) {
@@ -299,7 +300,7 @@ public class ScoreService {
 				}
 			}
 		} else {
-			// H2データベースの処理
+			// case: h2 database
 			for (String inUsername : scoreRepository.findUsernameOverlap()) {
 				if (inUsername.equals(username)) {
 					return true;
@@ -311,48 +312,51 @@ public class ScoreService {
 	}
 
 	/**
-	 * スコアデータ削除
+	 * Delete score data.
 	 * 
-	 * @param id スコアデータ識別情報
+	 * @param id Score data identification information.
 	 */
 	public void delete(ScoreId id) {
 		// bookRepository.delete(id);
 		ScoreBean scoreBean = new ScoreBean();
 		scoreBean.setId(id);
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
+			// case: IBM Cloudant
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 			scoreStore.delete(id.getUsername() + id.getCommittime());
 			
 		} else {
-			// H2データベースの処理
+			// case: h2 database
 			scoreRepository.delete(scoreBean);
 		}
 	}
 	
 	/**
-	 * スコアデータ全件削除
+	 * Delete all score data.
 	 * 
 	 */
 	public void deleteAll() {
 		
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
+			// case: IBM Cloudant
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 			for(Score score : scoreStore.getAll()) {
 				scoreStore.delete(score.get_id());
 			}
-			// インデックス再作成
+			// Re-create the index
 			init();
 		} else {
-			// H2データベースの処理
+			// case: h2 database
 			scoreRepository.deleteAll();
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void init() {
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// IBM Cloudantの処理
+			// case: IBM Cloudant
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 			scoreStore.init();
 		}

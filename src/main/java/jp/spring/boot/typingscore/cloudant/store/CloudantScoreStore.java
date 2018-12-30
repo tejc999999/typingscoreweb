@@ -32,7 +32,6 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
      * Constructor
      * 
      */
-
     public CloudantScoreStore(){
         CloudantClient cloudant = createClient();
         if(cloudant!=null){
@@ -54,19 +53,25 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
     }
 
     /**
-     * Get all score.
+     * Gets all Scores from the store.
      * 
      * @return All Scores.
-     **/
+     */
     @Override
     public Collection<Score> getAll(){
         List<Score> docs;
+        List<Score> removeIndexDocs = new ArrayList<Score>();
         try {
             docs = getDB().getAllDocsRequestBuilder().includeDocs(true).build().getResponse().getDocsAs(Score.class);
+            for(Score score: docs) {
+            	if(score.getCommittime() != null) {
+            		removeIndexDocs.add(score);
+            	}
+            }
         } catch (IOException e) {
             return null;
         }
-        return docs;
+        return removeIndexDocs;
     }
 
     /**
@@ -130,10 +135,9 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
     }
 
     /**
-     * score data persist.
-     * 
-     * @param score score bean.
-     * @return Score.
+     * Persists a Score to the store.
+     * @param score The Score to persist.
+     * @return The persisted Score.  The Score will not have a unique ID..
      */
     @Override
     public Score persist(Score score) {
@@ -142,9 +146,11 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
     }
 
     /**
-     * score data update.
+     * Updates a Score in the store.
      * 
-     * @return Score.
+     * @param id The ID of the Score to update.
+     * @param score The Visitor with updated information.
+     * @return The updated Score.
      */
     @Override
     public Score update(String id, Score newScore) {
@@ -152,6 +158,7 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
     	try {
     		score = getDB().find(Score.class, id);
     	} catch(NoDocumentException e) {
+    		// case: Score data not exists.
     		e.printStackTrace();
     		return null;
     	}
@@ -162,18 +169,22 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
     	score.setCommittime(newScore.getCommittime());
     	getDB().update(score);
         return getDB().find(Score.class, id);
-
     }
 
     /**
-     * score data delete.
+     * Deletes a Score from the store.
      * 
-     * @param id key.
+     * @param id delete score id.
      */
     @Override
     public void delete(String id) {
         Score score = getDB().find(Score.class, id);
-        getDB().remove(id, score.get_rev());
+        try {
+        	getDB().remove(id, score.get_rev());
+    	} catch(NoDocumentException e) {
+    		// case: Score data not exists.
+    		e.printStackTrace();
+    	}
     }
 
     /**

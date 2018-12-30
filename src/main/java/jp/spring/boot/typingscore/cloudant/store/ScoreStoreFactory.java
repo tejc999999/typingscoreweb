@@ -15,6 +15,14 @@
  ******************************************************************************/
 package jp.spring.boot.typingscore.cloudant.store;
 
+/**
+ * 
+ * Score Store Factory.
+ * When another database user, edit this class.
+ * 
+ * @author tejc999999
+ *
+ */
 public class ScoreStoreFactory {
 
     private static ScoreStore instance;

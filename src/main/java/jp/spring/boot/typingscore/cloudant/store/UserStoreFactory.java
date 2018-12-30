@@ -1,5 +1,13 @@
 package jp.spring.boot.typingscore.cloudant.store;
 
+/**
+ * 
+ * User Store Factory.
+ * When another database user, edit this class.
+ * 
+ * @author tejc999999
+ *
+ */
 public class UserStoreFactory {
 	
     private static UserStore instance;

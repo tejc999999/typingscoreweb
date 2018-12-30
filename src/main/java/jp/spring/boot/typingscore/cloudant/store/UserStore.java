@@ -5,7 +5,8 @@ import java.util.Collection;
 import jp.spring.boot.typingscore.cloudant.User;
 
 /**
- * スコアStore
+ * IBM Cloudant Database connect.
+ * User Data Store.
  * 
  * @author tejc999999
  *
@@ -25,45 +26,43 @@ public interface UserStore {
      * Gets all Scores from the store.
      * 
      * @return All Scores.
-     * @throws Exception 
      */
     public Collection<User> getAll();
 
     /**
-     * Gets an individual ToDo from the store.
+     * Gets an individual User from the store.
      * @param id The ID of the ToDo to get.
-     * @return The ToDo.
+     * @return The User.
      */
     public User get(String id);
 
     /**
-     * Persists a Score to the store.
-     * @param td The ToDo to persist.
-     * @return The persisted ToDo.  The ToDo will not have a unique ID..
+     * Persists a User to the store.
+     * @param user The User to persist.
+     * @return The persisted User.  The ToDo will not have a unique ID..
      */
     public User persist(User user);
 
     /**
-     * Updates a ToDo in the store.
+     * Updates a User in the store.
      * 
-     * @param id The ID of the Score to update.
-     * @param td The Visitor with updated information.
-     * @return The updated Score.
+     * @param id The ID of the User to update.
+     * @param user The User with updated information.
+     * @return The updated User.
      */
     public User update(String id, User user);
 
     /**
-     * Deletes a ToDo from the store.
+     * Deletes a User from the store.
      * 
-     * @param id 削除するスコアのID
+     * @param id delete user id.
      */
     public void delete(String id);
   
     /**
-     * スコアの件数を数える
+     * Count user data.
      * 
-     * @return スコアの合計件数
-     * @throws Exception 
+     * @return User count.
      */
     public int count() throws Exception;
 }

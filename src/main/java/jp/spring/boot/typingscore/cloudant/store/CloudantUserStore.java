@@ -31,15 +31,17 @@ public class CloudantUserStore extends CloudantStore implements UserStore {
     public CloudantUserStore(){
         CloudantClient cloudant =  createClient();
         if(cloudant!=null){
-        	// Cloudant接続クライアントが作成できている場合
+        	// case: Cloudant connect Client success.
         	
-        	// DBインスタンス生成
+        	// DB instance create.
         	setDB(cloudant.database(databaseName, true));
         }
     }
 
     /**
-     * ユーザーの全件取得処理
+     * Gets all Scores from the store.
+     * 
+     * @return All Scores.
      */
     @Override
     public Collection<User> getAll(){
@@ -53,19 +55,33 @@ public class CloudantUserStore extends CloudantStore implements UserStore {
     }
 
     /**
-     * 
+     * Gets an individual User from the store.
+     * @param id The ID of the ToDo to get.
+     * @return The User.
      */
     @Override
     public User get(String id) throws NoDocumentException {
         return getDB().find(User.class, id);
     }
 
+    /**
+     * Persists a User to the store.
+     * @param user The User to persist.
+     * @return The persisted User.  The ToDo will not have a unique ID..
+     */
     @Override
     public User persist(User user) {
         String id = getDB().save(user).getId();
         return getDB().find(User.class, id);
     }
 
+    /**
+     * Updates a User in the store.
+     * 
+     * @param id The ID of the User to update.
+     * @param user The User with updated information.
+     * @return The updated User.
+     */
     @Override
     public User update(String id, User newUser) {
     	User user = getDB().find(User.class, id);
@@ -77,12 +93,22 @@ public class CloudantUserStore extends CloudantStore implements UserStore {
 
     }
 
+    /**
+     * Deletes a User from the store.
+     * 
+     * @param id delete user id.
+     */
     @Override
     public void delete(String id) {
         User user = getDB().find(User.class, id);
         getDB().remove(id, user.get_rev());
     }
 
+    /**
+     * Count user data.
+     * 
+     * @return User count.
+     */
     @Override
     public int count() throws Exception {
         return getAll().size();

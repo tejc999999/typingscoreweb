@@ -10,22 +10,42 @@ import jp.spring.boot.typingscore.bean.UserBean;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Login user authentication.
+ * 
+ * @author tejc999999
+ *
+ */
 @Data
 @EqualsAndHashCode(callSuper=true)
 public class LoginUserDetails extends User {
 
 	/**
-	 * シリアルバージョンUID
+	 * Serial version UID
 	 */
 	private static final long serialVersionUID = -3601246438727975832L;
 	
+	/**
+	 * Login user.
+	 */
 	private final UserBean user;
 
+	/**
+	 * Perform login authentication
+	 * 
+	 * @param userBean login user bean.
+	 */
 	public LoginUserDetails(UserBean userBean) {
 		super(userBean.getUsername(), userBean.getPassword(), getAuthority(userBean));
 		this.user = userBean;
 	}
 	
+	/**
+	 * Perform login authentication
+	 * 
+	 * @param userBean login user bean.
+	 * @return role auth list.
+	 */
 	private static Collection<GrantedAuthority> getAuthority(UserBean userBean){
 		Collection<GrantedAuthority> authList;
 		if(userBean.getRole().equals(RoleName.ROLE_ADMIN.getString())) {

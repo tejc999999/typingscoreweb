@@ -26,8 +26,26 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/**
+ * IBM Cloudant connect info helper.
+ * Need  environment valiable "VCAP_SERVICES"
+ * 
+ * @author tejc999999
+ *
+ */
 public class VCAPHelper {
+	
+	/**
+	 * Environment valiable for IBM Cloudant connect.
+	 */
     public static String VCAP_SERVICES = System.getenv("VCAP_SERVICES");
+    
+    /**
+     * IBM Cloudant connect info parse.
+     * 
+     * @param serviceName connect service name. ex)"cloudant"
+     * @return JsonObject(credentials)
+     */
     public static JsonObject getCloudCredentials(String serviceName) {
         if(VCAP_SERVICES == null){
             return null;
@@ -50,6 +68,13 @@ public class VCAPHelper {
         return (JsonObject) obj.get("credentials");
     }
 
+    /**
+     * Look for the VCAP key that holds the service info
+     * 
+     * @param entries JSON Object for IBM Cloudant connect info.
+     * @param serviceName  connect service name. ex)"cloudant"
+     * @return service info.
+     */
     private static Entry<String, JsonElement> matchService(Set<Entry<String, JsonElement>> entries, String serviceName) {
         for (Entry<String, JsonElement> eachEntry : entries) {
             // Service with 'serviceName' in the name
@@ -89,6 +114,12 @@ public class VCAPHelper {
         return null;
     }
 
+    /**
+     * Make URL information cloudant_url contents of cloudant.properties
+     * 
+     * @param fileName local property name. ex)"cloudant_url"
+     * @return properties
+     */
     public static Properties getLocalProperties(String fileName){
         Properties properties = new Properties();
         InputStream inputStream = VCAPHelper.class.getClassLoader().getResourceAsStream(fileName);
