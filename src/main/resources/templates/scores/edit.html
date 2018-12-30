@@ -18,12 +18,12 @@
 	<header>
 		<div id="nav">
     		<ul>
-    		    <li><a th:href="@{/scores/add}">スコア登録画面</a></li>
-    		    <li><a th:href="@{/scores/}">管理用一覧画面</a></li> 	
-    		    <li><a th:href="@{/scores/view}">表示用一覧画面</a></li> 
-    		    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/users}">ログインユーザ管理</a></li>
-    		    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/databases}">データベース管理</a></li>
-				<li><a th:href="@{/logout}">ログアウト</a></li>
+				<li><a th:href="@{/scores/add}" th:text="#{html.header.scoreaddpage}">add score page</a></li>
+				<li><a th:href="@{/scores/}" th:text="#{html.header.managelistpage}">manage list page</a></li>
+    		    <li><a th:href="@{/scores/view}" th:text="#{html.header.viewlistpage}">view list page</a></li> 
+				<li sec:authorize="hasRole('ADMIN')"><a th:href="@{/users}" th:text="#{html.header.manageloginuser}">manage loginuser</a></li>
+				<li sec:authorize="hasRole('ADMIN')"><a th:href="@{/databases}" th:text="#{html.header.managedatabase}">manage detabase</a></li>
+				<li><a th:href="@{/logout}" th:text="#{html.header.logout}">logout</a></li>
     		</ul> 
 		</div>
 	</header>

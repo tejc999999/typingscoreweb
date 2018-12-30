@@ -1,6 +1,6 @@
 package jp.spring.boot.typingscore.form;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -12,26 +12,55 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@JsonPropertyOrder({"ユーザ名", "入力時間", "ミスタイプ数", "スコア", "登録日時"})
+/**
+ * Score Form.
+ * 
+ * @author tejc999999
+ *
+ */
+@JsonPropertyOrder({"userName", "inputTime", "missTypeCnt", "point", "commitTime"})
 @Data
 @NoArgsConstructor
 public class ScoreForm {
 
-	@JsonProperty("ユーザ名")
+	/**
+	 * User name.
+	 * Part of the primary key.
+	 */
+	@JsonProperty("userName")
 	@NotNull
-	@NotBlank(message = "必須入力です。")
+	@NotBlank(message = "required input.")
 	private String username;
-	@JsonProperty("入力時間")
-	@Min(value = 0, message = "{value} 以下は入力できません。")
+	
+	/**
+	 * Input time
+	 * Unit is seconds.
+	 */
+	@JsonProperty("inputTime")
+	@Min(value = 0, message = "can not enter {value} or less.")
 	@NotNull
 	private int inputtime;
-	@JsonProperty("ミスタイプ数")
-	@Min(value = 0, message = "{value} 以下は入力できません。")
+	
+	/**
+	 * miss type.
+	 * Number of times.
+	 */
+	@JsonProperty("missTypeCnt")
+	@Min(value = 0, message = "can not enter {value} or less.")
 	@NotNull
 	private int misstype;
-	@JsonProperty("スコア")
+	
+	/**
+	 * score.
+	 * calculation = inputtime + (misstype * 2)
+	 */
+	@JsonProperty("point")
 	private int point;
-	@JsonProperty("登録日時")
-	private Date committime;
-
+	
+	/**
+	 * commit time.
+ 	 * Part of the primary key.
+	 */
+	@JsonProperty("commitTime")
+	private Timestamp committime;
 }

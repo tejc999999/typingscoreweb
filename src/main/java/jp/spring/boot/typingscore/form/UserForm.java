@@ -7,19 +7,37 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Login user form.
+ * 
+ * @author tejc999999
+ *
+ */
 @Data
 @NoArgsConstructor
 public class UserForm {
 
+	/**
+	 * username.
+	 */
 	@NotNull
-	@NotBlank(message = "必須入力です。")
-	@Size(min = 6, max = 12, message = "{min} 文字以上 {max} 文字以下で入力してください。")
+	@NotBlank(message = "required input.")
+	@Size(min = 6, max = 12, message = "Enter at least {min} character and not more than {max} character.")
 	private String username;
+	
+	/**
+	 * password.
+	 */
 	@NotNull
-	@NotBlank(message = "必須入力です。")
-	@Size(min = 6, max = 12, message = "{min} 文字以上 {max} 文字以下で入力してください。")
+	@NotBlank(message = "required input.")
+	@Size(min = 6, max = 12, message = "Enter at least {min} character and not more than {max} character.")
 	private String password;
+	
+	/**
+	 * Role.
+	 * ROLE_ADMIN or ROLE_USER.
+	 */
 	@NotNull
-	@NotBlank(message = "必須選択です。")
+	@NotBlank(message = "required input.")
 	private String role;
 }

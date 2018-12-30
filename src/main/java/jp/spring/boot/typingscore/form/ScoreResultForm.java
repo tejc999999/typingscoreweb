@@ -5,32 +5,42 @@ import java.util.Date;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 
+ * @author tejc999999
+ *
+ */
 @Data
 @NoArgsConstructor
 public class ScoreResultForm {
 
 	/**
-	 * ユーザ名
+	 * user name.
+	 * Part of the primary key.
 	 */
 	private String username;
 
 	/**
-	 * 入力時間
+	 * Input time
+	 * Unit is seconds.
 	 */
 	private int inputtime;
 
 	/**
-	 * 入力ミス回数
+	 * miss type.
+	 * Number of times.
 	 */
 	private int misstype;
 
 	/**
-	 * ポイント
+	 * score.
+	 * calculation = inputtime + (misstype * 2)
 	 */
 	private int point;
 
 	/**
-	 * 登録日時
+	 * commit time.
+	 * Part of the primary key.
 	 */
 	private Date committime;
 

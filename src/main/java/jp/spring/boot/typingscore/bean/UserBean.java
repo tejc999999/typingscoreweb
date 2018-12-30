@@ -10,6 +10,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Login User Bean.
+ * 
+ * @author tejc999999
+ *
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,12 +23,25 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class UserBean {
 
+	/**
+	 * username.
+	 * primary key.
+	 */
 	@Id
 	private String username;
 
+	/**
+	 * password.
+	 * 
+	 */
 	@JsonIgnore
 	private String password;
-	
+
+	/**
+	 * role.
+	 * 
+	 * ROLE_ADMIN or ROLE_USER.
+	 */
 	private String role;
 
 }

@@ -1,21 +1,21 @@
 package jp.spring.boot.typingscore.controller;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,9 +31,9 @@ import jp.spring.boot.typingscore.form.ScoreResultForm;
 import jp.spring.boot.typingscore.service.ScoreService;
 
 /**
- * スコア用コントローラクラス
+ * Controller class for score function.
  * 
- * @author t.kawana
+ * @author tejc999999
  *
  */
 @Controller
@@ -43,17 +43,17 @@ public class ScoreController {
 	@Autowired
 	ScoreService scoreService;
 
-	@InitBinder
-	public void dateBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
-		binder.registerCustomEditor(Date.class, editor);
-	}
+//	@InitBinder
+//	public void dateBinder(WebDataBinder binder) {
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
+//		binder.registerCustomEditor(Date.class, editor);
+//	}
 
 	/**
-	 * ModelにFormを初期セットする
+	 * Initialize Form to Model
 	 * 
-	 * @return ScoreForm
+	 * @return ScoreForm score form.
 	 */
 	@ModelAttribute
 	ScoreForm setUpForm() {
@@ -61,9 +61,9 @@ public class ScoreController {
 	}
 
 	/**
-	 * スコア登録画面へ遷移する
+	 * Transit to the score registration screen
 	 * 
-	 * @return 遷移先ビュー
+	 * @return Destination view
 	 */
 	@GetMapping(path = "add")
 	public String add() {
@@ -71,12 +71,12 @@ public class ScoreController {
 	}
 
 	/**
-	 * スコア登録処理
+	 * Score registration processing
 	 * 
-	 * @param form  エラーチェック対象スコアForm
-	 * @param       result エラーチェック結果
-	 * @param model スコア格納用モデル
-	 * @return
+	 * @param form  Error check target score Form
+	 * @param  result Error check result
+	 * @param model Model for storing scores
+	 * @return Destination view
 	 */
 	@PostMapping(path = "create")
 	String create(@RequestParam String overlapFlg, @Validated ScoreForm form, BindingResult result, Model model) {
@@ -84,27 +84,28 @@ public class ScoreController {
 			return "scores/add";
 		}
 
-		// ユーザ名重複チェックが済んでいない場合、ユーザ名重複チェック
+		// If the user name duplication check has not been completed, the user name duplication check
 		if (!"true".equals(overlapFlg)) {
 			if (scoreService.findUsernameOverlap(form.getUsername())) {
-				// ユーザ名が重複しているので、重複チェック済みとして一旦登録画面に戻す
+				// Since the user names are duplicated,
+				// once the duplication check has been completed, the registration screen is once returned
 				model.addAttribute("overlapFlg", "true");
 				return "scores/add";
 			}
 		}
 		ScoreForm createScoreForm = scoreService.create(form);
 
-		// 今回のランク
+		// This rank
 		int rank = 0;
-		// 過去を含めた最高ランク
+		// Highest rank including past
 		int maxRank = 0;
-		// 過去を含めた最高ポイント
+		// The highest point including the past
 		int maxPoint = createScoreForm.getPoint();
-		// 過去を含めた最高ポイント時の入力時間
+		// Input time at the highest point including the past
 		int maxInputTime = createScoreForm.getInputtime();
-		// 過去を含めた最高ポイント時のミスタイプ数
+		// Number of mistypes at the highest point including the past
 		int maxMissType = createScoreForm.getMisstype();
-		// 挑戦回数
+		// Number of challenges
 		int tryCnt = 0;
 
 		List<ScoreForm> list = scoreService.findAllOrderByPoint();
@@ -115,15 +116,15 @@ public class ScoreController {
 		int beforePoint = -1;
 
 		for (ScoreForm tempForm : list) {
-			// １ユーザは１回だけ（一人のランクは１つだけ）
-			// 重複するユーザ名の場合はスコアの良い方だけをリストに追加する
+			// One user only once (only one rank is one)
+			// In case of a duplicate user name, only the one with the better score is added to the list
 			if (!checkUserNameList.contains(tempForm.getUsername())) {
-				// 同順位対応
+				// Same order correspondence
 				if(beforePoint == tempForm.getPoint()) {
-					// 直前ユーザと同ポイントの場合、同順位数をカウント
+					// In the case of the same point as the previous user, the same ranking number is counted
 					overlapRankNum++;
 				} else {
-					// ランキングの順位は同順位数を含めて+1する
+					// The ranking ranking is incremented by 1 including the ranking number
 					beforePoint = tempForm.getPoint();
 					rankNum = rankNum + overlapRankNum + 1;
 					overlapRankNum = 0;
@@ -137,21 +138,26 @@ public class ScoreController {
 				checkUserNameList.add(tempForm.getUsername());
 			}
 
-			// 過去の同名の成績があれば、最高ポイントを保持する
+			// Hold the highest points if there is a record of the same name in the past
 			if (createScoreForm.getUsername().equals(tempForm.getUsername())) {
 				tryCnt++;
 				if (tryCnt == 1) {
-					// 初回（最高成績）のみ順位とポイントを保持
+					// Keep rank and points only for first time (highest grades)
 					maxRank = rankNum;
 					maxPoint = tempForm.getPoint();
 					maxInputTime = tempForm.getInputtime();
 					maxMissType = tempForm.getMisstype();
 				}
-			}
-			// 今回のランクを格納
-			if (createScoreForm.getUsername().equals(tempForm.getUsername())
-					&& createScoreForm.getCommittime().equals(tempForm.getCommittime())) {
-				rank = rankNum;
+				
+				// Store this rank
+				if (createScoreForm.getCommittime().equals(tempForm.getCommittime())) {
+					if(checkUserNameList.size() > 1 && maxPoint < createScoreForm.getPoint()) {
+						// Add self position.
+						rank = rankNum + 1;
+					} else {
+						rank = rankNum;
+					}
+				}
 			}
 		}
 
@@ -170,10 +176,10 @@ public class ScoreController {
 	}
 
 	/**
-	 * 競技者用スコア一覧画面へ遷移する
+	 * Transition to competitor score list screen
 	 * 
-	 * @param model スコア一覧格納用モデル
-	 * @return 遷移先ビュー
+	 * @param model Model for storing score list
+	 * @return Destination view
 	 */
 	@GetMapping(path = "view")
 	public String view(Model model) {
@@ -186,10 +192,9 @@ public class ScoreController {
 	}
 
 	/**
-	 * 競技者用スコア一覧画面のランキング情報Ajax更新用
+	 * For updating the ranking information Ajax of the competitor score list screen
 	 * 
-	 * @param param
-	 * @return
+	 * @return Destination view
 	 */
 	@GetMapping(path = "/scoreload", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
@@ -205,15 +210,15 @@ public class ScoreController {
 		int beforePoint = -1;
 
 		for (ScoreForm form : list) {
-			// １ユーザは１回だけ（一人のランクは１つだけ）
-			// 重複するユーザ名の場合はスコアの良い方だけをリストに追加する
+			// One user only once (only one rank is one)
+			// In case of a duplicate user name, only the one with the better score is added to the list
 			if (!checkUserNameList.contains(form.getUsername())) {
-				// 同順位対応
+				// Same order correspondence
 				if(beforePoint == form.getPoint()) {
-					// 直前ユーザと同ポイントの場合、同順位数をカウント
+					// In the case of the same point as the previous user, the same ranking number is counted
 					overlapRankNum++;
 				} else {
-					// ランキングの順位は同順位数を含めて+1する
+					// The ranking ranking is incremented by 1 including the ranking number.
 					beforePoint = form.getPoint();
 					rankNum = rankNum + overlapRankNum + 1;
 					overlapRankNum = 0;
@@ -243,10 +248,10 @@ public class ScoreController {
 	}
 
 	/**
-	 * 管理用スコア一覧画面へ遷移する
+	 * Transit to the management score list screen.
 	 * 
-	 * @param model スコア一覧格納用モデル
-	 * @return 遷移先ビュー
+	 * @param model Model for storing score list.
+	 * @return Destination view.
 	 */
 	@GetMapping
 	String list(Model model) {
@@ -259,25 +264,25 @@ public class ScoreController {
 	}
 
 	/**
-	 * スコア編集画面へ遷移する
+	 * Transit to score edit screen.
 	 * 
-	 * @param username   ユーザ名
-	 * @param committime 登録日時
-	 * @param スコア格納用モデル
+	 * @param username user name.
+	 * @param committime Registered Date.
+	 * @param Model for storing scores.
 	 * 
-	 * @return 遷移先ビュー
+	 * @return Destination view.
 	 */
 	@PostMapping(path = "edit")
 	public String edit(@RequestParam String username, @RequestParam String committime, Model model) {
 		ScoreId id = new ScoreId();
 		id.setUsername(username);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date convCommittime = null;
+		Timestamp convCommittime = null;
 		try {
-			convCommittime = format.parse(committime);
+			convCommittime = new Timestamp(format.parse(committime).getTime());
 		} catch (ParseException e) {
-			convCommittime = new Date();
 			e.printStackTrace();
+			return "scores/";
 		}
 		id.setCommittime(convCommittime);
 
@@ -288,11 +293,11 @@ public class ScoreController {
 	}
 
 	/**
-	 * スコア編集処理
+	 * Edit score.
 	 * 
-	 * @param oldusername 旧ユーザ名
-	 * @param form        スコアForm
-	 * @return 遷移先ビュー
+	 * @param oldusername old user name.
+	 * @param form score form.
+	 * @return Destination view
 	 */
 	@PostMapping(path = "editprocess")
 	public String editprocess(@RequestParam String oldusername,
@@ -303,37 +308,38 @@ public class ScoreController {
 		}
 		ScoreId id = new ScoreId();
 		id.setUsername(oldusername);
-		;
+
 		id.setCommittime(form.getCommittime());
 
-		// 変更不可能項目（登録日時）を旧データからコピー
+		// Copy the unchangeable item (registration date and time) from the old data
 		form.setCommittime(id.getCommittime());
 
-		// 更新（識別情報自体を更新する場合があるので、旧データを削除してから更新（新規作成もあり））
+		// Update
+		// (Since the identification information itself may be updated, delete old data and create a new one)
 		scoreService.delete(id);
-		scoreService.update(form);
+		scoreService.create(form);
 		return "redirect:/scores";
 	}
 
 	/**
-	 * スコア削除処理
+	 * Delete score.
 	 * 
-	 * @param username   削除対象ユーザ名
-	 * @param committime 削除対象登録日時
-	 * @return 遷移先ビュー
+	 * @param username   Delete target user name
+	 * @param committime Delete target registration date and time
+	 * @return Destination view
 	 */
 	@PostMapping(path = "delete")
 	String delete(@RequestParam String username, @RequestParam String committime) {
 		ScoreId id = new ScoreId();
 		id.setUsername(username);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date convCommittime = null;
+		Timestamp convCommittime = null;
 		//
 		try {
-			convCommittime = format.parse(committime);
+			convCommittime = new Timestamp(format.parse(committime).getTime());
 		} catch (ParseException e) {
-			convCommittime = new Date();
 			e.printStackTrace();
+			return "redirect:/scores";
 		}
 		id.setCommittime(convCommittime);
 		scoreService.delete(id);
