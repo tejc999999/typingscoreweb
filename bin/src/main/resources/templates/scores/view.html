@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>スコア一覧画面（ランキング表示）</title>
+<title th:text="#{html.scores.view.pagetitle}">Score list page(ranking)</title>
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
@@ -32,7 +32,6 @@
 <script src="/js/scoreload.js" th:src="@{/js/scoreload.js}"></script>
 </head>
 <body>
-	<!--  		<h2 class="form-signin-heading">スコア一覧画面</h2>-->
         <div class="content">
             <div class="viewarea">
                 <div class="imageview">
@@ -40,11 +39,9 @@
                         <img th:src="@{/img/sign.png}" style="width: 400px; height: 300px;">
                     </div>
                     <div class="comment">
-                        <p>年に１回、新入生を対象としたタイピングコンテストを実施しています。
-                        <br>学内最高ランクの猛者を超えるタイピングができるか！？
-                        <br>H30新入生の成績は以下です。
-                        <br>
-                        </p>
+                        <p th:text="#{html.scores.view.lastyer.message1}">We conduct typing contest for new students once a year.</p>
+                        <p th:text="#{html.scores.view.lastyer.message2}">Can you type more than the top ranked fiercer in campus! What?</p>
+                        <p th:text="#{html.scores.view.lastyer.message3}">The result of H30 freshman is below.</p>
                     </div>
                     <div>
                         <span class="tremble">
@@ -68,28 +65,28 @@
                         <tr>
                             <td></td>
                             <td class="department">1</td>
-                            <td class="department">H30新入生</td>
-                            <td class="score">149</td>
-                            <td class="score-time">141</td>
-                            <td class="score-miss">4</td>
+                            <td class="department" th:text="#{html.scores.view.lastyer.rank.first.username}">H30NewStudent</td>
+                            <td class="score" th:text="#{html.scores.view.lastyer.rank.first.score}">149</td>
+                            <td class="score-time" th:text="#{html.scores.view.lastyer.rank.first.inputtime}">141</td>
+                            <td class="score-miss" th:text="#{html.scores.view.lastyer.rank.first.misstype}">4</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td class="department">2</td>
-                            <td class="department">H30新入生</td>
-                            <td class="score">153</td>
-                            <td class="score-time">151</td>
-                            <td class="score-miss">1</td>
+                            <td class="department" th:text="#{html.scores.view.lastyer.rank.second.username}">H30NewStudent</td>
+                            <td class="score" th:text="#{html.scores.view.lastyer.rank.second.score}">153</td>
+                            <td class="score-time" th:text="#{html.scores.view.lastyer.rank.second.inputtime}">151</td>
+                            <td class="score-miss" th:text="#{html.scores.view.lastyer.rank.second.misstype}">1</td>
                             <td></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td class="department">3</td>
-                            <td class="department">H30新入生</td>
-                            <td class="score">193</td>
-                            <td class="score-time">183</td>
-                            <td class="score-miss">5</td>
+                            <td class="department" th:text="#{html.scores.view.lastyer.rank.third.username}">H30NewStudent</td>
+                            <td class="score" th:text="#{html.scores.view.lastyer.rank.third.score}">193</td>
+                            <td class="score-time" th:text="#{html.scores.view.lastyer.rank.third.inputtime}">183</td>
+                            <td class="score-miss" th:text="#{html.scores.view.lastyer.rank.third.misstype}">5</td>
                             <td></td>
                         </tr>
                     </tbody>

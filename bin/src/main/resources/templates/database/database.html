@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>データベース管理画面</title>
+<title th:text="#{html.database.manage.pagetitle}">database management page</title>
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
@@ -30,10 +30,10 @@
 		</div>
 	</header>
 	<div class="content">
-		<h2>データベース管理画面</h2>
+		<h2 th:text="#{html.database.manage.title}">database management page</h2>
 		<div class="row">
 			<div class="col-sm-10 bg-info">
-				<h3>データベース（スコア）</h3>
+				<h3 th:text="#{html.database.manage.subtitle.database.score}">database(score)</h3>
 			</div>
 		</div>
 		<br>
@@ -41,36 +41,36 @@
 			<div class="col-sm-3 col-sm-offset-1">
 				<form th:action="@{/databases/download/score.csv}" method="get"
 					enctype="multipart/form-data">
-					<button class="btn btn-lg btn-primary btn-block" type="submit">ダウンロード</button>
+					<button class="btn btn-lg btn-primary btn-block" type="submit" th:value="#{html.database.manage.btn.download}">download</button>
 				</form>
 			</div>
 			<div class="col-sm-3">
 				<form th:action="@{/databases/upload/scorecsv}" method="post" enctype="multipart/form-data"
-				  onSubmit="return confirmdialog('DB（スコア）をアップロードしますか？', 'DB（スコア）をアップロードしました', 'DB（スコア）アップロードをキャンセルしました');">
-					<button class="btn btn-lg btn-primary btn-block" type="submit">アップロード</button>
-					<label class="btn btn-lg btn-warning btn-block"> ファイル選択
+				  onSubmit="return confirmdialog('upload DB（score）？', 'DB（score） uploaded', 'DB（score） upload canceled');">
+					<button class="btn btn-lg btn-primary btn-block" type="submit" th:value="#{html.database.manage.btn.upload}">upload</button>
+					<label class="btn btn-lg btn-warning btn-block" th:text="#{html.database.manage.btn.upload.fileselect}"> file select
 					<input
 						style="display: none;" type="file" name="upload_file" required="required"/><br />
 					</label>
 				</form>
 			</div>
 			<div class="col-sm-3">
- 				<form th:action="@{/databases/initdbscore}" method="get" onSubmit="return confirmdialog('DB（スコア）を初期化しますか？', 'DB（スコア）を初期化しました', 'DB（スコア）初期化をキャンセルしました');">
-					<button class="btn btn-lg btn-danger btn-block" type="submit">DB初期化</button>
+ 				<form th:action="@{/databases/initdbscore}" method="get" onSubmit="return confirmdialog('init DB（score）？', 'DB（score） initialized', 'DB（score） init canceled');">
+					<button class="btn btn-lg btn-danger btn-block" type="submit" th:value="#{html.database.manage.btn.scoredb.init}">DB init</button>
 				</form>
 			</div>
 		</div>
 		<br>
 		<div class="row">
 			<div class="col-sm-10 bg-danger">
-				<h3>データベース（ユーザ）</h3>
+				<h3 th:text="#{html.database.manage.subtitle.database.user}">database(user)</h3>
 			</div>
 		</div>
 		<br>
 		<div class="row">
 			<div class="col-sm-3 col-sm-offset-1">
- 				<form th:action="@{/databases/initdbdefaultuser}" method="get" onSubmit="return confirmdialog('初期ユーザを初期化しますか？', '初期ユーザを初期化しました', '初期ユーザ削除をキャンセルしました');">
-					<button class="btn btn-lg btn-danger btn-block" type="submit">初期ユーザ削除</button>
+ 				<form th:action="@{/databases/initdbdefaultuser}" method="get" onSubmit="return confirmdialog('init default user？', 'default user initialized', 'default user init canceled');">
+					<button class="btn btn-lg btn-danger btn-block" type="submit" th:value="#{html.database.manage.btn.inituser.delete}">default user delete</button>
 				</form>
 			</div>
 		</div>

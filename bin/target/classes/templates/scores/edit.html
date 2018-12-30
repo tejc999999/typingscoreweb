@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>スコア編集画面</title>
+<title th:text="#{html.scores.edit.pagetitle}">score edit page</title>
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
@@ -28,12 +28,12 @@
 		</div>
 	</header>
 	<div class="content">
-		<h2 class="form-signin-heading">スコア編集画面</h2>
+		<h2 class="form-signin-heading" th:text="#{html.scores.edit.title}">score edit page</h2>
 
 		<form class="form-horizontal" th:action="@{/scores/editprocess}"
 			th:object="${scoreForm}" method="post">
 			<div class="form-group">
-				<label class="control-label col-sm-2">ユーザ名</label>
+				<label class="control-label col-sm-2" th:text="#{html.scores.edit.item.username}">user name</label>
 				<div class="col-sm-4">
 					<input class="form-control" type="text" name="username"
 						th:field="*{username}" th:errorclass="error-input" />
@@ -42,7 +42,7 @@
 					th:errors="*{username}" class="error-messages">error!</span>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">入力時間（秒）</label>
+				<label class="control-label col-sm-2" th:text="#{html.scores.edit.item.inputtime}">input time（seconds）</label>
 				<div class="col-sm-4">
 					<input class="form-control" type="number" name="inputtime"
 						th:field="*{inputtime}" th:errorclass="error-input" />
@@ -51,7 +51,7 @@
 					th:errors="*{inputtime}" class="error-messages">error!</span>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">入力ミス（回）</label>
+				<label class="control-label col-sm-2" th:text="#{html.scores.edit.item.typemiss}">type miss(times)</label>
 				<div class="col-sm-4">
 					<input class="form-control" type="number" name="misstype"
 						th:field="*{misstype}" th:errorclass="error-input" />
@@ -62,7 +62,7 @@
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-4">
 					<input class="btn btn-lg btn-primary btn-block" type="submit"
-						value="変更" />
+						th:value="#{html.scores.edit.btn.edit}" />
 				</div>
 			</div>
 			<input type="hidden" name="committime" th:field="*{committime}"

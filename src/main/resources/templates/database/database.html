@@ -41,13 +41,13 @@
 			<div class="col-sm-3 col-sm-offset-1">
 				<form th:action="@{/databases/download/score.csv}" method="get"
 					enctype="multipart/form-data">
-					<button class="btn btn-lg btn-primary btn-block" type="submit" th:value="#{html.database.manage.btn.download}">download</button>
+					<input class="btn btn-lg btn-primary btn-block" type="submit" th:value="#{html.database.manage.btn.download}" />
 				</form>
 			</div>
 			<div class="col-sm-3">
 				<form th:action="@{/databases/upload/scorecsv}" method="post" enctype="multipart/form-data"
 				  onSubmit="return confirmdialog('upload DB（score）？', 'DB（score） uploaded', 'DB（score） upload canceled');">
-					<button class="btn btn-lg btn-primary btn-block" type="submit" th:value="#{html.database.manage.btn.upload}">upload</button>
+					<input class="btn btn-lg btn-primary btn-block" type="submit" th:value="#{html.database.manage.btn.upload}" />
 					<label class="btn btn-lg btn-warning btn-block" th:text="#{html.database.manage.btn.upload.fileselect}"> file select
 					<input
 						style="display: none;" type="file" name="upload_file" required="required"/><br />
@@ -56,7 +56,7 @@
 			</div>
 			<div class="col-sm-3">
  				<form th:action="@{/databases/initdbscore}" method="get" onSubmit="return confirmdialog('init DB（score）？', 'DB（score） initialized', 'DB（score） init canceled');">
-					<button class="btn btn-lg btn-danger btn-block" type="submit" th:value="#{html.database.manage.btn.scoredb.init}">DB init</button>
+					<input class="btn btn-lg btn-danger btn-block" type="submit" th:value="#{html.database.manage.btn.scoredb.init}" />
 				</form>
 			</div>
 		</div>
@@ -70,7 +70,7 @@
 		<div class="row">
 			<div class="col-sm-3 col-sm-offset-1">
  				<form th:action="@{/databases/initdbdefaultuser}" method="get" onSubmit="return confirmdialog('init default user？', 'default user initialized', 'default user init canceled');">
-					<button class="btn btn-lg btn-danger btn-block" type="submit" th:value="#{html.database.manage.btn.inituser.delete}">default user delete</button>
+					<input class="btn btn-lg btn-danger btn-block" type="submit" th:value="#{html.database.manage.btn.inituser.delete}" />
 				</form>
 			</div>
 		</div>
