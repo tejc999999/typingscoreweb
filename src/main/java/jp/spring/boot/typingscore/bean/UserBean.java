@@ -36,7 +36,19 @@ public class UserBean {
 	 */
 	@JsonIgnore
 	private String password;
+	
+	/**
+	 * login failure count.
+	 * 
+	 */
+	@JsonIgnore
+	private int loginfailurecnt;
 
+	/**
+	 * lock flg.
+	 */
+	private boolean accountNonLocked = true;
+	
 	/**
 	 * role.
 	 * 

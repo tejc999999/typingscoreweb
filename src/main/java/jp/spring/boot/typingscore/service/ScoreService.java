@@ -178,9 +178,6 @@ public class ScoreService {
 	        	ScoreId scoreId = new ScoreId();
 	        	scoreId.setUsername(doc.getUsername());
 	        	scoreId.setCommittime(doc.getCommittime());
-	        	System.out.println("DEBUG1:" + scoreBean);
-	        	System.out.println("DEBUG2:" + doc);
-	        	System.out.println("DEBUG3:" + doc.getInputtime());
 	        	scoreBean.setId(scoreId);
 	        	scoreBean.setInputtime(doc.getInputtime());
 	        	scoreBean.setMisstype(doc.getMisstype());
@@ -352,7 +349,7 @@ public class ScoreService {
 	}
 	
 	/**
-	 * 
+	 * create sort index.
 	 */
 	public void init() {
 		if(VCAPHelper.VCAP_SERVICES  != null) {

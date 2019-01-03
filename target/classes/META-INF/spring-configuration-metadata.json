@@ -1,0 +1,11 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "jp.spring.boot.typingscore.config.ParameterConfig",
+      "name": "spring.security.login",
+      "type": "jp.spring.boot.typingscore.config.ParameterConfig"
+    }
+  ],
+  "properties": []
+}

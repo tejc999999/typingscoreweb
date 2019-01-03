@@ -40,4 +40,14 @@ public class UserForm {
 	@NotNull
 	@NotBlank(message = "required input.")
 	private String role;
+	
+	/**
+	 * login failure count.
+	 */
+	private int loginfailurecnt;
+	
+	/**
+	 * lock flg.
+	 */
+	private boolean accountNonLocked = true;
 }

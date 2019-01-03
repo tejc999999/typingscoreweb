@@ -79,6 +79,7 @@ public class UserController {
 		if (result.hasErrors()) {
 			return add(model);
 		}
+		System.out.println("DEBUG:" + form);
 		userService.create(form);
 		return "redirect:/users";
 	}

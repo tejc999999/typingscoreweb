@@ -60,7 +60,7 @@ public class CloudantUserStore extends CloudantStore implements UserStore {
      * @return The User.
      */
     @Override
-    public User get(String id) throws NoDocumentException {
+    public User get(String id) throws NoDocumentException {    	
         return getDB().find(User.class, id);
     }
 
@@ -87,6 +87,8 @@ public class CloudantUserStore extends CloudantStore implements UserStore {
     	User user = getDB().find(User.class, id);
     	user.setUsername(newUser.getUsername());
     	user.setPassword(newUser.getPassword());
+    	user.setLoginfailurecnt(newUser.getLoginfailurecnt());
+    	user.setAccountNonLocked(newUser.isAccountNonLocked());
     	user.setRole(newUser.getRole());
     	getDB().update(user);
         return getDB().find(User.class, id);

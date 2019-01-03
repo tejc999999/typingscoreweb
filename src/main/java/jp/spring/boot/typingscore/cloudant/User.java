@@ -28,12 +28,23 @@ public class User extends CloudantObject {
 	private String password = null;
 	
 	/**
+	 * login failure count.
+	 * 
+	 */
+	private int loginfailurecnt = 0;
+	
+	/**
 	 * role.
 	 * 
 	 * ROLE_ADMIN or ROLE_USER.
 	 */
 	private String role = null;
 	
+	/**
+	 * lock flg.
+	 */
+	private boolean accountNonLocked = true;
+
 	/**
 	 * Constructor.
 	 * 

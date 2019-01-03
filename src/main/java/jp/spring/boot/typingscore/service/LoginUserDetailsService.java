@@ -1,20 +1,18 @@
 package jp.spring.boot.typingscore.service;
 
-import java.util.Optional;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import jp.spring.boot.typingscore.bean.UserBean;
-import jp.spring.boot.typingscore.cloudant.User;
-import jp.spring.boot.typingscore.cloudant.store.UserStore;
-import jp.spring.boot.typingscore.cloudant.store.UserStoreFactory;
-import jp.spring.boot.typingscore.cloudant.store.VCAPHelper;
-import jp.spring.boot.typingscore.repository.UserRepository;
 import jp.spring.boot.typingscore.security.LoginUserDetails;
+import jp.spring.boot.typingscore.security.RoleName;
 
 /**
  *  Login user service.
@@ -29,8 +27,8 @@ public class LoginUserDetailsService implements UserDetailsService {
 	 * user repository.
 	 */
 	@Autowired
-	UserRepository userRepository;
-
+	UserService userService;
+	  
 	/**
 	 * Perform login authentication.
 	 * 
@@ -39,20 +37,17 @@ public class LoginUserDetailsService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserBean userbean = null;
-		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// case: IBM Cloudant
-			UserStore userStore = UserStoreFactory.getInstance();
-			User user = userStore.get(username);
-			userbean = new UserBean();
-			userbean.setUsername(user.getUsername());
-			userbean.setPassword(user.getPassword());
-			userbean.setRole(user.getRole());
+
+		UserBean userbean = userService.getBean(username);
+		
+		return new LoginUserDetails(userbean, true, true, userbean.isAccountNonLocked(), getAuthorities(userbean));
+	}
+	
+	private Collection<GrantedAuthority> getAuthorities(UserBean userbean) {
+		if(userbean.getRole().equals(RoleName.ROLE_ADMIN.getString())) {
+			return AuthorityUtils.createAuthorityList(RoleName.ROLE_ADMIN.toString());
 		} else {
-			// case: h2 database
-			Optional<UserBean> opt = userRepository.findById(username);
-			userbean = opt.orElseThrow(() -> new UsernameNotFoundException("The requested user is not found."));
+			return AuthorityUtils.createAuthorityList(RoleName.ROLE_USER.toString());
 		}
-		return new LoginUserDetails(userbean);
 	}
 }

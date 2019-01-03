@@ -35,11 +35,52 @@ public class LoginUserDetails extends User {
 	 * 
 	 * @param userBean login user bean.
 	 */
-	public LoginUserDetails(UserBean userBean) {
-		super(userBean.getUsername(), userBean.getPassword(), getAuthority(userBean));
+	public LoginUserDetails(UserBean userBean, boolean accountNonExpired,
+			boolean credentialsNonExpired, boolean accountNonLocked,
+			Collection<GrantedAuthority> authorities) {
+		super(userBean.getUsername(), userBean.getPassword(),
+				true, true, true, userBean.isAccountNonLocked(), getAuthority(userBean));
+
 		this.user = userBean;
 	}
+	/**
+	 * Get status of account is not locked
+	 * 
+	 * @return status of account is not locked
+	 */
+	@Override
+	public	boolean isAccountNonLocked() {
+		return user.isAccountNonLocked();
+	}
+
+	/**
+	 * Get status of account is not locked
+	 * (Always returns true)
+	 * 
+	 * @return status of account is not locked
+	 */
+	public	boolean isEnabled() {
+		return true;
+	}
 	
+	/**
+	 * Acquire account expiration status
+	 * 
+	 * @return Account expiration status
+	 */
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+	
+	/**
+	 * Acquire the expiration status of the credential information
+	 * 
+	 * @return status of the credential information
+	 */
+	public boolean isAccountisCredentialsNonExpiredNonExpired() {
+		return true;
+	}
+
 	/**
 	 * Perform login authentication
 	 * 
