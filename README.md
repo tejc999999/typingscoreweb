@@ -41,9 +41,11 @@ Login users exist only below
 * Create login user
 * Initial login user deleted
 * User's administrative authority (administrator or general)
+* Login attempts limit(Lock if it fails 10 times)
 * DB switching (IBM Cloudant or h2 database)
 * Multilingual support (Japanese / English)
 
 ## Remarks
 * Only the highest score with the same user name ranking is displayed in ranking
 * Score = input time + (number of mistypes × 2), whichever has a smaller value is higher
+* The locked account is directly released from the DB from the DB (fix the number of failed logins at that time)
