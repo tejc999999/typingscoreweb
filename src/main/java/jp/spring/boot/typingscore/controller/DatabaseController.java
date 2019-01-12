@@ -131,6 +131,12 @@ public class DatabaseController {
 				while (mappingIte.hasNext()) {
 					ScoreForm form = mappingIte.next();
 					scoreService.create(form);
+					
+					// We set a waiting time of 0.1 second for free account
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+					}
 				}
 			} catch(IOException e) {
 				e.printStackTrace();

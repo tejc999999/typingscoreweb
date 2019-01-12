@@ -84,7 +84,7 @@ public class ScoreService {
 			} else {
 				score.setHighscoreflg(false);
 			}
-			System.out.println("DEBUG:" + score);
+//			System.out.println("DEBUG:" + score);
 			scoreStore.persist(score);
 		} else {
 			// case: h2 database
