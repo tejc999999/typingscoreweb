@@ -2,6 +2,7 @@ package jp.spring.boot.typingscore.cloudant.store;
 
 import java.util.Collection;
 
+
 import jp.spring.boot.typingscore.cloudant.Score;
 
 /**
@@ -31,6 +32,21 @@ public interface ScoreStore {
     public Collection<Score> getAll();
 
     /**
+     * Gets high Score from the store.
+     * 
+     * @param username user name.
+     * @return ScoreBean.
+     */
+    public Score findHighScore(String username);
+    
+    /**
+     * Gets high Score List from the store.
+     * 
+     * @return ScoreBean List.
+     */
+    public Collection<Score> findHighScoreListOrderByPoint();
+    
+    /**
      * Get All score order by commit time DESC.
      * 
      * @return All Scores. commit time DESC.
@@ -44,12 +60,20 @@ public interface ScoreStore {
      */
     public Collection<Score> getAllOrderByScore();
 
-    /**
-     * Find score and overlap username exclusion.
-     * 
-     * @return All Scores. exclusion overlap username.
-     */
-    public Collection<String> findUsernameOverlap();
+//    /**
+//     * Find score and overlap username exclusion.
+//     * 
+//     * @return All Scores. exclusion overlap username.
+//     */
+//    public Collection<String> findUsernameOverlap();
+    
+	  /**
+	  * score registration num of the target user.
+	  * 
+	  * @param username Acquire the score registration number of the target user.
+	  * @return All Scores. exclusion overlap username.
+	  */
+	 public int findUsernameOverlapCnt(String username);
     
     /**
      * Gets an individual Score from the store.

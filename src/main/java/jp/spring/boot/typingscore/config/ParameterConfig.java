@@ -31,7 +31,7 @@ public class ParameterConfig {
 	 */
 	@Bean
 	  public ParameterProperties parameterProperties() {
-			System.out.println("DEBUG-BB:" + loginAttemptsThreshold);
+
 		    return new ParameterProperties(loginAttemptsThreshold);
 	  }
 }

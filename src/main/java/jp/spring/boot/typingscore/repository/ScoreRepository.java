@@ -21,9 +21,35 @@ public interface ScoreRepository extends JpaRepository<ScoreBean, ScoreId> {
 	 * 
 	 * @return Score user name list
 	 */
-	@Query(value = "select new java.lang.String(s.id.username) from ScoreBean s group by s.id.username")
-	List<String> findUsernameOverlap();
+	@Query(value = "select s from ScoreBean s where s.id.username = :username and highscoreflg = true")
+	List<ScoreBean> findHighScore(String username);
 
+	/**
+	 * Acquire user name list of scores
+	 * 
+	 * @return Score user name list
+	 */
+	@Query(value = "select s from ScoreBean s where highscoreflg = true order by s.point asc")
+	List<ScoreBean> findHighScoreListOrderByPoint();
+
+//	/**
+//	 * Acquire user name list of scores
+//	 * 
+//	 * @return Score user name list
+//	 */
+//	@Query(value = "select new java.lang.String(s.id.username) from ScoreBean s group by s.id.username")
+//	List<String> findUsernameOverlap();
+
+	/**
+	 * Count the number of specified user name
+	 * 
+	 * @return number of specified user name
+	 */
+	@Query(value = "select COUNT(s.id.username) from ScoreBean s where s.id.username = :username")
+	int findUsernameOverlapCnt(String username);
+	
+	
+	
 	/**
 	 * Sort by registration date and time to get all scores
 	 * 

@@ -6,7 +6,9 @@ import java.sql.Timestamp;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Composite primary key for score
@@ -16,6 +18,8 @@ import lombok.Data;
  */
 @Embeddable
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ScoreId implements Serializable {
 	
 	/**

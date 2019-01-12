@@ -1,7 +1,5 @@
 package jp.spring.boot.typingscore.security;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
@@ -10,14 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.session.SessionFixationProtectionEvent;
 import org.springframework.stereotype.Component;
 
-import com.cloudant.client.org.lightcouch.NoDocumentException;
-
 import jp.spring.boot.typingscore.bean.UserBean;
-import jp.spring.boot.typingscore.cloudant.User;
-import jp.spring.boot.typingscore.cloudant.store.UserStore;
-import jp.spring.boot.typingscore.cloudant.store.UserStoreFactory;
-import jp.spring.boot.typingscore.cloudant.store.VCAPHelper;
-import jp.spring.boot.typingscore.repository.UserRepository;
 import jp.spring.boot.typingscore.service.UserService;
 
 /**

@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
  * @author tejc999999
  *
  */
-@JsonPropertyOrder({"userName", "inputTime", "missTypeCnt", "point", "commitTime"})
+@JsonPropertyOrder({"userName", "inputTime", "missTypeCnt", "point", "commitTime", "highscoreflg"})
 @Data
 @NoArgsConstructor
 public class ScoreForm {
@@ -63,4 +63,9 @@ public class ScoreForm {
 	 */
 	@JsonProperty("commitTime")
 	private Timestamp committime;
+	
+	/**
+	 * High score flag of the same user name
+	 */
+	private boolean highscoreflg = false;
 }

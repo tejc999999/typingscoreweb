@@ -19,5 +19,5 @@ public class CloudantObject {
 	/**
 	 * rev.
 	 */
-    private String _rev;
+	private String _rev;
 }

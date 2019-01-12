@@ -83,91 +83,75 @@ public class ScoreController {
 
 		// If the user name duplication check has not been completed, the user name duplication check
 		if (!"true".equals(overlapFlg)) {
-			if (scoreService.findUsernameOverlap(form.getUsername())) {
+			if (scoreService.findUsernameOverlapCnt(form.getUsername()) > 0) {
 				// Since the user names are duplicated,
 				// once the duplication check has been completed, the registration screen is once returned
 				model.addAttribute("overlapFlg", "true");
 				return "scores/add";
 			}
 		}
+
 		ScoreForm createScoreForm = scoreService.create(form);
+
+		ScoreForm highScoreForm =  scoreService.findHighScore(createScoreForm.getUsername());
+		
+		// Number of challenges
+		int tryCnt = scoreService.findUsernameOverlapCnt(createScoreForm.getUsername());
+		// The highest point including the past
+		int maxPoint = highScoreForm.getPoint();
+		// Input time at the highest point including the past
+		int maxInputTime = highScoreForm.getInputtime();
+		// Number of mistypes at the highest point including the past
+		int maxMissType = highScoreForm.getMisstype();
+		
+		List<ScoreForm> list = scoreService.findHighScoreListOrderByPoint();
+
+		// 全ユーザ数
+		int rankNum  = list.size();
 
 		// This rank
 		int rank = 0;
 		// Highest rank including past
-		int maxRank = 0;
-		// The highest point including the past
-		int maxPoint = createScoreForm.getPoint();
-		// Input time at the highest point including the past
-		int maxInputTime = createScoreForm.getInputtime();
-		// Number of mistypes at the highest point including the past
-		int maxMissType = createScoreForm.getMisstype();
-		// Number of challenges
-		int tryCnt = 0;
+		int maxRank = 0;		
 
-		List<ScoreForm> list = scoreService.findAllOrderByPoint();
-		List<ScoreRankForm> rankList = new ArrayList<ScoreRankForm>();
-		List<String> checkUserNameList = new ArrayList<String>();
-		int rankNum = 0;
 		int overlapRankNum = 0;
 		int beforePoint = -1;
+		boolean breakFlg = false;
+		for(ScoreForm scoreForm: list) {
 
-		for (ScoreForm tempForm : list) {
-			// One user only once (only one rank is one)
-			// In case of a duplicate user name, only the one with the better score is added to the list
-			if (!checkUserNameList.contains(tempForm.getUsername())) {
-				// Same order correspondence
-				if(beforePoint == tempForm.getPoint()) {
-					// In the case of the same point as the previous user, the same ranking number is counted
-					overlapRankNum++;
-				} else {
-					// The ranking ranking is incremented by 1 including the ranking number
-					beforePoint = tempForm.getPoint();
-					rankNum = rankNum + overlapRankNum + 1;
-					overlapRankNum = 0;
-				}
-				
-				ScoreRankForm rankForm = new ScoreRankForm();
-				BeanUtils.copyProperties(tempForm, rankForm);
-				rankForm.setRank(rankNum);
-				rankForm.setBlank("");
-				rankList.add(rankForm);
-				checkUserNameList.add(tempForm.getUsername());
+			// Same order correspondence
+			if(beforePoint == scoreForm.getPoint()) {
+				// In the case of the same point as the previous user, the same ranking number is counted
+				overlapRankNum++;
+			} else {
+				// The ranking ranking is incremented by 1 including the ranking number.
+				beforePoint = scoreForm.getPoint();
+				rank = rank + overlapRankNum + 1;
+				overlapRankNum = 0;
 			}
-
-			// Hold the highest points if there is a record of the same name in the past
-			if (createScoreForm.getUsername().equals(tempForm.getUsername())) {
-				tryCnt++;
-				if (tryCnt == 1) {
-					// Keep rank and points only for first time (highest grades)
-					maxRank = rankNum;
-					maxPoint = tempForm.getPoint();
-					maxInputTime = tempForm.getInputtime();
-					maxMissType = tempForm.getMisstype();
-				}
-				
-				// Store this rank
-				if (createScoreForm.getCommittime().equals(tempForm.getCommittime())) {
-					if(checkUserNameList.size() > 1 && maxPoint < createScoreForm.getPoint()) {
-						// Add self position.
-						rank = rankNum + 1;
-					} else {
-						rank = rankNum;
-					}
-				}
+			
+			if(scoreForm.getUsername().equals(createScoreForm.getUsername())) {
+				maxRank = rank;
 			}
-		}
+			if(scoreForm.getPoint() >= createScoreForm.getPoint()) {
+				breakFlg = true;
+			}
+			if(breakFlg && maxRank != 0) {
+				break;
+			}
+		}		
 
 		ScoreResultForm scoreResultForm = new ScoreResultForm();
 		BeanUtils.copyProperties(createScoreForm, scoreResultForm);
+
 		scoreResultForm.setTryCnt(tryCnt);
 		scoreResultForm.setRank(rank);
 		scoreResultForm.setMaxRank(maxRank);
-		scoreResultForm.setRankNum(rankNum + overlapRankNum);
+		scoreResultForm.setRankNum(rankNum);
 		scoreResultForm.setMaxPoint(maxPoint);
 		scoreResultForm.setMaxInputtime(maxInputTime);
 		scoreResultForm.setMaxMisstype(maxMissType);
-
+		
 		model.addAttribute("resultform", scoreResultForm);
 		return "scores/addcomp";
 	}
@@ -197,48 +181,43 @@ public class ScoreController {
 	@ResponseBody
 	public String scoreLoad() {
 
-		List<ScoreForm> list = scoreService.findAllOrderByPoint();
+		List<ScoreForm> list = scoreService.findHighScoreListOrderByPoint();
 
 		Gson gson = new Gson();
 		List<ScoreRankForm> rankList = new ArrayList<ScoreRankForm>();
-		List<String> checkUserNameList = new ArrayList<String>();
 		int rankNum = 0;
 		int overlapRankNum = 0;
 		int beforePoint = -1;
 
 		for (ScoreForm form : list) {
-			// One user only once (only one rank is one)
-			// In case of a duplicate user name, only the one with the better score is added to the list
-			if (!checkUserNameList.contains(form.getUsername())) {
-				// Same order correspondence
-				if(beforePoint == form.getPoint()) {
-					// In the case of the same point as the previous user, the same ranking number is counted
-					overlapRankNum++;
-				} else {
-					// The ranking ranking is incremented by 1 including the ranking number.
-					beforePoint = form.getPoint();
-					rankNum = rankNum + overlapRankNum + 1;
-					overlapRankNum = 0;
-				}
 
-				ScoreRankForm rankForm = new ScoreRankForm();
-				BeanUtils.copyProperties(form, rankForm);
-				rankForm.setRank(rankNum);
-				if(rankNum == 1) {
-					rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/gold.png\" class=\"icon\" /></span>");
-				} else if(rankNum == 2) {
-					rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/silver.png\" class=\"icon\" /></span>");
-				} else if(rankNum == 3) {
-					rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/bronze.png\" class=\"icon\" /></span>");
-				} else if(rankNum < 6) {
-					rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/green.png\" class=\"icon\" /></span>");
-				} else {
-					rankForm.setBlank("");
-				}
-
-				rankList.add(rankForm);
-				checkUserNameList.add(form.getUsername());
+			// Same order correspondence
+			if(beforePoint == form.getPoint()) {
+				// In the case of the same point as the previous user, the same ranking number is counted
+				overlapRankNum++;
+			} else {
+				// The ranking ranking is incremented by 1 including the ranking number.
+				beforePoint = form.getPoint();
+				rankNum = rankNum + overlapRankNum + 1;
+				overlapRankNum = 0;
 			}
+
+			ScoreRankForm rankForm = new ScoreRankForm();
+			BeanUtils.copyProperties(form, rankForm);
+			rankForm.setRank(rankNum);
+			if(rankNum == 1) {
+				rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/gold.png\" class=\"icon\" /></span>");
+			} else if(rankNum == 2) {
+				rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/silver.png\" class=\"icon\" /></span>");
+			} else if(rankNum == 3) {
+				rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/bronze.png\" class=\"icon\" /></span>");
+			} else if(rankNum < 6) {
+				rankForm.setBlank("<span class=\"blinking\"><img src=\"/img/green.png\" class=\"icon\" /></span>");
+			} else {
+				rankForm.setBlank("");
+			}
+
+			rankList.add(rankForm);
 		}
 
 		return gson.toJson(rankList);
@@ -311,10 +290,7 @@ public class ScoreController {
 		// Copy the unchangeable item (registration date and time) from the old data
 		form.setCommittime(id.getCommittime());
 
-		// Update
-		// (Since the identification information itself may be updated, delete old data and create a new one)
-		scoreService.delete(id);
-		scoreService.create(form);
+		scoreService.update(form);
 		return "redirect:/scores";
 	}
 
