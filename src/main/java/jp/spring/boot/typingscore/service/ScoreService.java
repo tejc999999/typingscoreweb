@@ -50,8 +50,12 @@ public class ScoreService {
 		scoreId.setUsername(scoreForm.getUsername());
 		// Registration time
 		// * Since H2 database can not correctly process milliseconds, it is truncated by milliseconds
-		Timestamp dateSecond = new Timestamp(DateUtils.truncate(new Date(), Calendar.SECOND).getTime());
-		scoreId.setCommittime(dateSecond);
+		if(scoreForm.getCommittime() == null) {
+			Timestamp dateSecond = new Timestamp(DateUtils.truncate(new Date(), Calendar.SECOND).getTime());
+			scoreId.setCommittime(dateSecond);
+		} else {
+			scoreId.setCommittime(scoreForm.getCommittime());
+		}
 		
 		ScoreBean scoreBean = new ScoreBean();
 		// Create compound primary key
@@ -80,7 +84,7 @@ public class ScoreService {
 			} else {
 				score.setHighscoreflg(false);
 			}
-
+			System.out.println("DEBUG:" + score);
 			scoreStore.persist(score);
 		} else {
 			// case: h2 database
