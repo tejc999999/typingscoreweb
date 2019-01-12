@@ -132,9 +132,9 @@ public class DatabaseController {
 					ScoreForm form = mappingIte.next();
 					scoreService.create(form);
 					
-					// We set a waiting time of 0.1 second for free account
+					// We set a waiting time of 0.2 second for free account
 					try {
-						Thread.sleep(100);
+						Thread.sleep(200);
 					} catch (InterruptedException e) {
 					}
 				}
