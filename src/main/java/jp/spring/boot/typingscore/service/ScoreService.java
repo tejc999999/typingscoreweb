@@ -5,7 +5,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
@@ -20,6 +22,8 @@ import jp.spring.boot.typingscore.cloudant.store.VCAPHelper;
 import jp.spring.boot.typingscore.db.ScoreId;
 import jp.spring.boot.typingscore.form.ScoreForm;
 import jp.spring.boot.typingscore.repository.ScoreRepository;
+
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.time.DateUtils;
 
 /**
@@ -44,68 +48,58 @@ public class ScoreService {
 	 * @return Registered score data
 	 */
 	public ScoreForm create(ScoreForm scoreForm) {
-		// Create compound primary key
-		ScoreId scoreId = new ScoreId();
-
-		scoreId.setUsername(scoreForm.getUsername());
-		// Registration time
-		// * Since H2 database can not correctly process milliseconds, it is truncated by milliseconds
-		if(scoreForm.getCommittime() == null) {
-			Timestamp dateSecond = new Timestamp(DateUtils.truncate(new Date(), Calendar.SECOND).getTime());
-			scoreId.setCommittime(dateSecond);
-		} else {
-			scoreId.setCommittime(scoreForm.getCommittime());
-		}
-		
-		ScoreBean scoreBean = new ScoreBean();
-		// Create compound primary key
-		scoreBean.setId(scoreId);
-
-		scoreBean.setInputtime(scoreForm.getInputtime());
-		scoreBean.setMisstype(scoreForm.getMisstype());
-
-		// point = inputtime + (misstype * 2)
-		scoreBean.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
 			// case: IBM Cloudant
 
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
-			Score score = createScore(scoreBean);
-
-			// Switch highscoreflg
-			Score highScore = scoreStore.findHighScore(scoreBean.getId().getUsername());
-			if(highScore == null) {
-				score.setHighscoreflg(true);
-			} else if(highScore.getPoint() > score.getPoint()) {
-				highScore.setHighscoreflg(false);
-				scoreStore.update(highScore.get_id(), highScore);
-				score.setHighscoreflg(true);
+			Score score = new Score();
+			// Create compound primary key
+			score.setUsername(scoreForm.getUsername());
+			if(scoreForm.getCommittime() == null) {
+				Timestamp dateSecond = new Timestamp(DateUtils.truncate(new Date(), Calendar.SECOND).getTime());
+				score.setCommittime(dateSecond);
 			} else {
-				score.setHighscoreflg(false);
+				score.setCommittime(scoreForm.getCommittime());
 			}
-//			System.out.println("DEBUG:" + score);
+			score.setInputtime(scoreForm.getInputtime());
+			score.setMisstype(scoreForm.getMisstype());
+
+			// point = inputtime + (misstype * 2)
+			score.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
+
 			scoreStore.persist(score);
+
+			scoreForm.setCommittime(score.getCommittime());
+			scoreForm.setPoint(score.getPoint());
 		} else {
-			// case: h2 database
+			// Create compound primary key
+			ScoreId scoreId = new ScoreId();
 
-			List<ScoreBean>  highScoreBeanList = scoreRepository.findHighScore(scoreId.getUsername());
-
-			// Switch highscoreflg
-			if(highScoreBeanList.size() == 0) {
-				scoreBean.setHighscoreflg(true);
-			} else if(highScoreBeanList.get(0).getPoint() > scoreBean.getPoint()) {
-				highScoreBeanList.get(0).setHighscoreflg(false);
-				scoreRepository.save(highScoreBeanList.get(0));
-				scoreBean.setHighscoreflg(true);
+			scoreId.setUsername(scoreForm.getUsername());
+			// Registration time
+			// * Since H2 database can not correctly process milliseconds, it is truncated by milliseconds
+			if(scoreForm.getCommittime() == null) {
+				Timestamp dateSecond = new Timestamp(DateUtils.truncate(new Date(), Calendar.SECOND).getTime());
+				scoreId.setCommittime(dateSecond);
 			} else {
-				scoreBean.setHighscoreflg(false);
+				scoreId.setCommittime(scoreForm.getCommittime());
 			}
-			
+			// case: h2 database
+			ScoreBean scoreBean = new ScoreBean();
+			// Create compound primary key
+			scoreBean.setId(scoreId);
+
+			scoreBean.setInputtime(scoreForm.getInputtime());
+			scoreBean.setMisstype(scoreForm.getMisstype());
+
+			// point = inputtime + (misstype * 2)
+			scoreBean.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
 			scoreBean = scoreRepository.save(scoreBean);
+
+			scoreForm.setCommittime(scoreBean.getId().getCommittime());
+			scoreForm.setPoint(scoreBean.getPoint());
 		}
-		scoreForm.setCommittime(scoreBean.getId().getCommittime());
-		scoreForm.setPoint(scoreBean.getPoint());
 		
 		return scoreForm;
 	}
@@ -118,61 +112,44 @@ public class ScoreService {
 	 */
 	public ScoreForm update(ScoreForm scoreForm) {
 
-		// Create composite primary key
-		ScoreId scoreId = new ScoreId();
-		scoreId.setUsername(scoreForm.getUsername());
-		scoreId.setCommittime(scoreForm.getCommittime());
 
-		ScoreBean scoreBean = new ScoreBean();
-		
-		// Register composite primary key
-		scoreBean.setId(scoreId);
-
-		scoreBean.setInputtime(scoreForm.getInputtime());
-		scoreBean.setMisstype(scoreForm.getMisstype());
-
-		// point = inputtime + (misstype * 2)
-		scoreBean.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
 			// case: IBM Cloudant
 
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
-			Score score = createScore(scoreBean);
+			Score score = new Score();
+			
+			score.setUsername(scoreForm.getUsername());
+			score.setCommittime(scoreForm.getCommittime());
+
+			score.setInputtime(scoreForm.getInputtime());
+			score.setMisstype(scoreForm.getMisstype());
+			
+			// point = inputtime + (misstype * 2)
+			score.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
 			
 			scoreStore.update(score.get_id(), score);
-			
-			// Switch highscoreflg
-			Score highScore = scoreStore.findHighScore(scoreBean.getId().getUsername());
-			if(highScore == null) {
-				score.setHighscoreflg(true);
-			} else if(highScore.getPoint() > score.getPoint()) {
-				highScore.setHighscoreflg(false);
-				scoreStore.update(highScore.get_id(), highScore);
-				score.setHighscoreflg(true);
-			} else {
-				score.setHighscoreflg(false);
-			}
 
-			scoreStore.persist(score);
-
-			
 		} else {
 			// case: h2 database
 			
-			List<ScoreBean>  highScoreBeanList = scoreRepository.findHighScore(scoreId.getUsername());
+			// Create composite primary key
+			ScoreId scoreId = new ScoreId();
+			scoreId.setUsername(scoreForm.getUsername());
+			scoreId.setCommittime(scoreForm.getCommittime());
 
-			// Switch highscoreflg
-			if(highScoreBeanList.size() == 0) {
-				scoreBean.setHighscoreflg(true);
-			} else if(highScoreBeanList.get(0).getPoint() > scoreBean.getPoint()) {
-				highScoreBeanList.get(0).setHighscoreflg(false);
-				scoreRepository.save(highScoreBeanList.get(0));
-				scoreBean.setHighscoreflg(true);
-			} else {
-				scoreBean.setHighscoreflg(false);
-			}
+			ScoreBean scoreBean = new ScoreBean();
+			
+			// Register composite primary key
+			scoreBean.setId(scoreId);
 
+			scoreBean.setInputtime(scoreForm.getInputtime());
+			scoreBean.setMisstype(scoreForm.getMisstype());
+
+			// point = inputtime + (misstype * 2)
+			scoreBean.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
+			
 			scoreRepository.save(scoreBean);
 		}
 
@@ -218,28 +195,32 @@ public class ScoreService {
 	 */
 	public List<ScoreForm> findAll() {
 		
-		List<ScoreBean> beanList = null;
+		List<ScoreForm> formList = new ArrayList<ScoreForm>();
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
 			// case: IBM Cloudant
-			beanList = new ArrayList<ScoreBean>();
+			
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
-	        for (Score doc : scoreStore.getAll()) {
-	        	ScoreBean scoreBean = createScoreBean(doc);
+	        for (Score score : scoreStore.getAll()) {
 	        	
-	        	beanList.add(scoreBean);
+	        	ScoreForm scoreForm = new ScoreForm();
+	        	scoreForm.setUsername(score.getUsername());
+	        	scoreForm.setCommittime(score.getCommittime());
+	        	scoreForm.setInputtime(score.getInputtime());
+	        	scoreForm.setMisstype(score.getMisstype());
+	        	scoreForm.setPoint(score.getPoint());
+	        	formList.add(scoreForm);
 	        }
 		} else {
 			// case: h2 database
-			beanList = scoreRepository.findAll();
-		}
-		List<ScoreForm> formList = new ArrayList<ScoreForm>();
-		for (ScoreBean scoreBean : beanList) {
-			ScoreForm scoreForm = new ScoreForm();
-			scoreForm.setUsername(scoreBean.getId().getUsername());
-			scoreForm.setCommittime(scoreBean.getId().getCommittime());
-			BeanUtils.copyProperties(scoreBean, scoreForm);
-			formList.add(scoreForm);
+
+			for (ScoreBean scoreBean : scoreRepository.findAll()) {
+				ScoreForm scoreForm = new ScoreForm();
+				scoreForm.setUsername(scoreBean.getId().getUsername());
+				scoreForm.setCommittime(scoreBean.getId().getCommittime());
+				BeanUtils.copyProperties(scoreBean, scoreForm);
+				formList.add(scoreForm);
+			}
 		}
 		return formList;
 	}
@@ -252,30 +233,33 @@ public class ScoreService {
 	 */
 	public List<ScoreForm> findAllOrderByCommittime() {
 
-		List<ScoreBean> beanList = null;
+		List<ScoreForm> formList = new ArrayList<ScoreForm>();
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
 			// case: IBM Cloudant
-			beanList = new ArrayList<ScoreBean>();
+
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
-	        for (Score doc : scoreStore.getAllOrderByCommittime()) {
+	        for (Score score : scoreStore.getAllOrderByCommittime()) {
 	        	
-	        	ScoreBean scoreBean = createScoreBean(doc);
-	        	
-	        	beanList.add(scoreBean);
+	        	ScoreForm scoreForm = new ScoreForm();
+	        	scoreForm.setUsername(score.getUsername());
+	        	scoreForm.setCommittime(score.getCommittime());
+	        	scoreForm.setInputtime(score.getInputtime());
+	        	scoreForm.setMisstype(score.getMisstype());
+	        	scoreForm.setPoint(score.getPoint());
+	        	formList.add(scoreForm);
 	        }
 			
 		} else {
 			// case: h2 database
-			beanList = scoreRepository.findAllByOrderById_CommittimeDesc();
-		}
-		List<ScoreForm> formList = new ArrayList<ScoreForm>();
-		for (ScoreBean scoreBean : beanList) {
-			ScoreForm scoreForm = new ScoreForm();
-			scoreForm.setUsername(scoreBean.getId().getUsername());
-			scoreForm.setCommittime(scoreBean.getId().getCommittime());
-			BeanUtils.copyProperties(scoreBean, scoreForm);
-			formList.add(scoreForm);
+
+			for (ScoreBean scoreBean : scoreRepository.findAllByOrderById_CommittimeDesc()) {
+				ScoreForm scoreForm = new ScoreForm();
+				scoreForm.setUsername(scoreBean.getId().getUsername());
+				scoreForm.setCommittime(scoreBean.getId().getCommittime());
+				BeanUtils.copyProperties(scoreBean, scoreForm);
+				formList.add(scoreForm);
+			}
 		}
 		return formList;
 	}
@@ -287,28 +271,31 @@ public class ScoreService {
 	 */
 	public List<ScoreForm> findAllOrderByPoint() {
 
-		List<ScoreBean> beanList = null;
+		List<ScoreForm> formList = new ArrayList<ScoreForm>();
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
 			// case: IBM Cloudant
-			beanList = new ArrayList<ScoreBean>();
+
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
-	        for (Score doc : scoreStore.getAllOrderByScore()) {
-	        	
-	        	ScoreBean scoreBean = createScoreBean(doc);
-	        	beanList.add(scoreBean);
+	        for (Score score : scoreStore.getAllOrderByScore()) {
+				ScoreForm scoreForm = new ScoreForm();
+	        	scoreForm.setUsername(score.getUsername());
+	        	scoreForm.setCommittime(score.getCommittime());
+	        	scoreForm.setInputtime(score.getInputtime());
+	        	scoreForm.setMisstype(score.getMisstype());
+	        	scoreForm.setPoint(score.getPoint());
+	        	formList.add(scoreForm);
 	        }
 		} else {
 			// case: h2 database
-			beanList = scoreRepository.findAllByOrderByPoint();
-		}
-		List<ScoreForm> formList = new ArrayList<ScoreForm>();
-		for (ScoreBean scoreBean : beanList) {
-			ScoreForm scoreForm = new ScoreForm();
-			scoreForm.setUsername(scoreBean.getId().getUsername());
-			scoreForm.setCommittime(scoreBean.getId().getCommittime());
-			BeanUtils.copyProperties(scoreBean, scoreForm);
-			formList.add(scoreForm);
+
+			for (ScoreBean scoreBean : scoreRepository.findAllByOrderByPoint()) {
+				ScoreForm scoreForm = new ScoreForm();
+				scoreForm.setUsername(scoreBean.getId().getUsername());
+				scoreForm.setCommittime(scoreBean.getId().getCommittime());
+				BeanUtils.copyProperties(scoreBean, scoreForm);
+				formList.add(scoreForm);
+			}
 		}
 		return formList;
 	}
@@ -326,7 +313,7 @@ public class ScoreService {
 		if(VCAPHelper.VCAP_SERVICES  != null) {
 			// case: IBM Cloudant
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
-			usernameOverlapCnt = scoreStore.findUsernameOverlapCnt(username);
+			usernameOverlapCnt = scoreStore.findByUsernameOverlapCnt(username);
 
 		} else {
 			// case: h2 database
@@ -337,9 +324,10 @@ public class ScoreService {
 	}
 	
 	/**
+	 * get high score of the target user name.
 	 * 
-	 * @param username
-	 * @return
+	 * @param username user name.
+	 * @return 
 	 */
 	public ScoreForm findHighScore(String username) {
 		
@@ -348,17 +336,31 @@ public class ScoreService {
 		if(VCAPHelper.VCAP_SERVICES  != null) {
 			// case: IBM Cloudant
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
-			Score score = scoreStore.findHighScore(username);
-			highScoreForm.setUsername(score.getUsername());
-			highScoreForm.setCommittime(score.getCommittime());
-			highScoreForm.setInputtime(score.getInputtime());
-			highScoreForm.setMisstype(score.getMisstype());
-			highScoreForm.setPoint(score.getPoint());
+			Score highScore = null;
+			for(Score score : scoreStore.findByUsername(username)) {
+				if(score == null || score.getPoint() < highScore.getPoint()) {
+					highScore = score;
+				}
+			}
 			
+			if(highScore != null) {
+				highScoreForm.setUsername(highScore.getUsername());
+				highScoreForm.setCommittime(highScore.getCommittime());
+				highScoreForm.setInputtime(highScore.getInputtime());
+				highScoreForm.setMisstype(highScore.getMisstype());
+				highScoreForm.setPoint(highScore.getPoint());
+			}
 		} else {
 			// case: h2 database
-			List<ScoreBean> scoreBeanList =  scoreRepository.findHighScore(username);
-			if(scoreBeanList != null && scoreBeanList.size() > 0) {
+			List<ScoreBean> scoreBeanList = scoreRepository.findById_Username(username);
+			ScoreBean highScoreBean = null;
+			for(ScoreBean scoreBean : scoreBeanList) {
+				if(scoreBean == null || scoreBean.getPoint() < highScoreBean.getPoint()) {
+					highScoreBean = scoreBean;
+				}
+			}
+
+			if(highScoreBean != null) {
 				highScoreForm.setUsername(scoreBeanList.get(0).getId().getUsername());
 				highScoreForm.setCommittime(scoreBeanList.get(0).getId().getCommittime());
 				BeanUtils.copyProperties(scoreBeanList.get(0), highScoreForm);
@@ -369,36 +371,98 @@ public class ScoreService {
 	}
 	
 	/**
+	 * get high score of the target user name.
 	 * 
-	 * @return
+	 * @param username user name.
+	 * @return 
 	 */
-	public List<ScoreForm> findHighScoreListOrderByPoint() {
-		
-		List<ScoreBean> beanList = null;
-		
+	public List<ScoreForm> findHighScoreList() {
+		Map<String, ScoreForm> formMap = new HashMap<String, ScoreForm>();
+
 		if(VCAPHelper.VCAP_SERVICES  != null) {
 			// case: IBM Cloudant
-			beanList = new ArrayList<ScoreBean>();
+
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
-			for (Score doc : scoreStore.findHighScoreListOrderByPoint()) {
-				ScoreBean scoreBean = createScoreBean(doc);
-				beanList.add(scoreBean);
+	        for (Score score : scoreStore.getAll()) {
+	
+				if(formMap.containsKey(score.getUsername())) {
+					if(formMap.get(score.getUsername()).getPoint() > score.getPoint()) {
+						ScoreForm scoreForm = new ScoreForm();
+						scoreForm.setUsername(score.getUsername());
+						scoreForm.setCommittime(score.getCommittime());
+						scoreForm.setInputtime(score.getInputtime());
+						scoreForm.setMisstype(score.getMisstype());
+						scoreForm.setPoint(score.getPoint());
+
+						formMap.put(scoreForm.getUsername(), scoreForm);
+					}
+				} else {
+					ScoreForm scoreForm = new ScoreForm();
+					scoreForm.setUsername(score.getUsername());
+					scoreForm.setCommittime(score.getCommittime());
+					scoreForm.setInputtime(score.getInputtime());
+					scoreForm.setMisstype(score.getMisstype());
+					scoreForm.setPoint(score.getPoint());
+
+					formMap.put(scoreForm.getUsername(), scoreForm);
+				}
 			}
 		} else {
 			// case: h2 database
-			beanList = scoreRepository.findHighScoreListOrderByPoint();
+
+			for (ScoreBean scoreBean : scoreRepository.findAll()) {
+	
+				if(formMap.containsKey(scoreBean.getId().getUsername())) {
+					if(formMap.get(scoreBean.getId().getUsername()).getPoint() > scoreBean.getPoint()) {
+						ScoreForm scoreForm = new ScoreForm();
+						scoreForm.setUsername(scoreBean.getId().getUsername());
+						scoreForm.setCommittime(scoreBean.getId().getCommittime());
+						BeanUtils.copyProperties(scoreBean, scoreForm);
+						formMap.put(scoreForm.getUsername(), scoreForm);
+					}
+				} else {
+					ScoreForm scoreForm = new ScoreForm();
+					scoreForm.setUsername(scoreBean.getId().getUsername());
+					scoreForm.setCommittime(scoreBean.getId().getCommittime());
+					BeanUtils.copyProperties(scoreBean, scoreForm);
+					formMap.put(scoreForm.getUsername(), scoreForm);
+				}
+			}
 		}
-		List<ScoreForm> formList = new ArrayList<ScoreForm>();
-		for (ScoreBean scoreBean : beanList) {
-			ScoreForm scoreForm = new ScoreForm();
-			scoreForm.setUsername(scoreBean.getId().getUsername());
-			scoreForm.setCommittime(scoreBean.getId().getCommittime());
-			BeanUtils.copyProperties(scoreBean, scoreForm);
-			formList.add(scoreForm);
-		}
-			
-		return formList;
+		return  new ArrayList<ScoreForm>(formMap.values());
 	}
+	
+//	/**
+//	 * 
+//	 * @return
+//	 */
+//	public List<ScoreForm> findHighScoreListOrderByPoint() {
+//		
+//		List<ScoreBean> beanList = null;
+//		
+//		if(VCAPHelper.VCAP_SERVICES  != null) {
+//			// case: IBM Cloudant
+//			beanList = new ArrayList<ScoreBean>();
+//			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
+//			for (Score doc : scoreStore.findHighScoreListOrderByPoint()) {
+//				ScoreBean scoreBean = createScoreBean(doc);
+//				beanList.add(scoreBean);
+//			}
+//		} else {
+//			// case: h2 database
+//			beanList = scoreRepository.findHighScoreListOrderByPoint();
+//		}
+//		List<ScoreForm> formList = new ArrayList<ScoreForm>();
+//		for (ScoreBean scoreBean : beanList) {
+//			ScoreForm scoreForm = new ScoreForm();
+//			scoreForm.setUsername(scoreBean.getId().getUsername());
+//			scoreForm.setCommittime(scoreBean.getId().getCommittime());
+//			BeanUtils.copyProperties(scoreBean, scoreForm);
+//			formList.add(scoreForm);
+//		}
+//			
+//		return formList;
+//	}
 
 	/**
 	 * Delete score data.
@@ -470,42 +534,4 @@ public class ScoreService {
 			scoreStore.init();
 		}
 	}
-	
-	/**
-	 * 
-	 * @param scoreBean
-	 * @return
-	 */
-	private Score createScore(ScoreBean scoreBean) {
-		
-		Score score = new Score();
-		score.set_id(scoreBean.getId().getUsername() + scoreBean.getId().getCommittime());
-		score.setUsername(scoreBean.getId().getUsername());
-		score.setCommittime(scoreBean.getId().getCommittime());
-		score.setInputtime(scoreBean.getInputtime());
-		score.setMisstype(scoreBean.getMisstype());
-		score.setPoint(scoreBean.getPoint());
-
-		return score;
-	}
-	
-	/**
-	 * 
-	 * @param score
-	 * @return
-	 */
-	private ScoreBean createScoreBean(Score score) {
-		
-    	ScoreBean scoreBean = new ScoreBean();
-    	ScoreId scoreId = new ScoreId();
-    	scoreId.setUsername(score.getUsername());
-    	scoreId.setCommittime(score.getCommittime());
-    	scoreBean.setId(scoreId);
-    	scoreBean.setInputtime(score.getInputtime());
-    	scoreBean.setMisstype(score.getMisstype());
-    	scoreBean.setPoint(score.getPoint());
-    	
-		return scoreBean;
-	}
-
 }

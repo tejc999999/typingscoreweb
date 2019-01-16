@@ -47,8 +47,8 @@ public class ScoreBean {
 	 */
 	private int point;
 	
-	/**
-	 * High score flag of the same user name
-	 */
-	private boolean highscoreflg = false;
+//	/**
+//	 * High score flag of the same user name
+//	 */
+//	private boolean highscoreflg = false;
 }

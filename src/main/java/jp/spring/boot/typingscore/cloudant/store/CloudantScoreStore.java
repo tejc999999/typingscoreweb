@@ -109,7 +109,7 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	 * 
 	 * @return All Scores. exclusion overlap username.
 	 */
-	public int findUsernameOverlapCnt(String username) {
+	public int findByUsernameOverlapCnt(String username) {
 		String selectorJson ="{\n" + 
 				"   \"selector\": {\n" + 
 				"      \"$and\": [\n" + 
@@ -133,23 +133,54 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 		}
 	}
 	
+//    /**
+//     * Gets high Score from the store.
+//     * 
+//     * @param username user name.
+//     * @return ScoreBean.
+//     */
+//	public Score findHighScore(String username) {
+//		
+//		String selectorJson ="{\n" + 
+//				"   \"selector\": {\n" + 
+//				"      \"$and\": [\n" + 
+//				"         {\n" + 
+//				"            \"_id\": {\n" + 
+//				"               \"$gt\": 0\n" + 
+//				"            },\n" + 
+////				"            \"highscoreflg\": {\n" + 
+////				"               \"$eq\": true\n" + 
+////				"            },\n" + 
+//				"            \"username\": {\n" + 
+//				"               \"$eq\": \"" + username + "\"\n" + 
+//				"            }\n" + 
+//				"         }\n" + 
+//				"      ]\n" + 
+//				"   }\n" + 
+//				"}";
+//		List<Score> scoreList = getDB().findByIndex(selectorJson, Score.class);
+//
+//		if(scoreList == null || scoreList.size() == 0) {
+//			return null;
+//		} else {
+//			return scoreList.get(0);
+//		}
+//	}
+
     /**
-     * Gets high Score from the store.
+     * Get all score of target user name.
      * 
      * @param username user name.
-     * @return ScoreBean.
+     * @return All Scores of target username.
      */
-	public Score findHighScore(String username) {
+	public Collection<Score> findByUsername(String username) {
 		
-		String selectorJson ="{\n" + 
+				String selectorJson ="{\n" + 
 				"   \"selector\": {\n" + 
 				"      \"$and\": [\n" + 
 				"         {\n" + 
 				"            \"_id\": {\n" + 
 				"               \"$gt\": 0\n" + 
-				"            },\n" + 
-				"            \"highscoreflg\": {\n" + 
-				"               \"$eq\": true\n" + 
 				"            },\n" + 
 				"            \"username\": {\n" + 
 				"               \"$eq\": \"" + username + "\"\n" + 
@@ -159,12 +190,8 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 				"   }\n" + 
 				"}";
 		List<Score> scoreList = getDB().findByIndex(selectorJson, Score.class);
-
-		if(scoreList == null || scoreList.size() == 0) {
-			return null;
-		} else {
-			return scoreList.get(0);
-		}
+		
+		return scoreList;
 	}
 	
     /**
@@ -176,15 +203,15 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 		
 		String selectorJson ="{\n" + 
 				"   \"selector\": {\n" + 
-				"      \"$and\": [\n" + 
-				"         {\n" + 
+//				"      \"$and\": [\n" + 
+//				"         {\n" + 
 				"            \"_id\": {\n" + 
 				"               \"$gt\": 0\n" + 
-				"            },\n" + 
-				"            \"highscoreflg\": {\n" + 
-				"               \"$eq\": true\n" + 
-				"            }\n" + 
-				"         }\n" + 
+//				"            },\n" + 
+//				"            \"highscoreflg\": {\n" + 
+//				"               \"$eq\": true\n" + 
+//				"            }\n" + 
+//				"         }\n" + 
 				"      ]\n" + 
 				"   }\n" + 
 				"}";
@@ -244,7 +271,7 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 		score.setMisstype(newScore.getMisstype());
 		score.setPoint(newScore.getPoint());
 		score.setCommittime(newScore.getCommittime());
-		score.setHighscoreflg(newScore.isHighscoreflg());
+//		score.setHighscoreflg(newScore.isHighscoreflg());
 		getDB().update(score);
 		
 		return getDB().find(Score.class, id);

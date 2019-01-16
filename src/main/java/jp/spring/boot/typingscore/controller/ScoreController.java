@@ -104,7 +104,7 @@ public class ScoreController {
 		// Number of mistypes at the highest point including the past
 		int maxMissType = highScoreForm.getMisstype();
 		
-		List<ScoreForm> list = scoreService.findHighScoreListOrderByPoint();
+		List<ScoreForm> list = scoreService.findHighScoreList();
 
 		// 全ユーザ数
 		int rankNum  = list.size();
@@ -181,7 +181,7 @@ public class ScoreController {
 	@ResponseBody
 	public String scoreLoad() {
 
-		List<ScoreForm> list = scoreService.findHighScoreListOrderByPoint();
+		List<ScoreForm> list = scoreService.findHighScoreList();
 
 		Gson gson = new Gson();
 		List<ScoreRankForm> rankList = new ArrayList<ScoreRankForm>();
