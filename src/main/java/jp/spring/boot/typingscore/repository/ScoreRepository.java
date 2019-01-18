@@ -16,21 +16,21 @@ import jp.spring.boot.typingscore.db.ScoreId;
  */
 public interface ScoreRepository extends JpaRepository<ScoreBean, ScoreId> {
 
-	/**
-	 * Acquire user name list of scores
-	 * 
-	 * @return Score user name list
-	 */
-	@Query(value = "select s from ScoreBean s where s.id.username = :username and highscoreflg = true")
-	List<ScoreBean> findHighScore(String username);
-
-	/**
-	 * Acquire user name list of scores
-	 * 
-	 * @return Score user name list
-	 */
-	@Query(value = "select s from ScoreBean s where highscoreflg = true order by s.point asc")
-	List<ScoreBean> findHighScoreListOrderByPoint();
+//	/**
+//	 * Acquire user name list of scores
+//	 * 
+//	 * @return Score user name list
+//	 */
+//	@Query(value = "select s from ScoreBean s where s.id.username = :username and highscoreflg = true")
+//	List<ScoreBean> findHighScore(String username);
+//
+//	/**
+//	 * Acquire user name list of scores
+//	 * 
+//	 * @return Score user name list
+//	 */
+//	@Query(value = "select s from ScoreBean s where highscoreflg = true order by s.point asc")
+//	List<ScoreBean> findHighScoreListOrderByPoint();
 
 //	/**
 //	 * Acquire user name list of scores
@@ -45,7 +45,7 @@ public interface ScoreRepository extends JpaRepository<ScoreBean, ScoreId> {
 	 * 
 	 * @return number of specified user name
 	 */
-	@Query(value = "select COUNT(s.id.username) from ScoreBean s where s.id.username = :username")
+	@Query(value = "select COUNT(*)  from ScoreBean s where s.id.username = :username")
 	int findUsernameOverlapCnt(String username);
 	
 	
@@ -63,4 +63,11 @@ public interface ScoreRepository extends JpaRepository<ScoreBean, ScoreId> {
 	 * @return All scores
 	 */
 	List<ScoreBean> findAllByOrderByPoint();
+	
+	/**
+	 * 
+	 * @param username user name.
+	 * @return All scores of target username.
+	 */
+	List<ScoreBean> findById_Username(String username);
 }

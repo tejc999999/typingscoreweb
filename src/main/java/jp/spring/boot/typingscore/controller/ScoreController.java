@@ -4,8 +4,12 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -77,6 +81,7 @@ public class ScoreController {
 	 */
 	@PostMapping(path = "create")
 	String create(@RequestParam String overlapFlg, @Validated ScoreForm form, BindingResult result, Model model) {
+		
 		if (result.hasErrors()) {
 			return "scores/add";
 		}
@@ -90,11 +95,13 @@ public class ScoreController {
 				return "scores/add";
 			}
 		}
+		
+		form.setCommittime(new Timestamp(DateUtils.truncate(new Date(), Calendar.SECOND).getTime()));
 
 		ScoreForm createScoreForm = scoreService.create(form);
 
 		ScoreForm highScoreForm =  scoreService.findHighScore(createScoreForm.getUsername());
-		
+	
 		// Number of challenges
 		int tryCnt = scoreService.findUsernameOverlapCnt(createScoreForm.getUsername());
 		// The highest point including the past
@@ -103,11 +110,6 @@ public class ScoreController {
 		int maxInputTime = highScoreForm.getInputtime();
 		// Number of mistypes at the highest point including the past
 		int maxMissType = highScoreForm.getMisstype();
-		
-		List<ScoreForm> list = scoreService.findHighScoreListOrderByPoint();
-
-		// 全ユーザ数
-		int rankNum  = list.size();
 
 		// This rank
 		int rank = 0;
@@ -116,9 +118,25 @@ public class ScoreController {
 
 		int overlapRankNum = 0;
 		int beforePoint = -1;
-		boolean breakFlg = false;
-		for(ScoreForm scoreForm: list) {
+		int rankCnt = 0;
+		
+		List<ScoreForm> list = scoreService.findHighScoreList();
 
+		if(createScoreForm.getPoint() != maxPoint) {
+
+			list = addHighScoreFormList(createScoreForm, list);
+		}
+		
+		// 全ユーザ数
+		int rankNum  = list.size();
+		
+		for(ScoreForm scoreForm: list) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			// Same order correspondence
 			if(beforePoint == scoreForm.getPoint()) {
 				// In the case of the same point as the previous user, the same ranking number is counted
@@ -126,20 +144,27 @@ public class ScoreController {
 			} else {
 				// The ranking ranking is incremented by 1 including the ranking number.
 				beforePoint = scoreForm.getPoint();
-				rank = rank + overlapRankNum + 1;
+				rankCnt = rankCnt + overlapRankNum + 1;
 				overlapRankNum = 0;
 			}
 			
+			System.out.println("DEBUG-A:" + scoreForm.getUsername() + "," + createScoreForm.getUsername());
 			if(scoreForm.getUsername().equals(createScoreForm.getUsername())) {
-				maxRank = rank;
+				System.out.println("DEBUG-B:" + scoreForm.getPoint() + "," + createScoreForm.getPoint());
+				System.out.println("maxRank=" + maxRank + ", rank=" + rank);
+				if(scoreForm.getPoint() != createScoreForm.getPoint()) {
+					System.out.println("A-exe");
+					maxRank = rankCnt;
+				} else {
+					System.out.println("B-exe");
+					rank = rankCnt;
+					if(maxRank == 0) {
+						System.out.println("C-exe");
+						maxRank = rank;
+					}
+				}
 			}
-			if(scoreForm.getPoint() >= createScoreForm.getPoint()) {
-				breakFlg = true;
-			}
-			if(breakFlg && maxRank != 0) {
-				break;
-			}
-		}		
+		}
 
 		ScoreResultForm scoreResultForm = new ScoreResultForm();
 		BeanUtils.copyProperties(createScoreForm, scoreResultForm);
@@ -181,7 +206,7 @@ public class ScoreController {
 	@ResponseBody
 	public String scoreLoad() {
 
-		List<ScoreForm> list = scoreService.findHighScoreListOrderByPoint();
+		List<ScoreForm> list = scoreService.findHighScoreList();
 
 		Gson gson = new Gson();
 		List<ScoreRankForm> rankList = new ArrayList<ScoreRankForm>();
@@ -290,7 +315,7 @@ public class ScoreController {
 		// Copy the unchangeable item (registration date and time) from the old data
 		form.setCommittime(id.getCommittime());
 
-		scoreService.update(form);
+		scoreService.update(oldusername, form);
 		return "redirect:/scores";
 	}
 
@@ -318,5 +343,19 @@ public class ScoreController {
 		scoreService.delete(id);
 
 		return "redirect:/scores";
+	}
+	
+	private List<ScoreForm> addHighScoreFormList(ScoreForm scoreForm, List<ScoreForm> list) {
+		
+		int index = 0;
+		for(ScoreForm tempScoreForm : list) {
+			if(tempScoreForm.getPoint() >= scoreForm.getPoint()) {
+				break; 
+			}
+			index++;
+		}
+		list.add(index, scoreForm);
+		
+		return list;
 	}
 }

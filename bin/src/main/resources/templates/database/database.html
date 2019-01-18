@@ -14,6 +14,8 @@
 	th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
 <link rel="stylesheet" type="text/css" href="../../static/css/style.css"
 	th:href="@{/css/style.css}" />
+<link rel="stylesheet" type="text/css" href="../../static/css/style.css"
+	th:href="@{/css/databasestyle.css}" />
 <script type="text/javascript" th:src="@{/js/confirmdialog.js}"></script>
 </head>
 <body>
@@ -45,10 +47,11 @@
 				</form>
 			</div>
 			<div class="col-sm-3">
-				<form th:action="@{/databases/upload/scorecsv}" method="post" enctype="multipart/form-data"
+			<form th:action="@{/databases/upload/scorecsv}" method="post" enctype="multipart/form-data"
 				  onSubmit="return confirmdialog('upload DB（score）？', 'DB（score） uploaded', 'DB（score） upload canceled');">
 					<input class="btn btn-lg btn-primary btn-block" type="submit" th:value="#{html.database.manage.btn.upload}" />
-					<label class="btn btn-lg btn-warning btn-block" th:text="#{html.database.manage.btn.upload.fileselect}"> file select
+					<!-- <label class="btn btn-lg btn-warning btn-block"> ファイル選択-->
+					<label class="btn btn-lg btn-warning btn-block"><p th:text="#{html.database.manage.btn.upload.fileselect}"> file select</p>
 					<input
 						style="display: none;" type="file" name="upload_file" required="required"/><br />
 					</label>
