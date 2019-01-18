@@ -16,7 +16,7 @@ import com.cloudant.client.org.lightcouch.NoDocumentException;
 import jp.spring.boot.typingscore.cloudant.Score;
 
 /**
- * IBM Cloudant Database connect. Score Data Store.
+ * スコア用ストア（IBM Cloudant用）
  * 
  * @author tejc999999
  *
@@ -24,26 +24,28 @@ import jp.spring.boot.typingscore.cloudant.Score;
 public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 
 	/**
-	 * database name for score.
+	 * データベース名
 	 */
 	private static final String databaseName = "scoredb";
 
 	/**
-	 * Constructor
+	 * コンストラクタ
 	 * 
 	 */
 	public CloudantScoreStore() {
 		CloudantClient cloudant = createClient();
 		if (cloudant != null) {
-			// case: Cloudant connect Client success.
-
-			// DB instance create.
+        	// IBM Cloudantへの接続に成功した場合
+        	
+        	// DBインスタンス生成
 			setDB(cloudant.database(databaseName, true));
 		}
 	}
 
 	/**
-	 * init process. index create.
+	 * 初期化処理
+	 * インデックスを作成する
+	 * 
 	 */
 	public void init() {
 		// index create.
@@ -53,9 +55,9 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	}
 
 	/**
-	 * Gets all Scores from the store.
+	 * 全てのスコア情報を取得する
 	 * 
-	 * @return All Scores.
+	 * @return 全てのスコアリスト
 	 */
 	public Collection<Score> getAll() {
 		List<Score> docs;
@@ -74,9 +76,9 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	}
 
 	/**
-	 * Get All score order by commit time DESC.
+	 * 登録日時順（降順）に並んだ全てのスコアリストを取得する
 	 * 
-	 * @return All Scores. commit time DESC.
+	 * @return 登録日時順（降順）に並んだ全てのスコアリスト
 	 */
 	public Collection<Score> getAllOrderByCommittime() {
 		List<Score> docs;
@@ -89,9 +91,9 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	}
 
 	/**
-	 * Get all score order by point ASC.
+	 * スコア順（昇順）に並んだ全てのスコアリストを取得する
 	 * 
-	 * @return All Scores. point ASC.
+	 * @return スコア順（昇順）に並んだ全てのスコアリスト
 	 */
 	public Collection<Score> getAllOrderByPoint() {
 		List<Score> docs;
@@ -105,9 +107,10 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	}
 	
 	/**
-	 * Find score and overlap username exclusion.
+	 * 同一ユーザ名のスコア登録数を取得する
 	 * 
-	 * @return All Scores. exclusion overlap username.
+	 * @param username 対象ユーザ名
+	 * @return 同一ユーザ名の登録数
 	 */
 	public int findByUsernameOverlapCnt(String username) {
 		String selectorJson ="{\n" + 
@@ -132,46 +135,12 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 			return scoreList.size();
 		}
 	}
-	
-//    /**
-//     * Gets high Score from the store.
-//     * 
-//     * @param username user name.
-//     * @return ScoreBean.
-//     */
-//	public Score findHighScore(String username) {
-//		
-//		String selectorJson ="{\n" + 
-//				"   \"selector\": {\n" + 
-//				"      \"$and\": [\n" + 
-//				"         {\n" + 
-//				"            \"_id\": {\n" + 
-//				"               \"$gt\": 0\n" + 
-//				"            },\n" + 
-////				"            \"highscoreflg\": {\n" + 
-////				"               \"$eq\": true\n" + 
-////				"            },\n" + 
-//				"            \"username\": {\n" + 
-//				"               \"$eq\": \"" + username + "\"\n" + 
-//				"            }\n" + 
-//				"         }\n" + 
-//				"      ]\n" + 
-//				"   }\n" + 
-//				"}";
-//		List<Score> scoreList = getDB().findByIndex(selectorJson, Score.class);
-//
-//		if(scoreList == null || scoreList.size() == 0) {
-//			return null;
-//		} else {
-//			return scoreList.get(0);
-//		}
-//	}
 
     /**
-     * Get all score of target user name.
+     * 対象ユーザの全スコアを取得する
      * 
-     * @param username user name.
-     * @return All Scores of target username.
+     * @param username 対象ユーザ名
+     * @return 対象ユーザの全スコアリスト
      */
 	public Collection<Score> findByUsername(String username) {
 		
@@ -195,23 +164,16 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	}
 	
     /**
-     * Gets high Score List from the store.
+     * スコア順の各ユーザ最高スコアリストを取得する
      * 
-     * @return ScoreBean List.
+     * @return スコア順の各ユーザ最高スコアリスト
      */
 	public Collection<Score> findHighScoreListOrderByPoint() {
 		
 		String selectorJson ="{\n" + 
 				"   \"selector\": {\n" + 
-//				"      \"$and\": [\n" + 
-//				"         {\n" + 
 				"            \"_id\": {\n" + 
 				"               \"$gt\": 0\n" + 
-//				"            },\n" + 
-//				"            \"highscoreflg\": {\n" + 
-//				"               \"$eq\": true\n" + 
-//				"            }\n" + 
-//				"         }\n" + 
 				"      ]\n" + 
 				"   }\n" + 
 				"}";
@@ -227,36 +189,33 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	}
 
 	/**
-	 * Gets an individual Score from the store.
+	 * スコア情報を取得する
 	 * 
-	 * @param id The ID of the Score to get.
-	 * @return Score.
+	 * @param id 対象スコアID
+	 * @return スコアBean
 	 */
-	@Override
 	public Score get(String id) {
 		return getDB().find(Score.class, id);
 	}
 
 	/**
-	 * Persists a Score to the store.
+	 * スコアを登録する
 	 * 
-	 * @param score The Score to persist.
-	 * @return The persisted Score. The Score will not have a unique ID..
+	 * @param score 登録スコアBean
+	 * @return 登録後スコアBean
 	 */
-	@Override
 	public Score persist(Score score) {
 		String id = getDB().save(score).getId();
 		return getDB().find(Score.class, id);
 	}
 
 	/**
-	 * Updates a Score in the store.
+	 * スコアを更新する
 	 * 
-	 * @param id    The ID of the Score to update.
-	 * @param score The Visitor with updated information.
-	 * @return The updated Score.
+	 * @param id 更新対象スコアID
+	 * @param score 更新スコアBean
+	 * @return 更新後スコアBean
 	 */
-	@Override
 	public Score update(String id, Score newScore) {
 		Score score = null;
 		try {
@@ -278,9 +237,9 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	}
 
 	/**
-	 * Deletes a Score from the store.
+	 * スコアを削除する
 	 * 
-	 * @param id delete score id.
+	 * @param id 対象スコアID
 	 */
 	public void delete(String id) {
 		System.out.println("DEBUG:" + id);
@@ -288,15 +247,15 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 		try {
 			getDB().remove(id, score.get_rev());
 		} catch (NoDocumentException e) {
-			// case: Score data not exists.
+			// スコア情報が存在しない場合
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Count score data.
+	 * 全てのスコア数を取得する
 	 * 
-	 * @return Score count.
+	 * @return 全てのスコア数
 	 */
 	public int count() throws Exception {
 		return getAll().size();

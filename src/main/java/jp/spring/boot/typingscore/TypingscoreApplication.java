@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Typingweb SpringBoot Application.
+ * SpringBoot Applicationクラス
  * 
  * @author tejc999999
  *
@@ -12,6 +12,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TypingscoreApplication {
 
+	/**
+	 * メイン処理
+	 * 
+	 * @param args 実行時引数
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(TypingscoreApplication.class, args);
 	}

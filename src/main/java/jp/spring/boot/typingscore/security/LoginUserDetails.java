@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Login user authentication.
+ * ログインユーザ認証クラス
  * 
  * @author tejc999999
  *
@@ -21,19 +21,19 @@ import lombok.EqualsAndHashCode;
 public class LoginUserDetails extends User {
 
 	/**
-	 * Serial version UID
+	 * シリアルバージョンUID
 	 */
 	private static final long serialVersionUID = -3601246438727975832L;
 	
 	/**
-	 * Login user.
+	 * ログインユーザ
 	 */
 	private final UserBean user;
 
 	/**
-	 * Perform login authentication
+	 * ログイン時の認証を行う
 	 * 
-	 * @param userBean login user bean.
+	 * @param userBean ログインユーザUserBean
 	 */
 	public LoginUserDetails(UserBean userBean, boolean accountNonExpired,
 			boolean credentialsNonExpired, boolean accountNonLocked,
@@ -44,9 +44,9 @@ public class LoginUserDetails extends User {
 		this.user = userBean;
 	}
 	/**
-	 * Get status of account is not locked
+	 * ユーザアカウントのロック情報を取得する
 	 * 
-	 * @return status of account is not locked
+	 * @return アカウントロック情報（true: ロックなし、false: ロック）
 	 */
 	@Override
 	public	boolean isAccountNonLocked() {
@@ -54,38 +54,37 @@ public class LoginUserDetails extends User {
 	}
 
 	/**
-	 * Get status of account is not locked
-	 * (Always returns true)
+	 * ユーザアカウントの有効情報を取得する
 	 * 
-	 * @return status of account is not locked
+	 * @return 有効情報（true: 有効、false: 無効）※true固定
 	 */
 	public	boolean isEnabled() {
 		return true;
 	}
 	
 	/**
-	 * Acquire account expiration status
+	 * ユーザカウントの有効期限切れ情報を取得する
 	 * 
-	 * @return Account expiration status
+	 * @return アカウント有効期限切れ情報（true: 有効期限内、false: 有効期限切れ）※true固定
 	 */
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 	
 	/**
-	 * Acquire the expiration status of the credential information
+	 * ユーザカウント認証情報の有効期限切れ情報を取得する
 	 * 
-	 * @return status of the credential information
+	 * @return アカウント認証情報有効期限切れ情報（true: 有効期限内、false: 有効期限切れ）※true固定
 	 */
 	public boolean isAccountisCredentialsNonExpiredNonExpired() {
 		return true;
 	}
 
 	/**
-	 * Perform login authentication
+	 * 権限情報を取得する
 	 * 
-	 * @param userBean login user bean.
-	 * @return role auth list.
+	 * @param userBean ログインユーザ用UserBean
+	 * @return 権限情報リスト
 	 */
 	private static Collection<GrantedAuthority> getAuthority(UserBean userBean){
 		Collection<GrantedAuthority> authList;

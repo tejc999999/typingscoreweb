@@ -6,8 +6,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * 
- * For IBM Cloudant.
- * Login User Bean.
+ * ログインユーザBean（IBM Cloudant用）.
  * 
  * @author tejc999999
  *
@@ -17,37 +16,36 @@ import lombok.EqualsAndHashCode;
 public class User extends CloudantObject {
 	
 	/**
-	 * username.
+	 * ユーザ名
 	 */
 	private String username = null;
 	
 	/**
-	 * password.
+	 * パスワード
 	 * 
 	 */
 	private String password = null;
 	
 	/**
-	 * login failure count.
+	 * ログイン失敗回数
 	 * 
 	 */
 	private int loginfailurecnt = 0;
 	
 	/**
-	 * role.
+	 * 権限
 	 * 
-	 * ROLE_ADMIN or ROLE_USER.
+	 * ROLE_ADMINまたはROLE_USER.
 	 */
 	private String role = null;
 	
 	/**
-	 * lock flg.
+	 * 非ロック情報
 	 */
 	private boolean accountNonLocked = true;
 
 	/**
-	 * Constructor.
-	 * 
+	 * コンストラクタ
 	 */
     public User() {
         this.username = "";

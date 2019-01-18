@@ -11,8 +11,7 @@ import jp.spring.boot.typingscore.cloudant.User;
 
 
 /**
- * IBM Cloudant Database connect.
- * Login User Data Store.
+ * ユーザ用ストア（IBM Cloudant用）
  * 
  * @author tejc999999
  *
@@ -20,30 +19,29 @@ import jp.spring.boot.typingscore.cloudant.User;
 public class CloudantUserStore extends CloudantStore implements UserStore {
 
     /**
-     * database name for login user.
+     * データベース名
      */
     private static final String databaseName = "userdb";
 
     /**
-     * Constructor
+     * コンストラクタ
      * 
      */
     public CloudantUserStore(){
         CloudantClient cloudant =  createClient();
         if(cloudant!=null){
-        	// case: Cloudant connect Client success.
+        	// IBM Cloudantへの接続に成功した場合
         	
-        	// DB instance create.
+        	// DBインスタンス生成
         	setDB(cloudant.database(databaseName, true));
         }
     }
 
     /**
-     * Gets all Scores from the store.
+     * 全てのユーザ情報を取得する
      * 
-     * @return All Scores.
+     * @return 全ユーザ情報リスト
      */
-    @Override
     public Collection<User> getAll(){
         List<User> docs;
         try {
@@ -55,34 +53,33 @@ public class CloudantUserStore extends CloudantStore implements UserStore {
     }
 
     /**
-     * Gets an individual User from the store.
-     * @param id The ID of the ToDo to get.
-     * @return The User.
+     * ユーザ情報を取得する
+     * 
+     * @param 対象ユーザID
+     * @return ユーザ情報
      */
-    @Override
     public User get(String id) throws NoDocumentException {    	
         return getDB().find(User.class, id);
     }
 
     /**
-     * Persists a User to the store.
-     * @param user The User to persist.
-     * @return The persisted User.  The ToDo will not have a unique ID..
+     * ユーザ情報を登録する
+     * 
+     * @param user 対象ユーザBean
+     * @return 登録ユーザBean
      */
-    @Override
     public User persist(User user) {
         String id = getDB().save(user).getId();
         return getDB().find(User.class, id);
     }
 
     /**
-     * Updates a User in the store.
+     * ユーザ情報を更新する
      * 
-     * @param id The ID of the User to update.
-     * @param user The User with updated information.
-     * @return The updated User.
+     * @param id 更新対象ユーザID
+     * @param user 更新ユーザBean
+     * @return 更新ユーザBean
      */
-    @Override
     public User update(String id, User newUser) {
     	User user = getDB().find(User.class, id);
     	user.setUsername(newUser.getUsername());
@@ -96,22 +93,20 @@ public class CloudantUserStore extends CloudantStore implements UserStore {
     }
 
     /**
-     * Deletes a User from the store.
+     * ユーザ情報を削除する
      * 
-     * @param id delete user id.
+     * @param id 削除対象ユーザID
      */
-    @Override
     public void delete(String id) {
         User user = getDB().find(User.class, id);
         getDB().remove(id, user.get_rev());
     }
 
     /**
-     * Count user data.
+     * ユーザ数を取得する
      * 
-     * @return User count.
+     * @return ユーザ数
      */
-    @Override
     public int count() throws Exception {
         return getAll().size();
     }

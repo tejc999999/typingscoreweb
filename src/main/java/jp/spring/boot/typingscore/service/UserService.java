@@ -20,7 +20,7 @@ import jp.spring.boot.typingscore.form.UserForm;
 import jp.spring.boot.typingscore.repository.UserRepository;
 
 /**
- * Login user Manage service.
+ * ユーザ用サービス
  * 
  * @author tejc999999
  *
@@ -29,33 +29,34 @@ import jp.spring.boot.typingscore.repository.UserRepository;
 public class UserService {
 
 	/**
-	 * user repository.
+	 * ユーザ用リポジトリ
 	 */
 	@Autowired
 	UserRepository userRepository;
 	
 	/**
-	 * Register a user.
+	 * ユーザを登録する.
 	 * 
 	 * @param userForm User Form.
 	 * @return Registered User Form.
 	 */
 	public UserForm create(UserForm userForm) {
 
-		// Password encoding
+		// パスワードをエンコード
 		userForm.setPassword(new BCryptPasswordEncoder().encode(userForm.getPassword()));
 
 		UserBean userBean = new UserBean();
 		BeanUtils.copyProperties(userForm, userBean);
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// case: IBM Cloudant
+			// DBがIBM Cloudの場合
+			
 			UserStore userStore = UserStoreFactory.getInstance();
 			User existUser = null;
 			try {
 				existUser = userStore.get(userForm.getUsername());
 			} catch(NoDocumentException e) {
-				// Corresponds to Exception that occurs when the user does not exist
+				// ユーザが存在しない場合
 			}
 			if(existUser == null) {
 				User user = new User();
@@ -69,7 +70,8 @@ public class UserService {
 				BeanUtils.copyProperties(user, userForm);
 			}
 		} else {
-			// case: h2 database
+			// DBがH2データベースの場合
+			
 			userBean = userRepository.save(userBean);
 			BeanUtils.copyProperties(userBean, userForm);
 		}
@@ -78,26 +80,27 @@ public class UserService {
 	
 
 	/**
-	 * Updater a user.
+	 * ユーザを更新する
 	 * 
-	 * @param userForm User Form
-	 * @return Updated User Form.
+	 * @param userForm 更新用UserForm
+	 * @return 更新後UserForm
 	 */
 	public UserForm update(UserForm userForm) {
-		// Password encoding
+		// パスワードをエンコードする
 		userForm.setPassword(new BCryptPasswordEncoder().encode(userForm.getPassword()));
 
 		UserBean userBean = new UserBean();
 		BeanUtils.copyProperties(userForm, userBean);
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// case: IBM Cloudant
+			// DBがIBM Cloudの場合
+
 			UserStore userStore = UserStoreFactory.getInstance();
 			User existUser = null;
 			try {
 				existUser = userStore.get(userForm.getUsername());
 			} catch(NoDocumentException e) {
-				// Corresponds to Exception that occurs when the user does not exist
+				// ユーザが存在しない場合
 			}
 			if(existUser == null) {
 				User user = new User();
@@ -110,7 +113,8 @@ public class UserService {
 				BeanUtils.copyProperties(user, userForm);
 			}
 		} else {
-			// case: h2 database
+			// DBがH2データベースの場合
+			
 			userBean = userRepository.save(userBean);
 			BeanUtils.copyProperties(userBean, userForm);
 		}
@@ -118,35 +122,38 @@ public class UserService {
 	}
 	
 	/**
-	 * Delete user data.
+	 * ユーザを削除する
 	 * 
-	 * @param username user name.
+	 * @param username 削除対象ユーザ名
 	 */
 	public void delete(String username) {
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// case: IBM Cloudant
+			// DBがIBM Cloudの場合
+
 			UserStore userStore = UserStoreFactory.getInstance();
 			userStore.delete(username);
 			
 		} else {
+			// DBがH2データベースの場合
+			
 			UserBean userBean = new UserBean();
 			userBean.setUsername(username);
-			// case: h2 database.
+
 			userRepository.delete(userBean);
 		}
 	}
 	
 	/**
-	 * Method using bean. 
-	 * Delete user data.
+	 * DBからUserFormを取得する. 
 	 * 
-	 * @param username user name.
+	 * @param username 対象ユーザ名
 	 */
-	public UserBean getBean(String username) throws UsernameNotFoundException {
-		UserBean userbean = null;
+	public UserForm getDBUserForm(String username) throws UsernameNotFoundException {
+		UserForm userForm = null;
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// case: IBM Cloudant
+			// DBがIBM Cloudの場合
+
 			UserStore userStore = UserStoreFactory.getInstance();
 			User user = null;
 			try {
@@ -154,49 +161,57 @@ public class UserService {
 			} catch(NoDocumentException e) {
 				throw new UsernameNotFoundException("The requested user is not found.");
 			}
-				userbean = new UserBean();
-				BeanUtils.copyProperties(user, userbean);
+			if(user != null) {
+				userForm = new UserForm();
+				BeanUtils.copyProperties(user, userForm);
+			}
 		} else {
-			// case: h2 database
+			// DBがH2データベースの場合
+			
 			Optional<UserBean> opt = userRepository.findById(username);
-			userbean = opt.orElseThrow(() -> new UsernameNotFoundException("The requested user is not found."));
+			UserBean userBean = opt.orElseThrow(() -> new UsernameNotFoundException("The requested user is not found."));
+			if(userBean != null) {
+				userForm = new UserForm();
+				BeanUtils.copyProperties(userBean, userForm);
+			}
 		}
-		return userbean;
+		return userForm;
 	}
 	
 	/**
-	 * Method using bean. 
-	 * Update user data.
+	 * DBにUserFormを登録する
 	 * 
-	 * @param userbean update user bean.
-	 * @return updated user bean.
+	 * @param userbean 更新用UserForm
+	 * @return updated 更新後UserForm
 	 */
-	public UserBean updateBean(UserBean userbean) {
-//		// Password encoding
-//		userbean.setPassword(new BCryptPasswordEncoder().encode(userbean.getPassword()));
+	public UserForm setDBUserForm(UserForm userForm) {
 
 		if(VCAPHelper.VCAP_SERVICES  != null) {
-			// case: IBM Cloudant
+			// DBがIBM Cloudの場合
+
 			UserStore userStore = UserStoreFactory.getInstance();
 			User existUser = null;
 			try {
-				existUser = userStore.get(userbean.getUsername());
+				existUser = userStore.get(userForm.getUsername());
 			} catch(NoDocumentException e) {
-				// Corresponds to Exception that occurs when the user does not exist
+				// ユーザが存在しない場合
 			}
 			if(existUser == null) {
 				User user = new User();
-				BeanUtils.copyProperties(userbean, user);
+				BeanUtils.copyProperties(userForm, user);
 				userStore.persist(user);
 			} else {
-				BeanUtils.copyProperties(userbean, existUser);
+				BeanUtils.copyProperties(userForm, existUser);
 				User user = userStore.update(existUser.get_id(), existUser);
-				BeanUtils.copyProperties(user, userbean);
+				BeanUtils.copyProperties(user, userForm);
 			}
 		} else {
-			// case: h2 database
-			userbean = userRepository.save(userbean);
+			// DBがH2データベースの場合
+			UserBean userBean = new UserBean();
+			BeanUtils.copyProperties(userForm, userBean);
+			userBean = userRepository.save(userBean);
+			BeanUtils.copyProperties(userBean, userForm);
 		}
-		return userbean;
+		return userForm;
 	}
 }

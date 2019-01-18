@@ -9,11 +9,12 @@ import org.springframework.security.web.authentication.session.SessionFixationPr
 import org.springframework.stereotype.Component;
 
 import jp.spring.boot.typingscore.bean.UserBean;
+import jp.spring.boot.typingscore.form.UserForm;
 import jp.spring.boot.typingscore.service.UserService;
 
 /**
  * 
- * Event Handler at Successful Authentication
+ * 認証成功イベントハンドラ
  * 
  * @author tejc999999
  *
@@ -22,34 +23,34 @@ import jp.spring.boot.typingscore.service.UserService;
 public class LoginSuccessAuthEventListeners {
 
 	/**
-	 * user repository.
+	 * ユーザ用サービス
 	 */
 	@Autowired
 	UserService userService;
 
 	/**
-	 * AuthenticationProvider auth success.
+	 * AuthenticationProviderによる認証が成功した場合のハンドラ
 	 * 
-	 * @param event AuthenticationProvider auth success.
+	 * @param event AuthenticationProviderによる認証成功イベント
 	 */
 	@EventListener
 	public void authSuccessEventHandler(AuthenticationSuccessEvent event) {
 	}
 
 	/**
-	 *  Successful handling of fixed session attack measures.
+	 *  固定セッション攻撃対策の処理に成功した場合のハンドラ
 	 *  
-	 * @param event Successful handling of fixed session attack measures.
+	 * @param event 固定セッション攻撃の対策処理の成功イベント
 	 */
 	@EventListener
 	public void SessionFixationProtectionEventHandler(SessionFixationProtectionEvent event) {
 	}
 	
 	/**
-	 * All auth success.
-	 * Clear the authentication failure count of the account
+	 * 全ての認証に成功した場合のハンドラ
+	 * ログイン失敗回数をクリアする
 	 * 
-	 * @param event all auth success.
+	 * @param event 全ての認証に成功したイベント
 	 */
 	@EventListener
 	public void InteractiveAuthSuccessEventHandle(InteractiveAuthenticationSuccessEvent event) {
@@ -59,23 +60,22 @@ public class LoginSuccessAuthEventListeners {
 	}
 	
 	/**
-	 * Record login success information in the DB
+	 * ログイン失敗回数をクリアする
 	 * 
-	 * @param username user name.
+	 * @param username 対象ユーザ名
 	 */
 	private void recordLoginFailureCntClear(String username) {
-		UserBean userbean = null;
+		UserForm userForm = null;
 		try {
 			
-			userbean = userService.getBean(username);
+			userForm = userService.getDBUserForm(username);
 		} catch(UsernameNotFoundException e) {
-			
 		}
 
-		if(userbean != null) {
+		if(userForm != null) {
 			
-			userbean.setLoginfailurecnt(0);
-			userService.updateBean(userbean);
+			userForm.setLoginfailurecnt(0);
+			userService.setDBUserForm(userForm);
 		}
 	}
 }

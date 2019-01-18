@@ -17,8 +17,8 @@ package jp.spring.boot.typingscore.cloudant.store;
 
 /**
  * 
- * Score Store Factory.
- * When another database user, edit this class.
+ * スコア用ストアファクトリ
+ * IBM Cloudant以外のNoSQLサービスを利用する場合、個別のストア作成
  * 
  * @author tejc999999
  *
@@ -29,7 +29,7 @@ public class ScoreStoreFactory {
 
     public static ScoreStore getInstance() {
     	if(instance == null) {
-        	// When another database use, getDB() write
+        	// 他のデータベースシステムを使用する場合、システムごとに記述を分ける
 
         	CloudantScoreStore cvif = new CloudantScoreStore();
             if (cvif.getDB() != null) {

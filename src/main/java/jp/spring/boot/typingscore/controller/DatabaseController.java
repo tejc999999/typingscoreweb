@@ -20,12 +20,13 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 
+import jp.spring.boot.typingscore.cloudant.store.VCAPHelper;
 import jp.spring.boot.typingscore.form.ScoreForm;
 import jp.spring.boot.typingscore.service.ScoreService;
 import jp.spring.boot.typingscore.service.UserService;
 
 /**
- * Controller class for database function.
+ * データベース管理用コントローラクラス
  * 
  * @author tejc999999
  *
@@ -35,21 +36,21 @@ import jp.spring.boot.typingscore.service.UserService;
 public class DatabaseController {
 
 	/**
-	 * Score Service.
+	 * スコア用サービス
 	 */
 	@Autowired
 	ScoreService scoreService;
 
 	/**
-	 * User Service.
+	 * ユーザ用サービス
 	 */
 	@Autowired
 	UserService userService;
 
 	/**
-	 * Display the database management screen.
+	 * データベース管理画面を表示する
 	 * 
-	 * @return Transition destination path
+	 * @return 遷移先パス
 	 */
 	@GetMapping
 	public String view() {
@@ -58,9 +59,9 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Initialize the database.
+	 * データベースを初期化する
 	 * 
-	 * @return Transition destination path
+	 * @return 遷移先パス
 	 */
 	@GetMapping(path = "initdbscore")
 	public String initDbScore() {
@@ -71,11 +72,9 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Delete initial user.
+	 * 初期ユーザを削除する
 	 * 
-	 * @param form   Error check target.
-	 * @param result Error check result.
-	 * @return Destination view.
+	 * @return 遷移先ビュー名
 	 */
 	@GetMapping(path = "initdbdefaultuser")
 	public String initDbDefaultUser() {
@@ -86,9 +85,9 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Download score data (CSV).
+	 * スコアデータ（CSV）をダウンロードする
 	 * 
-	 * @return Destination view
+	 * @return 遷移先ビュー名
 	 */
 	@GetMapping(value = "download/score.csv", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
 			+ "; charset=UTF-8; Content-Disposition: attachment")
@@ -104,15 +103,15 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Upload score data (CSV)
+	 * スコアデータ（CSV）をアップロードする
 	 * 
-	 * @return Destination view
+	 * @return 遷移先ビュー名
 	 */
 	@PostMapping(value = "upload/scorecsv")
 	public String setScoreCsv(@RequestParam("upload_file") MultipartFile file) throws JsonProcessingException {
 
 		if (file.isEmpty()) {
-			// Processing at abnormal termination
+			// アップロードファイルが空の場合
 		} else {
 
 			try {
@@ -132,10 +131,13 @@ public class DatabaseController {
 					ScoreForm form = mappingIte.next();
 					scoreService.create(form);
 					
-					// We set a waiting time of 0.2 second for free account
-					try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) {
+					// IBM・ライトアカウントの場合は制限があるため、間隔をあける
+					if (VCAPHelper.VCAP_SERVICES != null) {
+						try {
+							Thread.sleep(200);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			} catch(IOException e) {

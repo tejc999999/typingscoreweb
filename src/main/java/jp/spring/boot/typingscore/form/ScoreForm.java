@@ -13,7 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Score Form.
+ * スコア用Form.
  * 
  * @author tejc999999
  *
@@ -24,8 +24,8 @@ import lombok.NoArgsConstructor;
 public class ScoreForm {
 
 	/**
-	 * User name.
-	 * Part of the primary key.
+	 * ユーザ名
+	 * 複合主キーの一部
 	 */
 	@JsonProperty("userName")
 	@NotNull
@@ -33,8 +33,7 @@ public class ScoreForm {
 	private String username;
 	
 	/**
-	 * Input time
-	 * Unit is seconds.
+	 * 入力時間（秒）
 	 */
 	@JsonProperty("inputTime")
 	@Min(value = 0, message = "can not enter {value} or less.")
@@ -42,8 +41,7 @@ public class ScoreForm {
 	private int inputtime;
 	
 	/**
-	 * miss type.
-	 * Number of times.
+	 * ミスタイプ数
 	 */
 	@JsonProperty("missTypeCnt")
 	@Min(value = 0, message = "can not enter {value} or less.")
@@ -51,21 +49,17 @@ public class ScoreForm {
 	private int misstype;
 	
 	/**
-	 * score.
-	 * calculation = inputtime + (misstype * 2)
+	 * スコア
+	 * 計算方法 = 入力時間 + (ミスタイプ数 * 2)
 	 */
 	@JsonProperty("point")
 	private int point;
 	
 	/**
-	 * commit time.
- 	 * Part of the primary key.
+	 * 登録日時
+	 * 複合主キーの一部
 	 */
 	@JsonProperty("commitTime")
 	private Timestamp committime;
 	
-//	/**
-//	 * High score flag of the same user name
-//	 */
-//	private boolean highscoreflg = false;
 }

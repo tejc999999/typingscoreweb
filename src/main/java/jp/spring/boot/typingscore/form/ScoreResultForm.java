@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * スコア用Form
  * 
  * @author tejc999999
  *
@@ -15,32 +16,30 @@ import lombok.NoArgsConstructor;
 public class ScoreResultForm {
 
 	/**
-	 * user name.
-	 * Part of the primary key.
+	 * ユーザ名
+	 * 複合主キーの一部
 	 */
 	private String username;
 
 	/**
-	 * Input time
-	 * Unit is seconds.
+	 * 入力時間（秒）
 	 */
 	private int inputtime;
 
 	/**
-	 * miss type.
-	 * Number of times.
+	 * ミスタイプ数
 	 */
 	private int misstype;
 
 	/**
-	 * score.
-	 * calculation = inputtime + (misstype * 2)
+	 * スコア
+	 * 計算方法 = 入力時間 + (ミスタイプ数×2)
 	 */
 	private int point;
 
 	/**
-	 * commit time.
-	 * Part of the primary key.
+	 * 登録日時
+	 * 複合主キーの一部
 	 */
 	private Date committime;
 

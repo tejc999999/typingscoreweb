@@ -11,7 +11,7 @@ $(function() {
 	  
       var modalesectiondata = null;
       $(function(){
-          // Change datatable setting
+          // DataTableの設定を変更する
           var modalesectiontable = $("#ranktable").DataTable({
         	  "bDestroy": true,
               "bPaginate": false,
@@ -49,7 +49,8 @@ $(function() {
             	  $(row).find("td").eq(6).addClass('iconcell');
             	  if(dataIndex == 0) {
                 	  $(row).find("td").eq(1).addClass('numalign borderTopNone rank');
-//                  	  $(row).find("td").eq(2).addClass('stralign borderTopNone rank').text(escapeHtml($(row).find("td").eq(2).children().prop("outerHTML")));
+// $(row).find("td").eq(2).addClass('stralign borderTopNone
+// rank').text(escapeHtml($(row).find("td").eq(2).children().prop("outerHTML")));
               	  $(row).find("td").eq(2).addClass('stralign borderTopNone rank').text(escapeHtml($(row).find("td").eq(2).prop("innerHTML")));
                 	  $(row).find("td").eq(3).addClass('numalign borderTopNone score');
                 	  $(row).find("td").eq(4).addClass('numalign borderTopNone score-time');
@@ -65,12 +66,7 @@ $(function() {
           });
       })
   }
-/*
- * function Employee ( name, position, salary, office ) { this.name = name;
- * this.position = position; this.salary = salary; this._office = office;
- * 
- * this.office = function () { return this._office; } };
- */
+
   function getCountUp() {
     $.ajax({
     type : "GET",
@@ -79,7 +75,6 @@ $(function() {
     dataType : "json",
   }).done(function(list) {
 	  
-
 /*
  * <tr th:each="score, scoreStat : ${scores}"> <td></td>
  * <td th:text="${scoreStat.index} + 1 + '/' + ${scoreStat.size} + '位'"></td>
@@ -94,8 +89,6 @@ $(function() {
 	  }
 	  $("#ranktable").DataTable({
 		  
-		  
-		  
 	  });
 	  
   }).fail(function(jqXHR, textStatus) {
@@ -103,6 +96,7 @@ $(function() {
     });
   }
 });
+// SQLインジェクション対策として文字列をHTMLエスケープする
 function escapeHtml(str){
 	  console.log(str);
 	  str = str.replace('&/g', '&amp;');

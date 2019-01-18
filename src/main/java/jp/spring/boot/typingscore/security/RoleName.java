@@ -1,7 +1,7 @@
 package jp.spring.boot.typingscore.security;
 
 /**
- * Login user role.
+ * ログインユーザ権限
  * 
  * @author tejc999999
  *
@@ -9,7 +9,7 @@ package jp.spring.boot.typingscore.security;
 public enum RoleName {
 
 	/**
-	 * Role Enum.
+	 * 権限Enum.
 	 */
 	ROLE_ADMIN("ROLE_ADMIN"),
 	ROLE_USER("ROLE_USER"),
@@ -21,24 +21,27 @@ public enum RoleName {
     private final String str;
 
     /**
-     * Set Role name.
-     * @param str role name.
+     * 権限名称を設定する
+     * 
+     * @param str 顕現名称
      */
     private RoleName(final String str) {
         this.str = str;
     }
 
     /**
-     * Get Role name.
-     * @return role name.
+     * 権限名称を取得する
+     * 
+     * @return 権限名称
      */
     public String getString() {
         return this.str;
     }
 
     /**
-     * Get Role name without prefix.
-     * @return role name without prefix.
+     * 接尾辞なしの権限名称を取得する
+     * 
+     * @return 接尾辞なしの権限名称.
      */
     public String getRoleLessString() {
         return this.str.replace("ROLE_", "");

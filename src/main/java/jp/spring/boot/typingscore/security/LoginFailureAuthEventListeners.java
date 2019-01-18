@@ -11,12 +11,12 @@ import org.springframework.security.authentication.event.AuthenticationFailureSe
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import jp.spring.boot.typingscore.bean.UserBean;
 import jp.spring.boot.typingscore.config.ParameterProperties;
+import jp.spring.boot.typingscore.form.UserForm;
 import jp.spring.boot.typingscore.service.UserService;
 
 /**
- * Event handler at authentication failure
+ * 認証失敗イベントハンドラ
  * 
  * @author tejc999999
  *
@@ -25,28 +25,27 @@ import jp.spring.boot.typingscore.service.UserService;
 public class LoginFailureAuthEventListeners {
 	
 	/**
-	 * user repository.
+	 * ユーザ用サービス
 	 */
 	@Autowired
 	UserService userService;
 
+	/**
+	 * セキュリティ情報
+	 */
 	@Autowired
 	ParameterProperties securityPropertis;
-	// Threshold value of continuous authentication failure number of account
-	// locking
-//	private int loginAttemptsThreshold = 5;
 	
 	/**
-	 * It counts the number of failed login attempts, and locks if the specified number of times is exceeded.
-	 * Handling of authentication errors due to password matching failure.
+	 * 認証失敗時に規定回数を超えるとアカウントをロックする
 	 * 
-	 * @param event BadCredentialsException occurred
+	 * @param event BadCredentialsException発生イベント
 	 */
 	@EventListener
 	public void authFailureBadCredentialsEventHandler(AuthenticationFailureBadCredentialsEvent event) {
 		
 		if (event.getException().getClass().equals(UsernameNotFoundException.class)) {
-			// Ignore if the user name does not exist.
+			// 存在しないユーザ名の場合は処理しない
 			return;
 		}
 
@@ -62,41 +61,45 @@ public class LoginFailureAuthEventListeners {
 	}
 
 	/**
-	 * Handling of authentication errors by invalid user ID.
+	 * 無効なユーザIDによる認証が行われた場合のハンドラ
 	 * 
-	 * @param event DisabledException occurred
+	 * @param event DisabledException発生イベント
 	 */
 	@EventListener
 	public void authFailureDisabledEventHandler(AuthenticationFailureDisabledEvent event) {
 	}	
 	
 	/**
-	 * Handling authentication errors due to account locking.
-	 * @param event LockedException occurred
+	 * ロックされたアカウントによる認証が行われた場合のハンドラ
+	 * 
+	 * @param event LockedException発生イベント
 	 */
 	@EventListener
 	public void authFailureLockedEventHandler(AuthenticationFailureLockedEvent event) {
 	}	
 	
 	/**
-	 * Handling of authentication errors due to account expiration.
-	 * @param event AccountExpiredException occurred
+	 * 有効期限切れアカウントによる認証が行われた場合のハンドラ
+	 * 
+	 * @param event AccountExpiredException発生イベント
 	 */
 	@EventListener
 	public void authFailureExpiredEventHandler(AuthenticationFailureExpiredEvent event) {
 	}	
 	
 	/**
-	 * Handling of authentication errors due to expiration of credentials.
-	 * @param event CredentialsExpiredException occurred
+	 * 認証情報期限切れアカウントによる認証が行われた場合のハンドラ
+	 * 
+	 * @param event CredentialsExpiredException発生イベント
 	 */
 	@EventListener
 	public void authFailureCredentialsExpiredEventHandler(AuthenticationFailureCredentialsExpiredEvent event) {
 	}
 	
 	/**
-	 * Handling authentication service errors.
-	 * @param event AuthenticationServiceException occurred
+	 * 認証サービスでエラーが発生した場合のハンドラ
+	 * 
+	 * @param event AuthenticationServiceException発生イベント
 	 */
 	@EventListener
 	public void authFailureServiceExceptionEventHandler(AuthenticationFailureServiceExceptionEvent event) {
@@ -104,42 +107,42 @@ public class LoginFailureAuthEventListeners {
 	
 
 	/**
-	 * Login failure information is recorded in the DB
+	 * 認証失敗回数を記録する
 	 * 
-	 * @param username user name of account failed to login
+	 * @param 認証に失敗したユーザ名
 	 */
 	private void recordLoginAttempts(String username) {
 
-		UserBean userbean = userService.getBean(username);
-		userbean.setLoginfailurecnt(userbean.getLoginfailurecnt() + 1);
-		userService.updateBean(userbean);
+		UserForm userForm = userService.getDBUserForm(username);
+		userForm.setLoginfailurecnt(userForm.getLoginfailurecnt() + 1);
+		userService.setDBUserForm(userForm);
 	}
 	
 	/**
-	 * Retrieve the number of consecutive unsuccessful login attempts
+	 * 認証失敗回数を取得する
 	 * 
-	 * @param userName username
-	 * @return Number of consecutive login failures
+	 * @param userName 対象ユーザ名
+	 * @return 認証失敗回数
 	 */
 	private int countFailedLoginAttempts(String username) {
 
 		int loginFailureCnt = 0;
 
-		UserBean userbean = userService.getBean(username);
-		loginFailureCnt = userbean.getLoginfailurecnt();
+		UserForm userForm = userService.getDBUserForm(username);
+		loginFailureCnt = userForm.getLoginfailurecnt();
 		
 		return loginFailureCnt;
 	}
 
 	/**
-	 * Lock account
+	 * アカウントをロックする
 	 * 
-	 * @param username user name of account to lock.
+	 * @param username ロック対象ユーザ名
 	 */
 	private void lockoutUser(String username) {
 
-		UserBean userbean = userService.getBean(username);
-		userbean.setAccountNonLocked(false);
-		userService.updateBean(userbean);
+		UserForm userForm = userService.getDBUserForm(username);
+		userForm.setAccountNonLocked(false);
+		userService.setDBUserForm(userForm);
 	}
 }

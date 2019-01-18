@@ -9,65 +9,40 @@ import jp.spring.boot.typingscore.bean.ScoreBean;
 import jp.spring.boot.typingscore.db.ScoreId;
 
 /**
- * Score repository.
+ * スコア用リポジトリ
  * 
  * @author tejc999999
  *
  */
 public interface ScoreRepository extends JpaRepository<ScoreBean, ScoreId> {
 
-//	/**
-//	 * Acquire user name list of scores
-//	 * 
-//	 * @return Score user name list
-//	 */
-//	@Query(value = "select s from ScoreBean s where s.id.username = :username and highscoreflg = true")
-//	List<ScoreBean> findHighScore(String username);
-//
-//	/**
-//	 * Acquire user name list of scores
-//	 * 
-//	 * @return Score user name list
-//	 */
-//	@Query(value = "select s from ScoreBean s where highscoreflg = true order by s.point asc")
-//	List<ScoreBean> findHighScoreListOrderByPoint();
-
-//	/**
-//	 * Acquire user name list of scores
-//	 * 
-//	 * @return Score user name list
-//	 */
-//	@Query(value = "select new java.lang.String(s.id.username) from ScoreBean s group by s.id.username")
-//	List<String> findUsernameOverlap();
-
 	/**
-	 * Count the number of specified user name
+	 * ユーザ名の重複数を取得する
 	 * 
-	 * @return number of specified user name
+	 * @return ユーザ名の重複数
 	 */
 	@Query(value = "select COUNT(*)  from ScoreBean s where s.id.username = :username")
 	int findUsernameOverlapCnt(String username);
-	
-	
-	
+
 	/**
-	 * Sort by registration date and time to get all scores
+	 * 登録日時で並んだ全てのスコアを取得する
 	 * 
-	 * @return All scores
+	 * @return 登録日時順に並んだ全てのスコアリスト
 	 */
 	List<ScoreBean> findAllByOrderById_CommittimeDesc();
 
 	/**
-	 * Sort by score and retrieve all scores
+	 * スコア順で並んだ全てのスコアを取得する
 	 * 
-	 * @return All scores
+	 * @return スコア順に並んだ全てのスコアリスト
 	 */
 	List<ScoreBean> findAllByOrderByPoint();
 	
 	/**
+	 * 同一ユーザ名のスコアをすべて取得する
 	 * 
-	 * @param username user name.
-	 * @return All scores of target username.
+	 * @param username 対象ユーザ名
+	 * @return 対象ユーザ名の全てのスコア
 	 */
 	List<ScoreBean> findById_Username(String username);
 }

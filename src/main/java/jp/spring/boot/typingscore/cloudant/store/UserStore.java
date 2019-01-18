@@ -5,8 +5,7 @@ import java.util.Collection;
 import jp.spring.boot.typingscore.cloudant.User;
 
 /**
- * IBM Cloudant Database connect.
- * User Data Store.
+ * ユーザ用ストア（IBM Cloudant用）インターフェース
  * 
  * @author tejc999999
  *
@@ -14,55 +13,57 @@ import jp.spring.boot.typingscore.cloudant.User;
 public interface UserStore {
 
     /**
-     * Get the target db object.
+     * データベースオブジェクトを取得する
      * 
-     * @return Database.
+     * @return データベースオブジェクト
      * @throws Exception 
      */
     public Object getDB();
 
   
     /**
-     * Gets all Scores from the store.
+     * 全てのユーザ情報を取得する
      * 
-     * @return All Scores.
+     * @return 全ユーザ情報リスト
      */
     public Collection<User> getAll();
 
     /**
-     * Gets an individual User from the store.
-     * @param id The ID of the ToDo to get.
-     * @return The User.
+     * ユーザ情報を取得する
+     * 
+     * @param 対象ユーザID
+     * @return ユーザ情報
      */
     public User get(String id);
 
     /**
-     * Persists a User to the store.
-     * @param user The User to persist.
-     * @return The persisted User.  The ToDo will not have a unique ID..
+     * ユーザ情報を登録する
+     * 
+     * @param user 対象ユーザBean
+     * @return 登録ユーザBean
      */
     public User persist(User user);
 
     /**
-     * Updates a User in the store.
+     * ユーザ情報を更新する
      * 
-     * @param id The ID of the User to update.
-     * @param user The User with updated information.
-     * @return The updated User.
+     * @param id 更新対象ユーザID
+     * @param user 更新ユーザBean
+     * @return 更新ユーザBean
      */
     public User update(String id, User user);
 
     /**
-     * Deletes a User from the store.
+     * ユーザ情報を削除する
      * 
-     * @param id delete user id.
+     * @param id 削除対象ユーザID
      */
     public void delete(String id);
   
     /**
-     * Count user data.
+     * ユーザ数を取得する
      * 
-     * @return User count.
+     * @return ユーザ数
      */
     public int count() throws Exception;
 }

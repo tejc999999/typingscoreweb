@@ -7,8 +7,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * 
- * For IBM Cloudant.
- * Typing Score Bean.
+ * スコア用Bean（IBM Cloudant用）
  * 
  * @author tejc999999
  *
@@ -18,40 +17,35 @@ import lombok.EqualsAndHashCode;
 public class Score extends CloudantObject {
 
 	/**
-	 * username.
-	 * id = username + commit time.
+	 * ユーザ名
+	 * 複合主キーの一部
 	 */
 	private String username = null;
 	
 	/**
-	 * commit time.
-	 * id = username + commit time.
+	 * 登録日時
+	 * 複合主キーの一部
 	 */
 	private Timestamp committime = null;
 
 	/**
-	 * input time(second).
+	 * 入力時間(second).
 	 */
 	private Integer inputtime = null;
 	
 	/**
-	 * misstype count;
+	 * ミスタイプ数
 	 */
 	private Integer misstype = null;
 	
 	/**
-	 * typing score.
-	 * point = inputtime + (misstype * 2)
+	 * スコア
+	 * 計算方法 = 入力時間 + (ミスタイプ数×2)
 	 */
 	private Integer point = null;
 	
-//	/**
-//	 * High score flag of the same user name
-//	 */
-//	private boolean highscoreflg = false;
-	
 	/**
-	 * Constructor.
+	 * コンストラクタ
 	 */
     public Score() {
         this.username = "";

@@ -20,7 +20,7 @@ import jp.spring.boot.typingscore.security.RoleName;
 import jp.spring.boot.typingscore.service.UserService;
 
 /**
- * Controller class for user function.
+ * ユーザ用コントローラクラス
  * 
  * @author tejc999999
  *
@@ -30,19 +30,21 @@ import jp.spring.boot.typingscore.service.UserService;
 public class UserController {
 
 	/**
-	 * User service.
+	 * ユーザ用サービス
 	 */
 	@Autowired
 	UserService userService;
 
-	
+	/**
+	 * 多言語対応用メッセージソース
+	 */
 	@Autowired
 	MessageSource  messageSource ;
 	
 	/**
-	 * Initialize Form to Model.
+	 * モデルを初期化する
 	 * 
-	 * @return UserForm userform.
+	 * @return UserForm モデルに設定するUserForm
 	 */
 	@ModelAttribute
 	UserForm setUpForm() {
@@ -50,13 +52,13 @@ public class UserController {
 	}
 
 	/**
-	 * Transit to user registration screen.
+	 * ユーザ登録画面に遷移する
 	 * 
-	 * @return Destination view.
+	 * @return 遷移先ビュー名
 	 */
 	@GetMapping
 	String add(Model model) {
-		// Radio Button Options.
+		// ラジオボタンのオプション（名称）を設定する.
         Map<String, String> roleMap = new LinkedHashMap<String, String>();
         roleMap.put(RoleName.ROLE_USER.getString(), this.messageSource.getMessage("role.name.user", null, LocaleContextHolder.getLocale()));
         roleMap.put(RoleName.ROLE_ADMIN.getString(), this.messageSource.getMessage("role.name.admin", null, LocaleContextHolder.getLocale()));
@@ -68,11 +70,11 @@ public class UserController {
 	}
 
 	/**
-	 * Register a user
+	 * ユーザを登録する
 	 * 
-	 * @param form  Error check target.
-	 * @param result Error check result.
-	 * @return Destination view.
+	 * @param form 登録ユーザ用UserForm
+	 * @param result エラーチェック結果
+	 * @return 遷移先ビュー名
 	 */
 	@PostMapping(path = "create")
 	String create(@Validated UserForm form, BindingResult result , Model model) {

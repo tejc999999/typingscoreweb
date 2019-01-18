@@ -5,8 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
- * Score rank form.
- * Score form add rank.
+ * スコアランク用Form
+ * スコア用Formにランク情報とアイコン格納用フィールドを付与
  * 
  * @author tejc999999
  *
@@ -17,12 +17,12 @@ import lombok.NoArgsConstructor;
 public class ScoreRankForm extends ScoreForm {
 
 	/**
-	 * rank.
+	 * 順位
 	 */
 	private int rank;
 
 	/**
-	 * Store an icon display html.
+	 * アイコン描画用HTML
 	 */
 	private String blank;
 }

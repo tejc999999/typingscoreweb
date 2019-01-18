@@ -6,9 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * Config setting loading config
- * 
- * used @ConfigurationProperties but did not work
+ * 設定ファイル読み込み
+ * (ConfigurationProperties アノテーションはうまく動作しなかったので今回は使用しない）
  * 
  * @author tejc999999
  *
@@ -19,15 +18,15 @@ import org.springframework.context.annotation.PropertySource;
 public class ParameterConfig {
 
 	/**
-	 * Login failure count threshold.
+	 *ログイン失敗閾値
 	 */
 	@Value("${spring.security.login.loginAttemptsThreshold}")
     private int loginAttemptsThreshold;
     
 	/**
-	 * Get application settings
+	 * プロパティ（ログイン失敗閾値）を取得する
 	 * 
-	 * @return Application setting value
+	 * @return プロパティ
 	 */
 	@Bean
 	  public ParameterProperties parameterProperties() {

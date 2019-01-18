@@ -11,20 +11,31 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 public class LoginAuthenticationFailureHandler implements AuthenticationFailureHandler {
+	
+	/**
+	 * ログイン用URL
+	 */
+	private String url;
 
 	/**
+	 * コンストラクタ
 	 * 
+	 * @param url ログイン用URL
 	 */
-	private String errorUrl;
-
-	/**
-	 * 
-	 * @param errorUrl
-	 */
-	public LoginAuthenticationFailureHandler(String errorUrl) {
-		this.errorUrl = errorUrl;
+	public LoginAuthenticationFailureHandler(String url) {
+		this.url = url;
 	}
 	
+	
+	/**
+	 * ログイン認証イベントハンドラ
+	 * ログイン失敗時にGETで失敗情報を返す
+	 * 
+	 * @param request HTTPサーブレットリクエスト
+	 * @param response HTTPサーブレットレスポンス
+	 * @throws IOException
+	 * @throws ServletException
+	 */
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
@@ -46,6 +57,6 @@ public class LoginAuthenticationFailureHandler implements AuthenticationFailureH
 		}
 		
         DefaultRedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-        redirectStrategy.sendRedirect(request, response, "/login?" + errorpath);
+        redirectStrategy.sendRedirect(request, response, url + "?" + errorpath);
 	}
 }

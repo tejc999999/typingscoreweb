@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import jp.spring.boot.typingscore.db.ScoreId;
 
 /**
- * Typing Score Bean.
+ * スコア用Bean
  * 
  * @author tejc999999
  *
@@ -24,31 +24,27 @@ import jp.spring.boot.typingscore.db.ScoreId;
 public class ScoreBean {
 
 	/**
-	 * Compound key.
-	 * username and committime(Timestamp).
+	 * 複合主キー
+	 * ユーザ名と登録日時(Timestamp).
 	 * 
 	 */
 	@EmbeddedId
 	private ScoreId id;
 	
 	/**
-	 * input time(second).
+	 * 入力時間（秒）
 	 */
 	private int inputtime;
 	
 	/**
-	 * misstype count;
+	 * ミスタイプ数
 	 */
 	private int misstype;
 	
 	/**
-	 * typing score.
-	 * point = inputtime + (misstype * 2)
+	 * スコア
+	 * 計算方法 = 入力時間 + (ミスタイプ数 * 2)
 	 */
 	private int point;
 	
-//	/**
-//	 * High score flag of the same user name
-//	 */
-//	private boolean highscoreflg = false;
 }
