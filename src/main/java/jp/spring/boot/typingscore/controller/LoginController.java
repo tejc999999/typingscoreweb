@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * Controller class for login.
+ * ログイン用コントローラクラス
  * 
  * @author tejc999999
  *
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LoginController {
 
 	/**
-	 * Display the login screen.
+	 * ログイン画面に遷移する
 	 * 
-	 * @return  Transition destination path
+	 * @return  遷移先ビュー名
 	 */
 	@GetMapping(path = "login")
 	String loginForm() {

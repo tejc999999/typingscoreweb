@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import jp.spring.boot.typingscore.bean.UserBean;
 
 /**
- * Login user Repository.
+ * ユーザ用リポジトリ
  * 
  * @author tejc999999
  *

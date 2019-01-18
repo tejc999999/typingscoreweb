@@ -2,6 +2,7 @@ package jp.spring.boot.typingscore.service;
 
 import java.util.Collection;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -15,7 +16,7 @@ import jp.spring.boot.typingscore.security.LoginUserDetails;
 import jp.spring.boot.typingscore.security.RoleName;
 
 /**
- *  Login user service.
+ *  ログインユーザ用サービス
  *  
  * @author tejc999999
  *
@@ -24,25 +25,31 @@ import jp.spring.boot.typingscore.security.RoleName;
 public class LoginUserDetailsService implements UserDetailsService {
 	
 	/**
-	 * user repository.
+	 * ユーザ用サービス
 	 */
 	@Autowired
 	UserService userService;
 	  
 	/**
-	 * Perform login authentication.
+	 * ログイン認証を行う
 	 * 
-	 * @param username user name.
-	 * @throws UsernameNotFoundException user name not found.
+	 * @param username ログインユーザ名
+	 * @throws UsernameNotFoundException ログインユーザが存在しない場合に発生する
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserBean userbean = new UserBean();
+		BeanUtils.copyProperties(userService.getDBUserForm(username), userbean);
 
-		UserBean userbean = userService.getBean(username);
-		
 		return new LoginUserDetails(userbean, true, true, userbean.isAccountNonLocked(), getAuthorities(userbean));
 	}
-	
+
+	/**
+	 * ログインユーザに該当する認証情報を返す
+	 * 
+	 * @param userbean ログインユーザ情報
+	 * @return 認証情報コレクション
+	 */
 	private Collection<GrantedAuthority> getAuthorities(UserBean userbean) {
 		if(userbean.getRole().equals(RoleName.ROLE_ADMIN.getString())) {
 			return AuthorityUtils.createAuthorityList(RoleName.ROLE_ADMIN.toString());

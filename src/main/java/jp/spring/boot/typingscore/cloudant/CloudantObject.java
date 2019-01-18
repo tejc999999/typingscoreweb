@@ -3,7 +3,7 @@ package jp.spring.boot.typingscore.cloudant;
 import lombok.Data;
 
 /**
- * Cloudant Bean Base Class.
+ * Bean（IBM Cloudant用）の基底クラス
  * 
  * @author tejc999999
  *
@@ -12,12 +12,12 @@ import lombok.Data;
 public class CloudantObject {
 
 	/**
-	 * id.
+	 * 識別情報
 	 */
 	private String _id;
 	
 	/**
-	 * rev.
+	 * 更新情報
 	 */
 	private String _rev;
 }

@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Composite primary key for score
+ * スコア用複合主キー
  * 
  * @author tejc999999
  *
@@ -23,20 +23,19 @@ import lombok.NoArgsConstructor;
 public class ScoreId implements Serializable {
 	
 	/**
-	 * Serial version UID.
+	 * シリアルバージョンUID
 	 */
 	private static final long serialVersionUID = 6790969058470310683L;
 
 	/**
-	 * user name.
+	 * ユーザ名
 	 */
 	@Embedded
 	private String username;
 	
 	/**
-	 * commit time.
+	 * 登録日時
 	 */
-//	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp committime;
 	
 }

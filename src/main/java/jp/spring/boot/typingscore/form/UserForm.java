@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Login user form.
+ * ユーザ用Form
  * 
  * @author tejc999999
  *
@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class UserForm {
 
 	/**
-	 * username.
+	 * ユーザ名
 	 */
 	@NotNull
 	@NotBlank(message = "required input.")
@@ -26,7 +26,7 @@ public class UserForm {
 	private String username;
 	
 	/**
-	 * password.
+	 * パスワード
 	 */
 	@NotNull
 	@NotBlank(message = "required input.")
@@ -34,20 +34,20 @@ public class UserForm {
 	private String password;
 	
 	/**
-	 * Role.
-	 * ROLE_ADMIN or ROLE_USER.
+	 * 権限
+	 * ROLE_ADMINまたはROLE_USER.
 	 */
 	@NotNull
 	@NotBlank(message = "required input.")
 	private String role;
 	
 	/**
-	 * login failure count.
+	 * ログイン失敗回数
 	 */
 	private int loginfailurecnt;
 	
 	/**
-	 * lock flg.
+	 * 非ロック情報
 	 */
 	private boolean accountNonLocked = true;
 }

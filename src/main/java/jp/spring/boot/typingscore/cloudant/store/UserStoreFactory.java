@@ -2,8 +2,8 @@ package jp.spring.boot.typingscore.cloudant.store;
 
 /**
  * 
- * User Store Factory.
- * When another database user, edit this class.
+ * ユーザ用ストアファクトリ
+ * IBM Cloudant以外のNoSQLサービスを利用する場合、個別のストア作成
  * 
  * @author tejc999999
  *
@@ -14,7 +14,7 @@ public class UserStoreFactory {
 
     public static UserStore getInstance() {
     	if(instance == null) {
-        	// When another database use, getDB() write
+        	// 他のデータベースシステムを使用する場合、システムごとに記述を分ける
     		
         	CloudantUserStore cvif = new CloudantUserStore();
             if (cvif.getDB() != null) {

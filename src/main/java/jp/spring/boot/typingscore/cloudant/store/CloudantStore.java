@@ -9,13 +9,16 @@ import com.google.gson.JsonObject;
 
 /**
  * 
- * IBM Cloudans Store Common Base Class.
+ * スコア用ストア（IBM Cloudant用）
  * 
  * @author tejc999999
  *
  */
 public abstract class CloudantStore {
 	
+	/**
+	 * DBオブジェクト
+	 */
     private Database db = null;
     
     /**
@@ -27,13 +30,12 @@ public abstract class CloudantStore {
         
         String url = null;
         if (System.getenv("VCAP_SERVICES") != null) {
-            //case: environments variable VCAP_SERVICES exists.
+            //環境変数VCAP_SERVICESが存在する場合
 
-        	// When running in IBM Cloud, the VCAP_SERVICES env var will have the credentials for all bound/connected services
-            // Parse the VCAP JSON structure looking for cloudant.
+        	// 環境変数VCAP_SERVICES内のバインドされた接続サービス資格情報からJSON構造を解析する
             JsonObject cloudantCredentials = VCAPHelper.getCloudCredentials("cloudant");
             if(cloudantCredentials == null){
-            	// case: environments variable VCAP_SERVICES not contains cloudant
+            	// IBM Cloudant接続用の資格情報が存在しない場合
             	
                 System.out.println("No cloudant database service bound to this application");
                 return null;
@@ -41,37 +43,36 @@ public abstract class CloudantStore {
             // Make the URL information the contents of the environment variable VCAP_SERVICES
             url = cloudantCredentials.get("url").getAsString();
         } else if (System.getenv("CLOUDANT_URL") != null) {
-        	// case: environment variable VCAP_SERVICES does not exist
-        	//         and the environment variable CLOUDANT_URL exists
+        	// 環境変数CLOUDANT_URLが存在する場合
 
-        	// Make the URL information the contents of the environment variable CLOUDANT_URL
+        	// URL情報を環境変数CLOUDANT_URLの値にする
             url = System.getenv("CLOUDANT_URL");
         } else {
-        	// case: Neither environment variable VCAP_ERVICES nor cloudant.url in cloudant.properties exists
+        	// 環境変数VCAP_SERVICES、CLOUDANT_URLの両方が存在しない場合
         	
             System.out.println("Running locally. Looking for credentials in cloudant.properties");
-            // Make URL information cloudant_url contents of cloudant.properties
+            //ファイルcloudant.properties内のcloudant_urlからURL情報を作成する
             try {
             	url = VCAPHelper.getLocalProperties("cloudant.properties").getProperty("cloudant_url");
             } catch(NullPointerException e) {
-            	// Exception handling when property is not set (using different DB)
+            	// プロパティが存在しない場合
             }
             if(url == null || url.length()==0){
-            	// case: cloudant_url did not exist in cloudant.properties
+            	// ファイルcloudant.properties内にcloudant_urlが存在しない場合
                 System.out.println("To use a database, set the Cloudant url in src/main/resources/cloudant.properties");
                 return null;
             }
         }
         
         try {
-        	// Connect cloudant.
+        	// IBM Cloudantに接続する
             System.out.println("Connecting to Cloudant");
             CloudantClient client = ClientBuilder.url(new URL(url)).build();
             
-            // case: For a proxy environment:
-            // ex）proxy url=http://(ip address):(port number)
-            //      Not an authentication proxy、「.proxyUser("auth proxy user id").proxyPassword("auth proxy user password")」is not required.
-//            CloudantClient client = ClientBuilder.url(new URL(url)).proxyURL(new URL("http://(ip address): (port number)")).proxyUser("auth proxy user id").proxyPassword("auth proxy user password").build();
+            // プロキシ環境の場合は以下を設定する
+            // 例）proxy url=http://(IPアドレス):(ポート番号)
+            // 認証プロキシではない場合は「.proxyUser（ "認証プロキシユーザーID"）.proxyPassword（ "認証プロキシユーザーパスワード"）」は必須ではない
+            //  CloudantClient client = ClientBuilder.url(new URL(url)).proxyURL(new URL("http://(IPアドレス): (ポート番号)")).proxyUser("認証プロキシユーザーID").proxyPassword("認証プロキシユーザーパスワード").build();
             return client;
         } catch (Exception e) {
             System.out.println("Unable to connect to database");
@@ -81,18 +82,18 @@ public abstract class CloudantStore {
     }
     
     /**
-     * Get the target db object.
+     * データベースオブジェクトを取得する
      * 
-     * @return Database.
+     * @return データベースオブジェクト
      */
     public Database getDB(){
         return db;
     }
 
     /**
-     * Set the target db object.
+     * データベースオブジェクトを設定する
      * 
-     * @param Database db object.
+     * @param データベースオブジェクト
      */
     public void setDB(Database db) {
     	this.db = db;

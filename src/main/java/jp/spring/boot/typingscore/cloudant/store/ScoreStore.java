@@ -5,7 +5,7 @@ import java.util.Collection;
 import jp.spring.boot.typingscore.cloudant.Score;
 
 /**
- * IBM Cloudant Database connect. Score Data Store.
+ *スコア用ストア（IBM Cloudant用）インターフェース
  * 
  * @author tejc999999
  *
@@ -13,114 +13,100 @@ import jp.spring.boot.typingscore.cloudant.Score;
 public interface ScoreStore {
 
 	/**
-	 * Get the target Score object.
+	 * データベースオブジェクトを取得する
 	 * 
-	 * @return Database.
+	 * @return データベースオブジェクト
 	 * @throws Exception
 	 */
 	public Object getDB();
 
 	/**
-	 * Gets all Scores from the store.
+	 * 全てのスコア情報を取得する
 	 * 
-	 * @return All Scores.
-	 * @throws Exception
+	 * @return 全てのスコアリスト
 	 */
 	public Collection<Score> getAll();
 
-//    /**
-//     * Gets high Score from the store.
-//     * 
-//     * @param username user name.
-//     * @return ScoreBean.
-//     */
-//    public Score findHighScore(String username);
-
-	/**
-	 * Gets high Score List from the store.
-	 * 
-	 * @return ScoreBean List.
-	 */
+    /**
+     * スコア順の各ユーザ最高スコアリストを取得する
+     * 
+     * @return スコア順の各ユーザ最高スコアリスト
+     */
 	public Collection<Score> findHighScoreListOrderByPoint();
 
 	/**
-	 * Get All score order by commit time DESC.
+	 * 登録日時順（降順）に並んだ全てのスコアリストを取得する
 	 * 
-	 * @return All Scores. commit time DESC.
+	 * @return 登録日時順（降順）に並んだ全てのスコアリスト
 	 */
 	public Collection<Score> getAllOrderByCommittime();
 
 	/**
-	 * Get all score order by point ASC.
+	 * スコア順（昇順）に並んだ全てのスコアリストを取得する
 	 * 
-	 * @return All Scores. point ASC.
+	 * @return スコア順（昇順）に並んだ全てのスコアリスト
 	 */
 	public Collection<Score> getAllOrderByPoint();
 
-//    /**
-//     * Find score and overlap username exclusion.
-//     * 
-//     * @return All Scores. exclusion overlap username.
-//     */
-//    public Collection<String> findUsernameOverlap();
-
 	/**
-	 * score registration num of the target user.
+	 * 同一ユーザ名のスコア登録数を取得する
 	 * 
-	 * @param username Acquire the score registration number of the target user.
-	 * @return All Scores. exclusion overlap username.
+	 * @param username 対象ユーザ名
+	 * @return 同一ユーザ名の登録数
 	 */
 	public int findByUsernameOverlapCnt(String username);
 
-	/**
-	 * Get all score of target user name.
-	 * 
-	 * @param username user name.
-	 * @return All Scores of target username.
-	 */
+    /**
+     * 対象ユーザの全スコアを取得する
+     * 
+     * @param username 対象ユーザ名
+     * @return 対象ユーザの全スコアリスト
+     */
 	public Collection<Score> findByUsername(String username);
 
 	/**
-	 * Gets an individual Score from the store.
+	 * スコア情報を取得する
 	 * 
-	 * @param id The ID of the Score to get.
-	 * @return The Score.
+	 * @param id 対象スコアID
+	 * @return スコアBean
 	 */
 	public Score get(String id);
 
 	/**
-	 * Persists a Score to the store.
+	 * スコアを登録する
 	 * 
-	 * @param score The Score to persist.
-	 * @return The persisted Score. The Score will not have a unique ID..
+	 * @param score 登録スコアBean
+	 * @return 登録後スコアBean
 	 */
 	public Score persist(Score score);
 
 	/**
-	 * Updates a Score in the store.
+	 * スコアを更新する
 	 * 
-	 * @param id    The ID of the Score to update.
-	 * @param score The Visitor with updated information.
-	 * @return The updated Score.
+	 * @param id 更新対象スコアID
+	 * @param score 更新スコアBean
+	 * @return 更新後スコアBean
 	 */
 	public Score update(String id, Score score);
 
 	/**
-	 * Deletes a Score from the store.
+	 * スコアを削除する
 	 * 
-	 * @param id delete score id.
+	 * @param id 対象スコアID
 	 */
 	public void delete(String id);
 
 	/**
-	 * Count score data.
+	 * 全てのスコア数を取得する
 	 * 
-	 * @return Score count.
+	 * @return 全てのスコア数
 	 */
 	public int count() throws Exception;
 
 	/**
-	 * init process. index create.
+	 * 初期化処理
+	 * インデックスを作成する
+	 * 
 	 */
 	public void init();
 }

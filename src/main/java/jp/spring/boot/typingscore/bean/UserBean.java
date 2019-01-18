@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Login User Bean.
+ * ユーザ用Bean
  * 
  * @author tejc999999
  *
@@ -24,35 +24,35 @@ import lombok.NoArgsConstructor;
 public class UserBean {
 
 	/**
-	 * username.
-	 * primary key.
+	 * ユーザ名
+	 * 主キー
 	 */
 	@Id
 	private String username;
 
 	/**
-	 * password.
+	 * パスワード
 	 * 
 	 */
 	@JsonIgnore
 	private String password;
 	
 	/**
-	 * login failure count.
+	 * ログイン失敗回数
 	 * 
 	 */
 	@JsonIgnore
 	private int loginfailurecnt;
 
 	/**
-	 * lock flg.
+	 * 非ロック情報
 	 */
 	private boolean accountNonLocked = true;
 	
 	/**
-	 * role.
+	 * 権限
 	 * 
-	 * ROLE_ADMIN or ROLE_USER.
+	 * ROLE_ADMINまたはROLE_USER.
 	 */
 	private String role;
 

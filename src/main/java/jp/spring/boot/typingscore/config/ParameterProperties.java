@@ -3,7 +3,7 @@ package jp.spring.boot.typingscore.config;
 import lombok.Data;
 
 /**
- * Hold application settings.
+ * プロパティファイル設定値
  * 
  * @author tejc999999
  *
@@ -12,14 +12,14 @@ import lombok.Data;
 public class ParameterProperties {
 
 	/**
-	 * Login failure count threshold.
+	 * ログイン失敗閾値
 	 */
     private int loginAttemptsThreshold;
     
     /**
-     * constructor.
+     * コンストラクタ
      * 
-     * @param loginAttemptsThreshold Login failure count threshold.
+     * @param ログイン失敗閾値
      */
     public ParameterProperties(int loginAttemptsThreshold) {
     	this.loginAttemptsThreshold = loginAttemptsThreshold;
