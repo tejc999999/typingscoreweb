@@ -45,7 +45,7 @@ public interface ScoreRepository extends JpaRepository<ScoreBean, ScoreId> {
 	 * 
 	 * @return number of specified user name
 	 */
-	@Query(value = "select COUNT(s.id.username) from ScoreBean s where s.id.username = :username")
+	@Query(value = "select COUNT(*)  from ScoreBean s where s.id.username = :username")
 	int findUsernameOverlapCnt(String username);
 	
 	

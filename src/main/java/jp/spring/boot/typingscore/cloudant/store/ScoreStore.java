@@ -55,7 +55,7 @@ public interface ScoreStore {
 	 * 
 	 * @return All Scores. point ASC.
 	 */
-	public Collection<Score> getAllOrderByScore();
+	public Collection<Score> getAllOrderByPoint();
 
 //    /**
 //     * Find score and overlap username exclusion.

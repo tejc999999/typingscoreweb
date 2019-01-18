@@ -93,7 +93,7 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	 * 
 	 * @return All Scores. point ASC.
 	 */
-	public Collection<Score> getAllOrderByScore() {
+	public Collection<Score> getAllOrderByPoint() {
 		List<Score> docs;
 
 		String selectorJson = "\"selector\": {  }";
@@ -283,6 +283,7 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	 * @param id delete score id.
 	 */
 	public void delete(String id) {
+		System.out.println("DEBUG:" + id);
 		Score score = getDB().find(Score.class, id);
 		try {
 			getDB().remove(id, score.get_rev());
