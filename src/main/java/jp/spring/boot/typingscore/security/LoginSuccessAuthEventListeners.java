@@ -66,11 +66,8 @@ public class LoginSuccessAuthEventListeners {
 	 */
 	private void recordLoginFailureCntClear(String username) {
 		UserForm userForm = null;
-		try {
 			
-			userForm = userService.getDBUserForm(username);
-		} catch(UsernameNotFoundException e) {
-		}
+		userForm = userService.getDBUserForm(username);
 
 		if(userForm != null) {
 			

@@ -53,11 +53,7 @@ public class UserService {
 			
 			UserStore userStore = UserStoreFactory.getInstance();
 			User existUser = null;
-			try {
-				existUser = userStore.get(userForm.getUsername());
-			} catch(NoDocumentException e) {
-				// ユーザが存在しない場合
-			}
+			existUser = userStore.get(userForm.getUsername());
 			if(existUser == null) {
 				User user = new User();
 				user.set_id(userBean.getUsername());
@@ -97,11 +93,7 @@ public class UserService {
 
 			UserStore userStore = UserStoreFactory.getInstance();
 			User existUser = null;
-			try {
-				existUser = userStore.get(userForm.getUsername());
-			} catch(NoDocumentException e) {
-				// ユーザが存在しない場合
-			}
+			existUser = userStore.get(userForm.getUsername());
 			if(existUser == null) {
 				User user = new User();
 				user.set_id(userBean.getUsername());
@@ -149,18 +141,14 @@ public class UserService {
 	 * 
 	 * @param username 対象ユーザ名
 	 */
-	public UserForm getDBUserForm(String username) throws UsernameNotFoundException {
+	public UserForm getDBUserForm(String username)  {
 		UserForm userForm = null;
 		if(VCAPHelper.VCAP_SERVICES  != null) {
 			// DBがIBM Cloudの場合
 
 			UserStore userStore = UserStoreFactory.getInstance();
 			User user = null;
-			try {
-				user = userStore.get(username);
-			} catch(NoDocumentException e) {
-				throw new UsernameNotFoundException("The requested user is not found.");
-			}
+			user = userStore.get(username);
 			if(user != null) {
 				userForm = new UserForm();
 				BeanUtils.copyProperties(user, userForm);
@@ -191,11 +179,7 @@ public class UserService {
 
 			UserStore userStore = UserStoreFactory.getInstance();
 			User existUser = null;
-			try {
-				existUser = userStore.get(userForm.getUsername());
-			} catch(NoDocumentException e) {
-				// ユーザが存在しない場合
-			}
+			existUser = userStore.get(userForm.getUsername());
 			if(existUser == null) {
 				User user = new User();
 				BeanUtils.copyProperties(userForm, user);

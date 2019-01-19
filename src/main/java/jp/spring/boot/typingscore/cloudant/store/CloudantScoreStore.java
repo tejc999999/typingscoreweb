@@ -9,7 +9,6 @@ import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.model.FindByIndexOptions;
 import com.cloudant.client.api.model.IndexField;
 import com.cloudant.client.api.model.IndexField.SortOrder;
-import com.cloudant.client.api.views.Key;
 import com.cloudant.client.org.lightcouch.NoDocumentException;
 
 
@@ -195,7 +194,14 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	 * @return スコアBean
 	 */
 	public Score get(String id) {
-		return getDB().find(Score.class, id);
+		Score score = null;
+		try {
+			score = getDB().find(Score.class, id);
+		} catch(NoDocumentException e) {
+			score = null;
+			e.printStackTrace();
+		}
+		return score;
 	}
 
 	/**
@@ -205,8 +211,15 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	 * @return 登録後スコアBean
 	 */
 	public Score persist(Score score) {
-		String id = getDB().save(score).getId();
-		return getDB().find(Score.class, id);
+		Score persistScore = null;
+		try {
+			String id = getDB().save(score).getId();
+			persistScore = getDB().find(Score.class, id);
+		} catch(NoDocumentException e) {
+			persistScore = null;
+			e.printStackTrace();
+		}
+		return persistScore;
 	}
 
 	/**
@@ -220,20 +233,20 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 		Score score = null;
 		try {
 			score = getDB().find(Score.class, id);
+			score.setUsername(newScore.getUsername());
+			score.setInputtime(newScore.getInputtime());
+			score.setMisstype(newScore.getMisstype());
+			score.setPoint(newScore.getPoint());
+			score.setCommittime(newScore.getCommittime());
+//			score.setHighscoreflg(newScore.isHighscoreflg());
+			getDB().update(score);
+			score = getDB().find(Score.class, id);
 		} catch (NoDocumentException e) {
-			// case: Score data not exists.
+			// スコアが存在しない場合
+			score = null;
 			e.printStackTrace();
-			return null;
 		}
-		score.setUsername(newScore.getUsername());
-		score.setInputtime(newScore.getInputtime());
-		score.setMisstype(newScore.getMisstype());
-		score.setPoint(newScore.getPoint());
-		score.setCommittime(newScore.getCommittime());
-//		score.setHighscoreflg(newScore.isHighscoreflg());
-		getDB().update(score);
-		
-		return getDB().find(Score.class, id);
+		return score;
 	}
 
 	/**
@@ -257,7 +270,7 @@ public class CloudantScoreStore extends CloudantStore implements ScoreStore {
 	 * 
 	 * @return 全てのスコア数
 	 */
-	public int count() throws Exception {
+	public int count()  {
 		return getAll().size();
 	}
 }

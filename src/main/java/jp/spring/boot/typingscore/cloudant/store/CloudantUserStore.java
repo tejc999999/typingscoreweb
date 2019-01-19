@@ -58,8 +58,14 @@ public class CloudantUserStore extends CloudantStore implements UserStore {
      * @param 対象ユーザID
      * @return ユーザ情報
      */
-    public User get(String id) throws NoDocumentException {    	
-        return getDB().find(User.class, id);
+    public User get(String id)  { 
+    	User user = null;
+    	try {
+    		user =  getDB().find(User.class, id);
+    	} catch(NoDocumentException e) {
+    		e.printStackTrace();
+    	}
+		return user;
     }
 
     /**
@@ -69,8 +75,15 @@ public class CloudantUserStore extends CloudantStore implements UserStore {
      * @return 登録ユーザBean
      */
     public User persist(User user) {
-        String id = getDB().save(user).getId();
-        return getDB().find(User.class, id);
+    	User persistUser = null;
+    	try {
+	        String id = getDB().save(user).getId();
+	        persistUser = getDB().find(User.class, id);
+    	} catch(NoDocumentException e) {
+    		persistUser = null;
+    		e.printStackTrace();
+    	}
+        return persistUser;
     }
 
     /**
@@ -81,25 +94,36 @@ public class CloudantUserStore extends CloudantStore implements UserStore {
      * @return 更新ユーザBean
      */
     public User update(String id, User newUser) {
-    	User user = getDB().find(User.class, id);
-    	user.setUsername(newUser.getUsername());
-    	user.setPassword(newUser.getPassword());
-    	user.setLoginfailurecnt(newUser.getLoginfailurecnt());
-    	user.setAccountNonLocked(newUser.isAccountNonLocked());
-    	user.setRole(newUser.getRole());
-    	getDB().update(user);
-        return getDB().find(User.class, id);
-
+    	User user = null;
+    	try {
+	    	user = getDB().find(User.class, id);
+	    	user.setUsername(newUser.getUsername());
+	    	user.setPassword(newUser.getPassword());
+	    	user.setLoginfailurecnt(newUser.getLoginfailurecnt());
+	    	user.setAccountNonLocked(newUser.isAccountNonLocked());
+	    	user.setRole(newUser.getRole());
+	    	getDB().update(user);
+	    	user = getDB().find(User.class, id);
+    	} catch(NoDocumentException e) {
+    		user = null;
+    		e.printStackTrace();
+    	}
+        return user;
     }
 
     /**
      * ユーザ情報を削除する
      * 
      * @param id 削除対象ユーザID
+     * @throws Exception 
      */
-    public void delete(String id) {
-        User user = getDB().find(User.class, id);
-        getDB().remove(id, user.get_rev());
+    public void delete(String id)  {
+    	try {
+    		User user = getDB().find(User.class, id);
+    		getDB().remove(id, user.get_rev());
+    	} catch(NoDocumentException e) {
+    		e.printStackTrace();
+    	}
     }
 
     /**
@@ -107,7 +131,7 @@ public class CloudantUserStore extends CloudantStore implements UserStore {
      * 
      * @return ユーザ数
      */
-    public int count() throws Exception {
+    public int count()  {
         return getAll().size();
     }
 }
