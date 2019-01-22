@@ -164,14 +164,17 @@ public class ScoreController {
 
 		ScoreResultForm scoreResultForm = new ScoreResultForm();
 		BeanUtils.copyProperties(createScoreForm, scoreResultForm);
-
+		// 描画用入力時間文字列を設定する
+        String minunitstr = this.messageSource.getMessage("html.scores.view.rank.inputtime.unitmin", null, LocaleContextHolder.getLocale());
+        String secunitstr = this.messageSource.getMessage("html.scores.view.rank.inputtime.unitsec", null, LocaleContextHolder.getLocale());
+		scoreResultForm.setInputtimeView(scoreResultForm.getInputtimeMin() + " " + minunitstr + "  " + scoreResultForm.getInputtimeSec() + " " + secunitstr);
+		
 		scoreResultForm.setTryCnt(tryCnt);
 		scoreResultForm.setRank(rank);
 		scoreResultForm.setMaxRank(maxRank);
 		scoreResultForm.setRankNum(rankNum);
 		scoreResultForm.setMaxPoint(maxPoint);
-		scoreResultForm.setMaxInputtimeMin(maxInputTimeMin);
-		scoreResultForm.setMaxInputtimeSec(maxInputTimeSec);
+		scoreResultForm.setMaxInputtimeView(maxInputTimeMin + " " + minunitstr + "  " + maxInputTimeSec + " " + secunitstr);
 		scoreResultForm.setMaxMisstype(maxMissType);
 		
 		model.addAttribute("resultform", scoreResultForm);

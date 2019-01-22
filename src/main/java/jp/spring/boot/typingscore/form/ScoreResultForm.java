@@ -41,14 +41,9 @@ public class ScoreResultForm extends ScoreForm {
 	private int maxMisstype;
 	
 	/**
-	 * 最高ポイント時入力時間（分）
+	 * 最高ポイント時入力時間（表示用）
 	 */
-	private int maxInputtimeMin;
-	
-	/**
-	 * 最高ポイント時入力時間（秒）
-	 */
-	private int maxInputtimeSec;
+	private String maxInputtimeView;
 
 	/**
 	 * 合計ランキング者数
