@@ -29,8 +29,9 @@ $(function() {
                   { data: "rank" },
                   { data: "username" },
                   { data: "point" },
-                  { data: "inputtimeMin" },
-                  { data: "inputtimeSec" },
+                  { data: "inputtimeView" },
+//                  { data: "inputtimeMin" },
+//                  { data: "inputtimeSec" },
                   { data: "misstype" },
                   { data: "blank" },
               ],
@@ -47,23 +48,23 @@ $(function() {
 // ],
               "createdRow": function(row, data, dataIndex) {
             	  $(row).find("td").eq(0).addClass('iconcell');
-            	  $(row).find("td").eq(7).addClass('iconcell');
+            	  $(row).find("td").eq(6).addClass('iconcell');
             	  if(dataIndex == 0) {
                 	  $(row).find("td").eq(1).addClass('numalign borderTopNone rank');
 // $(row).find("td").eq(2).addClass('stralign borderTopNone
 // rank').text(escapeHtml($(row).find("td").eq(2).children().prop("outerHTML")));
                 	  $(row).find("td").eq(2).addClass('stralign borderTopNone rank').text(escapeHtml($(row).find("td").eq(2).prop("innerHTML")));
                 	  $(row).find("td").eq(3).addClass('numalign borderTopNone score');
-                	  $(row).find("td").eq(4).addClass('numalign borderTopNone score-time-min');
-                	  $(row).find("td").eq(5).addClass('numalign borderTopNone score-time-sec');
-                	  $(row).find("td").eq(6).addClass('numalign borderTopNone score-miss');
+                	  $(row).find("td").eq(4).addClass('numalign borderTopNone score-time-view');
+//                	  $(row).find("td").eq(5).addClass('numalign borderTopNone score-time-sec');
+                	  $(row).find("td").eq(5).addClass('numalign borderTopNone score-miss');
             	  } else {
                 	  $(row).find("td").eq(1).addClass('numalign rank');
                 	  $(row).find("td").eq(2).addClass('stralign rank');
                 	  $(row).find("td").eq(3).addClass('numalign score');
-                	  $(row).find("td").eq(4).addClass('numalign score-time-min');
-                	  $(row).find("td").eq(5).addClass('numalign score-time-sec');
-                	  $(row).find("td").eq(6).addClass('numalign score-miss');
+                	  $(row).find("td").eq(4).addClass('numalign score-time-view');
+//                	  $(row).find("td").eq(5).addClass('numalign score-time-sec');
+                	  $(row).find("td").eq(5).addClass('numalign score-miss');
             	  }
               }
           });

@@ -30,9 +30,8 @@ td, th {
 }
 
 .viewarea {
-	flex: 1 1 auto;
-	margin: 5px;
-	margin-top: 0px;
+	flex: 0 0 560px;
+	margin: 0px 5px 5px 5px;
 }
 
 .rankarea {
@@ -52,17 +51,22 @@ td, th {
     font-size: 20px;
     padding-bottom: 0px;
 }
+/*
 .score::before {
 	content: "score:";
 }
+*/
+/*
 .score-time-min {
     vertical-align: bottom;
     font-size: 14px;
     padding-bottom: 0px;
 }
+
 .score-time-min::before {
 	content: "input:";
 }
+
 .score-time-min::after {
 	content: "(min)";
 }
@@ -74,14 +78,27 @@ td, th {
 .score-time-sec::after {
 	content: "(sec)";
 }
+*/
+.score-time-view {
+    vertical-align: bottom;
+    font-size: 14px;
+    padding-bottom: 0px;
+}
+/*
+.score-time-view::before {
+	content: "input:";
+}
+*/
 .score-miss {
     vertical-align: bottom;
     font-size: 14px;
     padding-bottom: 0px;
 }
+/*
 .score-miss::before {
 	content: "miss:";
 }
+*/
 .rank {
     font-weight: bold;
     background:linear-gradient(180deg,#330867 0%,#1E00FF 70%,black 70%,black 100%);
@@ -96,6 +113,7 @@ td, th {
 
 .numalign {
 	text-align: right;
+	align: right;
 }
 
 .stralign {
@@ -103,6 +121,25 @@ td, th {
 }
 .borderTopNone {
 	border-top: none;
+}
+
+.td-icon {
+	width: 50px;
+}
+.td-rank {
+	width: 50px;
+}
+.td-username {
+	width: 420px;
+}
+.td-score {
+	width: 140px;
+}
+.td-inputtime {
+	width: 280px;
+}
+.td-misstype {
+	width: 140px;
 }
 
 /* comment */

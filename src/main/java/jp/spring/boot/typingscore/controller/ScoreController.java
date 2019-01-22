@@ -11,6 +11,8 @@ import java.util.List;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +30,7 @@ import jp.spring.boot.typingscore.db.ScoreId;
 import jp.spring.boot.typingscore.form.ScoreForm;
 import jp.spring.boot.typingscore.form.ScoreRankForm;
 import jp.spring.boot.typingscore.form.ScoreResultForm;
+import jp.spring.boot.typingscore.security.RoleName;
 import jp.spring.boot.typingscore.service.ScoreService;
 
 /**
@@ -45,6 +48,12 @@ public class ScoreController {
 	 */
 	@Autowired
 	ScoreService scoreService;
+	
+	/**
+	 * 多言語対応用メッセージソース
+	 */
+	@Autowired
+	MessageSource  messageSource ;
 
 	/**
 	 * モデルを初期化する
@@ -231,6 +240,12 @@ public class ScoreController {
 				rankForm.setBlank("");
 			}
 
+			// 描画用入力時間文字列を設定する
+	        String minunitstr = this.messageSource.getMessage("html.scores.view.rank.inputtime.unitmin", null, LocaleContextHolder.getLocale());
+	        String secunitstr = this.messageSource.getMessage("html.scores.view.rank.inputtime.unitsec", null, LocaleContextHolder.getLocale());
+
+			rankForm.setInputtimeView(rankForm.getInputtimeMin() + " " + minunitstr + "  " + rankForm.getInputtimeSec() + " " + secunitstr);
+			
 			rankList.add(rankForm);
 		}
 

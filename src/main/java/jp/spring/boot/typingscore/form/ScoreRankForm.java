@@ -2,7 +2,9 @@ package jp.spring.boot.typingscore.form;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
 
 /**
  * スコアランク用Form
@@ -25,4 +27,10 @@ public class ScoreRankForm extends ScoreForm {
 	 * アイコン描画用HTML
 	 */
 	private String blank;
+	
+	/**
+	 * 描画用入力時間
+	 */
+	private String inputtimeView;
+
 }
