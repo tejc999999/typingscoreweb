@@ -101,8 +101,10 @@ public class ScoreController {
 		int tryCnt = scoreService.findUsernameOverlapCnt(createScoreForm.getUsername());
 		// 最高スコア
 		int maxPoint = highScoreForm.getPoint();
-		// 最高スコアの入力時間
-		int maxInputTime = highScoreForm.getInputtime();
+		// 最高スコアの入力時間（分）
+		int maxInputTimeMin = highScoreForm.getInputtimeMin();
+		// 最高スコアの入力時間（秒）
+		int maxInputTimeSec = highScoreForm.getInputtimeSec();
 		// 最高スコアのミスタイプ数
 		int maxMissType = highScoreForm.getMisstype();
 
@@ -159,7 +161,8 @@ public class ScoreController {
 		scoreResultForm.setMaxRank(maxRank);
 		scoreResultForm.setRankNum(rankNum);
 		scoreResultForm.setMaxPoint(maxPoint);
-		scoreResultForm.setMaxInputtime(maxInputTime);
+		scoreResultForm.setMaxInputtimeMin(maxInputTimeMin);
+		scoreResultForm.setMaxInputtimeSec(maxInputTimeSec);
 		scoreResultForm.setMaxMisstype(maxMissType);
 		
 		model.addAttribute("resultform", scoreResultForm);

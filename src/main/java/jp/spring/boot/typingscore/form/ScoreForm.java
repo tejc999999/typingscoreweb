@@ -33,12 +33,18 @@ public class ScoreForm {
 	private String username;
 	
 	/**
+	 * 入力時間（分）
+	 */
+	@JsonProperty("inputTimeMin")
+	@Min(value = 0, message = "can not enter {value} or less.")
+	private int inputtimeMin;
+	
+	/**
 	 * 入力時間（秒）
 	 */
-	@JsonProperty("inputTime")
+	@JsonProperty("inputTimeSec")
 	@Min(value = 0, message = "can not enter {value} or less.")
-	@NotNull
-	private int inputtime;
+	private int inputtimeSec;
 	
 	/**
 	 * ミスタイプ数

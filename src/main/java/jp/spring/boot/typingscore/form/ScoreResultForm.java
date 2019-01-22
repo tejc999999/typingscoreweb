@@ -1,8 +1,7 @@
 package jp.spring.boot.typingscore.form;
 
-import java.util.Date;
-
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -12,36 +11,9 @@ import lombok.NoArgsConstructor;
  *
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
-public class ScoreResultForm {
-
-	/**
-	 * ユーザ名
-	 * 複合主キーの一部
-	 */
-	private String username;
-
-	/**
-	 * 入力時間（秒）
-	 */
-	private int inputtime;
-
-	/**
-	 * ミスタイプ数
-	 */
-	private int misstype;
-
-	/**
-	 * スコア
-	 * 計算方法 = 入力時間 + (ミスタイプ数×2)
-	 */
-	private int point;
-
-	/**
-	 * 登録日時
-	 * 複合主キーの一部
-	 */
-	private Date committime;
+public class ScoreResultForm extends ScoreForm {
 
 	/**
 	 * 挑戦回数
@@ -69,9 +41,14 @@ public class ScoreResultForm {
 	private int maxMisstype;
 	
 	/**
-	 * 最高ポイント時入力時間
+	 * 最高ポイント時入力時間（分）
 	 */
-	private int maxInputtime;
+	private int maxInputtimeMin;
+	
+	/**
+	 * 最高ポイント時入力時間（秒）
+	 */
+	private int maxInputtimeSec;
 
 	/**
 	 * 合計ランキング者数

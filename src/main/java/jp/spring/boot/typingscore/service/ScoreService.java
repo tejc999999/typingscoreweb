@@ -62,11 +62,11 @@ public class ScoreService {
 			} else {
 				score.setCommittime(scoreForm.getCommittime());
 			}
-			score.setInputtime(scoreForm.getInputtime());
+			score.setInputtime((scoreForm.getInputtimeMin() * 60) + scoreForm.getInputtimeSec());
 			score.setMisstype(scoreForm.getMisstype());
 
 			// スコア＝入力時間＋（ミスタイプ数×２）
-			score.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
+			score.setPoint((scoreForm.getInputtimeMin() * 60) + scoreForm.getInputtimeSec() + (scoreForm.getMisstype() * 2));
 
 			scoreStore.persist(score);
 
@@ -91,11 +91,11 @@ public class ScoreService {
 			// 複合主キーを設定
 			scoreBean.setId(scoreId);
 
-			scoreBean.setInputtime(scoreForm.getInputtime());
+			scoreBean.setInputtime((scoreForm.getInputtimeMin() * 60) + scoreForm.getInputtimeSec());
 			scoreBean.setMisstype(scoreForm.getMisstype());
 
 			// スコア＝入力時間＋（ミスタイプ数×２）
-			scoreBean.setPoint(scoreForm.getInputtime() + (scoreForm.getMisstype() * 2));
+			scoreBean.setPoint((scoreForm.getInputtimeMin() * 60) + scoreForm.getInputtimeSec() + (scoreForm.getMisstype() * 2));
 			scoreBean = scoreRepository.save(scoreBean);
 
 			scoreForm.setCommittime(scoreBean.getId().getCommittime());
@@ -129,11 +129,11 @@ public class ScoreService {
 			score.setUsername(newScoreForm.getUsername());
 			score.setCommittime(newScoreForm.getCommittime());
 
-			score.setInputtime(newScoreForm.getInputtime());
+			score.setInputtime((newScoreForm.getInputtimeMin() * 60) + newScoreForm.getInputtimeSec());
 			score.setMisstype(newScoreForm.getMisstype());
 
 			// スコア＝入力時間＋（ミスタイプ数×２）
-			score.setPoint(newScoreForm.getInputtime() + (newScoreForm.getMisstype() * 2));
+			score.setPoint((newScoreForm.getInputtimeMin() * 60) + newScoreForm.getInputtimeSec() + (newScoreForm.getMisstype() * 2));
 
 			if (!oldUserName.equals(newScoreForm.getUsername())) {
 				scoreStore.persist(score);
@@ -164,11 +164,11 @@ public class ScoreService {
 			// 複合主キーを登録
 			scoreBean.setId(scoreId);
 
-			scoreBean.setInputtime(newScoreForm.getInputtime());
+			scoreBean.setInputtime((newScoreForm.getInputtimeMin() * 60) + newScoreForm.getInputtimeSec());
 			scoreBean.setMisstype(newScoreForm.getMisstype());
 
 			// スコア＝入力時間＋（ミスタイプ数×２）
-			scoreBean.setPoint(newScoreForm.getInputtime() + (newScoreForm.getMisstype() * 2));
+			scoreBean.setPoint((newScoreForm.getInputtimeMin() * 60) + newScoreForm.getInputtimeSec() + (newScoreForm.getMisstype() * 2));
 
 			scoreRepository.save(scoreBean);
 		}
@@ -194,15 +194,17 @@ public class ScoreService {
 
 			form.setUsername(score.getUsername());
 			form.setCommittime(score.getCommittime());
-			form.setInputtime(score.getInputtime());
-			form.setMisstype(score.getMisstype());
-			form.setPoint(score.getPoint());
+			form.setInputtimeMin(score.getInputtime() / 60);
+			form.setInputtimeSec(score.getInputtime() % 60);
+			BeanUtils.copyProperties(score, form);
 		} else {
 			// DBがH2データベースの場合
 			Optional<ScoreBean> opt = scoreRepository.findById(id);
 			opt.ifPresent(scoreBean -> {
 				form.setUsername(scoreBean.getId().getUsername());
 				form.setCommittime(scoreBean.getId().getCommittime());
+				form.setInputtimeMin(scoreBean.getInputtime() / 60);
+				form.setInputtimeSec(scoreBean.getInputtime() % 60);
 				BeanUtils.copyProperties(scoreBean, form);
 			});
 		}
@@ -228,9 +230,9 @@ public class ScoreService {
 				ScoreForm scoreForm = new ScoreForm();
 				scoreForm.setUsername(score.getUsername());
 				scoreForm.setCommittime(score.getCommittime());
-				scoreForm.setInputtime(score.getInputtime());
-				scoreForm.setMisstype(score.getMisstype());
-				scoreForm.setPoint(score.getPoint());
+				scoreForm.setInputtimeMin(score.getInputtime() / 60);
+				scoreForm.setInputtimeSec(score.getInputtime() % 60);
+				BeanUtils.copyProperties(score, scoreForm);
 				formList.add(scoreForm);
 			}
 		} else {
@@ -240,6 +242,8 @@ public class ScoreService {
 				ScoreForm scoreForm = new ScoreForm();
 				scoreForm.setUsername(scoreBean.getId().getUsername());
 				scoreForm.setCommittime(scoreBean.getId().getCommittime());
+				scoreForm.setInputtimeMin(scoreBean.getInputtime() / 60);
+				scoreForm.setInputtimeSec(scoreBean.getInputtime() % 60);
 				BeanUtils.copyProperties(scoreBean, scoreForm);
 				formList.add(scoreForm);
 			}
@@ -265,9 +269,9 @@ public class ScoreService {
 				ScoreForm scoreForm = new ScoreForm();
 				scoreForm.setUsername(score.getUsername());
 				scoreForm.setCommittime(score.getCommittime());
-				scoreForm.setInputtime(score.getInputtime());
-				scoreForm.setMisstype(score.getMisstype());
-				scoreForm.setPoint(score.getPoint());
+				scoreForm.setInputtimeMin(score.getInputtime() / 60);
+				scoreForm.setInputtimeSec(score.getInputtime() % 60);
+				BeanUtils.copyProperties(score, scoreForm);
 				formList.add(scoreForm);
 			}
 
@@ -278,6 +282,8 @@ public class ScoreService {
 				ScoreForm scoreForm = new ScoreForm();
 				scoreForm.setUsername(scoreBean.getId().getUsername());
 				scoreForm.setCommittime(scoreBean.getId().getCommittime());
+				scoreForm.setInputtimeMin(scoreBean.getInputtime() / 60);
+				scoreForm.setInputtimeSec(scoreBean.getInputtime() % 60);
 				BeanUtils.copyProperties(scoreBean, scoreForm);
 				formList.add(scoreForm);
 			}
@@ -302,9 +308,9 @@ public class ScoreService {
 				ScoreForm scoreForm = new ScoreForm();
 				scoreForm.setUsername(score.getUsername());
 				scoreForm.setCommittime(score.getCommittime());
-				scoreForm.setInputtime(score.getInputtime());
-				scoreForm.setMisstype(score.getMisstype());
-				scoreForm.setPoint(score.getPoint());
+				scoreForm.setInputtimeMin(score.getInputtime() / 60);
+				scoreForm.setInputtimeSec(score.getInputtime() % 60);
+				BeanUtils.copyProperties(score, scoreForm);
 				formList.add(scoreForm);
 			}
 		} else {
@@ -314,6 +320,8 @@ public class ScoreService {
 				ScoreForm scoreForm = new ScoreForm();
 				scoreForm.setUsername(scoreBean.getId().getUsername());
 				scoreForm.setCommittime(scoreBean.getId().getCommittime());
+				scoreForm.setInputtimeMin(scoreBean.getInputtime() / 60);
+				scoreForm.setInputtimeSec(scoreBean.getInputtime() % 60);
 				BeanUtils.copyProperties(scoreBean, scoreForm);
 				formList.add(scoreForm);
 			}
@@ -368,9 +376,9 @@ public class ScoreService {
 			if (highScore != null) {
 				highScoreForm.setUsername(highScore.getUsername());
 				highScoreForm.setCommittime(highScore.getCommittime());
-				highScoreForm.setInputtime(highScore.getInputtime());
-				highScoreForm.setMisstype(highScore.getMisstype());
-				highScoreForm.setPoint(highScore.getPoint());
+				highScoreForm.setInputtimeMin(highScore.getInputtime() / 60);
+				highScoreForm.setInputtimeSec(highScore.getInputtime() % 60);
+				BeanUtils.copyProperties(highScore, highScoreForm);
 			}
 		} else {
 			// DBがH2データベースの場合
@@ -386,6 +394,8 @@ public class ScoreService {
 			if (highScoreBean != null) {
 				highScoreForm.setUsername(highScoreBean.getId().getUsername());
 				highScoreForm.setCommittime(highScoreBean.getId().getCommittime());
+				highScoreForm.setInputtimeMin(highScoreBean.getInputtime() / 60);
+				highScoreForm.setInputtimeSec(highScoreBean.getInputtime() % 60);
 				BeanUtils.copyProperties(highScoreBean, highScoreForm);
 			}
 		}
@@ -412,20 +422,18 @@ public class ScoreService {
 						ScoreForm scoreForm = new ScoreForm();
 						scoreForm.setUsername(score.getUsername());
 						scoreForm.setCommittime(score.getCommittime());
-						scoreForm.setInputtime(score.getInputtime());
-						scoreForm.setMisstype(score.getMisstype());
-						scoreForm.setPoint(score.getPoint());
-
+						scoreForm.setInputtimeMin(score.getInputtime() / 60);
+						scoreForm.setInputtimeSec(score.getInputtime() % 60);
+						BeanUtils.copyProperties(score, scoreForm);
 						formMap.put(scoreForm.getUsername(), scoreForm);
 					}
 				} else {
 					ScoreForm scoreForm = new ScoreForm();
 					scoreForm.setUsername(score.getUsername());
 					scoreForm.setCommittime(score.getCommittime());
-					scoreForm.setInputtime(score.getInputtime());
-					scoreForm.setMisstype(score.getMisstype());
-					scoreForm.setPoint(score.getPoint());
-
+					scoreForm.setInputtimeMin(score.getInputtime() / 60);
+					scoreForm.setInputtimeSec(score.getInputtime() % 60);
+					BeanUtils.copyProperties(score, scoreForm);
 					formMap.put(scoreForm.getUsername(), scoreForm);
 				}
 			}
@@ -439,6 +447,8 @@ public class ScoreService {
 						ScoreForm scoreForm = new ScoreForm();
 						scoreForm.setUsername(scoreBean.getId().getUsername());
 						scoreForm.setCommittime(scoreBean.getId().getCommittime());
+						scoreForm.setInputtimeMin(scoreBean.getInputtime() / 60);
+						scoreForm.setInputtimeSec(scoreBean.getInputtime() % 60);
 						BeanUtils.copyProperties(scoreBean, scoreForm);
 						formMap.put(scoreForm.getUsername(), scoreForm);
 					}
@@ -446,6 +456,8 @@ public class ScoreService {
 					ScoreForm scoreForm = new ScoreForm();
 					scoreForm.setUsername(scoreBean.getId().getUsername());
 					scoreForm.setCommittime(scoreBean.getId().getCommittime());
+					scoreForm.setInputtimeMin(scoreBean.getInputtime() / 60);
+					scoreForm.setInputtimeSec(scoreBean.getInputtime() % 60);
 					BeanUtils.copyProperties(scoreBean, scoreForm);
 					formMap.put(scoreForm.getUsername(), scoreForm);
 				}

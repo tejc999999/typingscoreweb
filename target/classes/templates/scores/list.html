@@ -33,7 +33,8 @@
 			<tr>
 				<th class="col-sm-2" th:text="#{html.scores.list.item.username}">username</th>
 				<th class="col-sm-2" th:text="#{html.scores.list.item.score}">score</th>
-				<th class="col-sm-2" th:text="#{html.scores.list.item.inputtime}">input time（seconds）</th>
+				<th class="col-sm-2" th:text="#{html.scores.list.item.inputtimemin}">input time（min）</th>
+				<th class="col-sm-2" th:text="#{html.scores.list.item.inputtimesec}">input time（sec）</th>
 				<th class="col-sm-2" th:text="#{html.scores.list.item.typemiss}">type miss(times)</th>
 				<th class="col-sm-2" th:text="#{html.scores.list.item.committime}">commit time</th>
 				<th class="col-sm-1"></th>
@@ -42,7 +43,8 @@
 			<tr th:each="score : ${scores}">
 				<td th:text="${score.username}">user</td>
 				<td th:text="${score.point}">0</td>
-				<td th:text="${score.inputtime}">0</td>
+				<td th:text="${score.inputtimeMin}">0</td>
+				<td th:text="${score.inputtimeSec}">0</td>
 				<td th:text="${score.misstype}">0</td>
 				<td
 					th:text="${#dates.format(score.committime,'yyyy/MM/dd k:mm:ss')}">yyyy/mm/dd-00:00:00</td>
