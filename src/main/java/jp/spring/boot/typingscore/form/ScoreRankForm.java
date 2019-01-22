@@ -27,10 +27,5 @@ public class ScoreRankForm extends ScoreForm {
 	 * アイコン描画用HTML
 	 */
 	private String blank;
-	
-	/**
-	 * 描画用入力時間
-	 */
-	private String inputtimeView;
 
 }

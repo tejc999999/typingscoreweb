@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -68,4 +69,9 @@ public class ScoreForm {
 	@JsonProperty("commitTime")
 	private Timestamp committime;
 	
+	/**
+	 * 描画用入力時間
+	 */
+	@JsonIgnore
+	private String inputtimeView;	
 }

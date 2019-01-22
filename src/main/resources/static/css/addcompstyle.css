@@ -58,21 +58,6 @@ td, th {
     font-size: 18px;
     padding: auto 1px;
 }
-.score-p::before {
-	content: "score:";
-}
-.score-time-p-min::before {
-	content: "input:";
-}
-.score-time-p-min::after {
-	content: "(min)";
-}
-.score-time-p-sec::after {
-	content: "(sec)";
-}
-.score-miss-p::before {
-	content: "miss:";
-}
 .numalign {
 	text-align: right;
 }
