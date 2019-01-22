@@ -127,7 +127,7 @@ td, th {
 	width: 50px;
 }
 .td-rank {
-	width: 50px;
+	width: 80px;
 }
 .td-username {
 	width: 420px;
@@ -139,7 +139,7 @@ td, th {
 	width: 280px;
 }
 .td-misstype {
-	width: 140px;
+	width: 160px;
 }
 
 /* comment */
