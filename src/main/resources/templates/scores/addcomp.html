@@ -47,8 +47,7 @@
 							<th class="col-sm-1 numalign tablehead">rank</th>
 							<th class="col-sm-3 stralign tablehead">user name</th>
 							<th class="col-sm-2 numalign tablehead">score</th>
-							<th class="col-sm-2 numalign tablehead">input time(min)</th>
-							<th class="col-sm-2 numalign tablehead">input time(sec)</th>
+							<th class="col-sm-2 numalign tablehead" colspan="2">input time</th>
 							<th class="col-sm-2 numalign tablehead">miss type</th>
 						</tr>
 					</thead>
@@ -63,9 +62,9 @@
 							<td class="numalign score"><p th:text="${resultform.point}"
 									class="score-p"></td>
 							<td class="numalign score-time"><p
-									th:text="${resultform.inputtimeMin}" class="score-time-p"></td>
+									th:text="${resultform.inputtimeMin}" class="score-time-p-min"></td>
 							<td class="numalign score-time"><p
-									th:text="${resultform.inputtimeSec}" class="score-time-p"></td>
+									th:text="${resultform.inputtimeSec}" class="score-time-p-sec"></td>
 							<td class="numalign score-miss"><p
 									th:text="${resultform.misstype}" class="score-miss-p"></td>
 						</tr>

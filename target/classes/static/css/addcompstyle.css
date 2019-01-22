@@ -61,8 +61,14 @@ td, th {
 .score-p::before {
 	content: "score:";
 }
-.score-time-p::before {
-	content: "time:";
+.score-time-p-min::before {
+	content: "input:";
+}
+.score-time-p-min::after {
+	content: "(min)";
+}
+.score-time-p-sec::after {
+	content: "(sec)";
 }
 .score-miss-p::before {
 	content: "miss:";
