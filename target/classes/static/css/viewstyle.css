@@ -55,13 +55,24 @@ td, th {
 .score::before {
 	content: "score:";
 }
-.score-time {
+.score-time-min {
     vertical-align: bottom;
     font-size: 14px;
     padding-bottom: 0px;
 }
-.score-time::before {
-	content: "time:";
+.score-time-min::before {
+	content: "input:";
+}
+.score-time-min::after {
+	content: "(min)";
+}
+.score-time-sec {
+    vertical-align: bottom;
+    font-size: 14px;
+    padding-bottom: 0px;
+}
+.score-time-sec::after {
+	content: "(sec)";
 }
 .score-miss {
     vertical-align: bottom;
