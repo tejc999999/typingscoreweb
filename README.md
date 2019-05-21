@@ -6,7 +6,7 @@
 ## environment
 * フレームワーク: SpringBoot
 * 開発言語: java, html, css, javascript(datatables, ajax)
-* DB: IBM CloudantまたはH2 database(永続化なし)(模試環境変数VCAP_SERVICESが設定されていない場合、自動的に組込みH2データベースを使用する)
+* DB: IBM CloudantまたはH2 database(永続化なし)(環境変数VCAP_SERVICESが設定されていない場合、自動的に組込みH2データベースを使用する)
 * ライブラリ管理: Maven
 
 ## ライセンス
