@@ -90,7 +90,8 @@ public class ScoreService {
 			ScoreBean scoreBean = new ScoreBean();
 			// 複合主キーを設定
 			scoreBean.setId(scoreId);
-
+			scoreBean.setUsername_department(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
+			scoreBean.setUsername_name(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));
 			scoreBean.setInputtime((scoreForm.getInputtimeMin() * 60) + scoreForm.getInputtimeSec());
 			scoreBean.setMisstype(scoreForm.getMisstype());
 
@@ -100,6 +101,7 @@ public class ScoreService {
 
 			scoreForm.setCommittime(scoreBean.getId().getCommittime());
 			scoreForm.setPoint(scoreBean.getPoint());
+			
 		}
 
 		return scoreForm;
@@ -163,7 +165,8 @@ public class ScoreService {
 
 			// 複合主キーを登録
 			scoreBean.setId(scoreId);
-
+			scoreBean.setUsername_department(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
+			scoreBean.setUsername_name(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));
 			scoreBean.setInputtime((newScoreForm.getInputtimeMin() * 60) + newScoreForm.getInputtimeSec());
 			scoreBean.setMisstype(newScoreForm.getMisstype());
 
