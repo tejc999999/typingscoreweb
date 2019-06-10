@@ -19,6 +19,7 @@ import jp.spring.boot.typingscore.cloudant.Score;
 import jp.spring.boot.typingscore.cloudant.store.ScoreStore;
 import jp.spring.boot.typingscore.cloudant.store.ScoreStoreFactory;
 import jp.spring.boot.typingscore.cloudant.store.VCAPHelper;
+import jp.spring.boot.typingscore.config.ParameterProperties;
 import jp.spring.boot.typingscore.db.ScoreId;
 import jp.spring.boot.typingscore.form.ScoreForm;
 import jp.spring.boot.typingscore.repository.ScoreRepository;
@@ -39,6 +40,9 @@ public class ScoreService {
 	 */
 	@Autowired
 	ScoreRepository scoreRepository;
+	
+	@Autowired
+	ParameterProperties parameterPropaties;
 
 	/**
 	 * スコアを登録する
@@ -98,6 +102,9 @@ public class ScoreService {
 			// スコア＝入力時間＋（ミスタイプ数×２）
 			scoreBean.setPoint((scoreForm.getInputtimeMin() * 60) + scoreForm.getInputtimeSec() + (scoreForm.getMisstype() * 2));
 			scoreBean = scoreRepository.save(scoreBean);
+			
+			//ゲーム区分
+			scoreBean.setGamecode(parameterPropaties.getActiveGameCode());
 
 			scoreForm.setCommittime(scoreBean.getId().getCommittime());
 			scoreForm.setPoint(scoreBean.getPoint());

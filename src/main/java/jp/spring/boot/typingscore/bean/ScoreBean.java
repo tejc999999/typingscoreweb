@@ -60,6 +60,6 @@ public class ScoreBean {
 	/**
 	 * ゲーム区分
 	 */
-	private int gamecode;
+	private String  gamecode;
 	
 }
