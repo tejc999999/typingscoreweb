@@ -71,7 +71,12 @@ public class ScoreController {
 	 * @return 遷移先ビュー
 	 */
 	@GetMapping(path = "add")
-	public String add() {
+	public String add(Model model) {
+		
+		List<ScoreForm> list = scoreService.findAllOrderByCommittime();
+		list.removeIf(score -> score.getPoint() != 0);
+		list.add(0,new ScoreForm());
+		model.addAttribute("scores", list);
 		return "scores/add";
 	}
 
