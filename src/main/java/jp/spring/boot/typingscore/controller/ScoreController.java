@@ -128,6 +128,8 @@ public class ScoreController {
 			// 今回スコアをリストに追加（スコア順の該当箇所に挿入）
 			list = addHighScoreFormList(createScoreForm, list);
 		}
+		list.removeIf(score -> score.getPoint() == 0);
+		
 		
 		// 全ユーザ数
 		int rankNum  = list.size();
@@ -196,7 +198,6 @@ public class ScoreController {
 	public String view(Model model) {
 
 		List<ScoreForm> list = scoreService.findAllOrderByPoint();
-
 		model.addAttribute("scores", list);
 
 		return "scores/view";
@@ -212,7 +213,8 @@ public class ScoreController {
 	public String scoreLoad() {
 
 		List<ScoreForm> list = scoreService.findHighScoreList();
-
+		list.removeIf(score -> score.getPoint() == 0);
+		
 		Gson gson = new Gson();
 		List<ScoreRankForm> rankList = new ArrayList<ScoreRankForm>();
 		int rankNum = 0;
