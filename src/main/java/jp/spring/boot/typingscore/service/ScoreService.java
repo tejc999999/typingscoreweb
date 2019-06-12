@@ -94,8 +94,8 @@ public class ScoreService {
 			ScoreBean scoreBean = new ScoreBean();
 			// 複合主キーを設定
 			scoreBean.setId(scoreId);
-			scoreBean.setUsername_department(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
-			scoreBean.setUsername_name(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));
+			scoreBean.setUsernamedepartment(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
+			scoreBean.setUsernamename(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));
 			scoreBean.setInputtime((scoreForm.getInputtimeMin() * 60) + scoreForm.getInputtimeSec());
 			scoreBean.setMisstype(scoreForm.getMisstype());
 
@@ -172,8 +172,8 @@ public class ScoreService {
 
 			// 複合主キーを登録
 			scoreBean.setId(scoreId);
-			scoreBean.setUsername_department(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
-			scoreBean.setUsername_name(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));
+			scoreBean.setUsernamedepartment(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
+			scoreBean.setUsernamename(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));
 			scoreBean.setInputtime((newScoreForm.getInputtimeMin() * 60) + newScoreForm.getInputtimeSec());
 			scoreBean.setMisstype(newScoreForm.getMisstype());
 
@@ -449,8 +449,9 @@ public class ScoreService {
 			}
 		} else {
 			// DBがH2データベースの場合
-
-			for (ScoreBean scoreBean : scoreRepository.findAllByOrderByPoint()) {
+			List<ScoreBean> pointNot0List = scoreRepository.findAllByOrderByPoint();
+			pointNot0List.removeIf(score -> score.getPoint() == 0);
+			for (ScoreBean scoreBean : pointNot0List) {
 	
 				if(formMap.containsKey(scoreBean.getId().getUsername())) {
 					if(formMap.get(scoreBean.getId().getUsername()).getPoint() > scoreBean.getPoint()) {
