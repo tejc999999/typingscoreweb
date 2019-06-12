@@ -101,10 +101,10 @@ public class ScoreService {
 
 			// スコア＝入力時間＋（ミスタイプ数×２）
 			scoreBean.setPoint((scoreForm.getInputtimeMin() * 60) + scoreForm.getInputtimeSec() + (scoreForm.getMisstype() * 2));
-			scoreBean = scoreRepository.save(scoreBean);
 			
 			//ゲーム区分
 			scoreBean.setGamecode(parameterPropaties.getActiveGameCode());
+			scoreBean = scoreRepository.save(scoreBean);
 
 			scoreForm.setCommittime(scoreBean.getId().getCommittime());
 			scoreForm.setPoint(scoreBean.getPoint());
@@ -247,7 +247,8 @@ public class ScoreService {
 			}
 		} else {
 			// DBがH2データベースの場合
-
+			List<ScoreBean> beanlist = scoreRepository.findAll();
+			beanlist.removeIf(score -> score.getGamecode().equals(parameterPropaties.getActiveGameCode()) == false);
 			for (ScoreBean scoreBean : scoreRepository.findAll()) {
 				ScoreForm scoreForm = new ScoreForm();
 				scoreForm.setUsername(scoreBean.getId().getUsername());
@@ -287,8 +288,9 @@ public class ScoreService {
 
 		} else {
 			// DBがH2データベースの場合
-
-			for (ScoreBean scoreBean : scoreRepository.findAllByOrderById_CommittimeDesc()) {
+			List<ScoreBean> beanlist = scoreRepository.findAllByOrderById_CommittimeDesc();
+			beanlist.removeIf(score -> score.getGamecode().equals(parameterPropaties.getActiveGameCode()) == false);
+			for (ScoreBean scoreBean : beanlist) {
 				ScoreForm scoreForm = new ScoreForm();
 				scoreForm.setUsername(scoreBean.getId().getUsername());
 				scoreForm.setCommittime(scoreBean.getId().getCommittime());
@@ -325,8 +327,10 @@ public class ScoreService {
 			}
 		} else {
 			// DBがH2データベースの場合
-
-			for (ScoreBean scoreBean : scoreRepository.findAllByOrderByPoint()) {
+			List<ScoreBean> beanlist = scoreRepository.findAllByOrderByPoint();
+			beanlist.removeIf(score -> score.getGamecode().equals(parameterPropaties.getActiveGameCode()) == false);
+			
+			for (ScoreBean scoreBean : beanlist) {
 				ScoreForm scoreForm = new ScoreForm();
 				scoreForm.setUsername(scoreBean.getId().getUsername());
 				scoreForm.setCommittime(scoreBean.getId().getCommittime());
@@ -356,7 +360,7 @@ public class ScoreService {
 
 		} else {
 			// DBがH2データベースの場合
-			usernameOverlapCnt = scoreRepository.findUsernameOverlapCnt(username);
+			usernameOverlapCnt = scoreRepository.findUsernameOverlapCnt(username, parameterPropaties.getActiveGameCode());
 		}
 
 		return usernameOverlapCnt;
@@ -394,6 +398,7 @@ public class ScoreService {
 			// DBがH2データベースの場合
 			
 			List<ScoreBean> scoreBeanList = scoreRepository.findById_Username(username);
+			scoreBeanList.removeIf(score -> score.getGamecode().equals(parameterPropaties.getActiveGameCode()) == false);
 			ScoreBean highScoreBean = null;
 			for (ScoreBean scoreBean : scoreBeanList) {
 				if (highScoreBean == null || scoreBean.getPoint() < highScoreBean.getPoint()) {
@@ -451,6 +456,7 @@ public class ScoreService {
 			// DBがH2データベースの場合
 			List<ScoreBean> pointNot0List = scoreRepository.findAllByOrderByPoint();
 			pointNot0List.removeIf(score -> score.getPoint() == 0);
+			pointNot0List.removeIf(score -> score.getGamecode().equals(parameterPropaties.getActiveGameCode()) == false);
 			for (ScoreBean scoreBean : pointNot0List) {
 	
 				if(formMap.containsKey(scoreBean.getId().getUsername())) {

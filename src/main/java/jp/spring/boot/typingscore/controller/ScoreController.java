@@ -130,6 +130,7 @@ public class ScoreController {
 		}
 		
 		
+		
 		// 全ユーザ数
 		int rankNum  = list.size();
 		// 今回スコアの順位
