@@ -36,9 +36,11 @@ import jp.spring.boot.typingscore.config.ParameterProperties;
 import jp.spring.boot.typingscore.form.GameForm;
 import jp.spring.boot.typingscore.form.ScoreForm;
 import jp.spring.boot.typingscore.form.ScoreResultForm;
+import jp.spring.boot.typingscore.form.SendForm;
 import jp.spring.boot.typingscore.security.RoleName;
 import jp.spring.boot.typingscore.service.GameService;
 import jp.spring.boot.typingscore.service.ScoreService;
+import jp.spring.boot.typingscore.service.SendService;
 import jp.spring.boot.typingscore.service.UserService;
 
 /**
@@ -74,6 +76,12 @@ public class DatabaseController {
 	 */
 	@Autowired
 	UserService userService;
+	
+	/**
+	 * 送信用サービス
+	 */
+	@Autowired
+	SendService sendService;
 
 	/**
 	 * データベース管理画面を表示する
@@ -189,9 +197,29 @@ public class DatabaseController {
 		return "database/game";
 	}
 	
+	/**
+	 * ゲーム区分更新
+	 * @param gameForm
+	 * @param model
+	 * @return
+	 */
 	@GetMapping(path = "gameupdate")
 	public String gameupdate(GameForm gameForm, Model model) {
 		gameForm = gameService.update(gameForm);
 		return view(model);
 	}
+	
+	@GetMapping(path = "send")
+	public String send(Model model) {
+		List<SendForm> totalranklist = sendService.getTotalRankingList();
+		List<SendForm> japaneseranklist = sendService.getJapaneseRankingList();
+		List<SendForm> englishranklist = sendService.getEnglishRankingList();
+		
+		model.addAttribute("totalrank", totalranklist);
+		model.addAttribute("japaneserank", japaneseranklist);
+		model.addAttribute("englishrank", englishranklist);
+		return "database/send";
+	}
+	
+	
 }

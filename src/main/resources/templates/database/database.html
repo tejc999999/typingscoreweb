@@ -70,6 +70,11 @@
 					<input class="btn btn-lg btn-success btn-block" type="submit" th:value="${activegamecode}"/>
 				</form>		
 			</div>
+			<div class="col-sm-3">
+				<form th:action="@{/databases/send}" method="get">
+					<input class="btn btn-lg btn-success btn-block" type="submit" th:value="ランキング送信"/>
+				</form>		
+			</div>
 		</div>
 		<br>
 		<div class="row">
