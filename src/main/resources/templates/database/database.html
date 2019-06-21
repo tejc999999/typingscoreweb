@@ -66,12 +66,12 @@
 		<br>
 		<div class="row">
 			<div class="col-sm-3 col-sm-offset-1">
-				<form th:action="@{/databases/game}" method="get">
+				<form th:action="@{/databases/game}" method="post">
 					<input class="btn btn-lg btn-success btn-block" type="submit" th:value="${activegamecode}"/>
 				</form>		
 			</div>
 			<div class="col-sm-3">
-				<form th:action="@{/databases/send}" method="get">
+				<form th:action="@{/send}">
 					<input class="btn btn-lg btn-success btn-block" type="submit" th:value="ランキング送信"/>
 				</form>		
 			</div>

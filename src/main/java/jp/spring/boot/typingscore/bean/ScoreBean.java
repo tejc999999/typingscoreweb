@@ -34,12 +34,12 @@ public class ScoreBean {
 	/**
 	 * ユーザー名から分割した学科名
 	 */
-	private String username_department;
+	private String usernamedepartment;
 	
 	/**
 	 * ユーザー名から分割した名前
 	 */
-	private String username_name;
+	private String usernamename;
 	
 	/**
 	 * 入力時間（秒）

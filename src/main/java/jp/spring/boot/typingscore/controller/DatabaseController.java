@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -33,6 +35,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 
 import jp.spring.boot.typingscore.cloudant.store.VCAPHelper;
 import jp.spring.boot.typingscore.config.ParameterProperties;
+import jp.spring.boot.typingscore.db.ScoreId;
 import jp.spring.boot.typingscore.form.GameForm;
 import jp.spring.boot.typingscore.form.ScoreForm;
 import jp.spring.boot.typingscore.form.ScoreResultForm;
@@ -189,7 +192,7 @@ public class DatabaseController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(path = "game")
+	@PostMapping(path = "game")
 	public String game(Model model) {
 		
 		model.addAttribute("gamecode", parameterPropaties.getGameType());
@@ -203,23 +206,10 @@ public class DatabaseController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(path = "gameupdate")
+	@PostMapping(path = "gameupdate")
 	public String gameupdate(GameForm gameForm, Model model) {
 		gameForm = gameService.update(gameForm);
 		return view(model);
 	}
-	
-	@GetMapping(path = "send")
-	public String send(Model model) {
-		List<SendForm> totalranklist = sendService.getTotalRankingList();
-		List<SendForm> japaneseranklist = sendService.getJapaneseRankingList();
-		List<SendForm> englishranklist = sendService.getEnglishRankingList();
-		
-		model.addAttribute("totalrank", totalranklist);
-		model.addAttribute("japaneserank", japaneseranklist);
-		model.addAttribute("englishrank", englishranklist);
-		return "database/send";
-	}
-	
 	
 }

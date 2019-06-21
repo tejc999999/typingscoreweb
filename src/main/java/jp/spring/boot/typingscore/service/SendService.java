@@ -1,9 +1,22 @@
 package jp.spring.boot.typingscore.service;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +57,7 @@ public class SendService {
 			beanlist.removeIf(score -> score.getPoint() == 0);
 			
 			//総合1位取得
-			int beforePoint = beanlist.get(0).getPoint();
+			int beforePoint = (beanlist.size() > 0) ? beanlist.get(0).getPoint() : 0;
 			for (ScoreBean scoreBean : beanlist) {
 				if(beforePoint == scoreBean.getPoint()) {
 					SendForm sendForm = new SendForm();
@@ -219,18 +232,76 @@ public class SendService {
 	}
 	
 	/**
-	 * ScoreBeanのランキングJson形式のListに変換して返す
+	 * SendFormのランキングをJson形式に変換
 	 * @param beanmap
 	 * @return
 	 */
-	public List<String> toJsonFromSendForm(List<SendForm>sendFormList) {
-		List<String> jsonlist = new ArrayList<String>();
+	public String toJsonFromSendForm(List<SendForm>sendFormList) {
+		String json = "[";
 		for (SendForm sendForm : sendFormList) {
 
-			jsonlist.add( "{\"dept\": \"" + sendForm.getGamecode() + "\", \"rank\": \"" + sendForm.getRank() + "\", \"score\": \"" + sendForm.getPoint() + "\", \"course\": \""
-					+ sendForm.getDepartment() + "\", \"name\": \"" + sendForm.getUsernamename() + "\"}");
+				 json += "{\"dept\": \"" + sendForm.getGamecode()
+							+ "\", \"rank\": " + sendForm.getRank()
+							+ ", \"score\": " + sendForm.getPoint() 
+							+ ", \"course\": \"" + sendForm.getDepartment()
+							+ "\", \"name\": \"" + sendForm.getUsernamename()
+							+ "\"},";
 		}
-		return jsonlist;
+		json = json.substring(0,json.length() - 1);
+		json += "]";
+		return json;
+	}
+	
+	/***
+	 * 
+	 * @param sendFormList
+	 * @return
+	 */
+	public Boolean postRanking(List<SendForm> sendFormList) {
+		HttpsURLConnection httpcon = null;
+		Boolean isSuccess;
+		try {
+			
+			URL url = new URL("https://tcc-typingranking.herokuapp.com/score");
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("172.17.0.2", 80));
+			httpcon = (HttpsURLConnection) url.openConnection(proxy);
+			httpcon.setRequestMethod("POST");
+			httpcon.setRequestProperty("Content-Type", "application/json");
+			httpcon.setDoOutput(true);
+			httpcon.setDoInput(true);
+			httpcon.connect();
+			
+			//リクエストボディの書き出しを行う。
+			 OutputStreamWriter out = new OutputStreamWriter(
+					 new BufferedOutputStream(httpcon.getOutputStream()));
+            out.write(toJsonFromSendForm(sendFormList));
+            out.close();
+            
+            //レスポンス表示
+            int statusCode = httpcon.getResponseCode();
+            System.out.println("HTTP STATUS : " + statusCode);
+            
+//         InputStream stream = httpcon.getInputStream();
+//         String line = "";
+//         BufferedReader br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+//         while ((line = br.readLine()) != null) {
+//             System.out.println(line);
+//         }
+//         stream.close();
+//            
+            isSuccess = true;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			isSuccess = false;
+		}finally {
+            if (httpcon != null) {
+                //7.コネクションを閉じる。
+            	httpcon.disconnect();
+            }
+		}
+		
+		return isSuccess;
 	}
 
 }

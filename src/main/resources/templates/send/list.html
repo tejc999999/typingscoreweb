@@ -45,14 +45,14 @@
 				<td th:text="${score.usernamename}">user</td>				
 				<td th:text="${score.point}">0</td>
 				<td>
-					<form th:action="@{/scores/edit}" method="post">
+					<form th:action="@{/send/edit}" method="post">
 						<input type="submit" name="form" th:value="#{html.scores.list.btn.edit}" /> <input
 							type="hidden" name="username" th:value="${score.username}" /> <input
 							type="hidden" name="committime" th:value="${score.committime}" />
 					</form>
 				</td>
 				<td>
-					<form th:action="@{/scores/delete}" method="post">
+					<form th:action="@{/send/delete}" method="post">
 						<input type="submit" name="form" th:value="#{html.scores.list.btn.delete}" /> <input
 							type="hidden" name="username" th:value="${score.username}" /> <input
 							type="hidden" name="committime" th:value="${score.committime}" />
@@ -77,14 +77,14 @@
 				<td th:text="${score.usernamename}">user</td>				
 				<td th:text="${score.point}">0</td>
 				<td>
-					<form th:action="@{/scores/edit}" method="post">
+					<form th:action="@{/send/edit}" method="post">
 						<input type="submit" name="form" th:value="#{html.scores.list.btn.edit}" /> <input
 							type="hidden" name="username" th:value="${score.username}" /> <input
 							type="hidden" name="committime" th:value="${score.committime}" />
 					</form>
 				</td>
 				<td>
-					<form th:action="@{/scores/delete}" method="post">
+					<form th:action="@{/send/delete}" method="post">
 						<input type="submit" name="form" th:value="#{html.scores.list.btn.delete}" /> <input
 							type="hidden" name="username" th:value="${score.username}" /> <input
 							type="hidden" name="committime" th:value="${score.committime}" />
@@ -109,22 +109,22 @@
 				<td th:text="${score.usernamename}">user</td>				
 				<td th:text="${score.point}">0</td>
 				<td>
-					<form th:action="@{/scores/edit}" method="post">
-						<input type="submit" name="form" th:value="#{html.scores.list.btn.edit}" /> <input
-							type="hidden" name="username" th:value="${score.username}" /> <input
-							type="hidden" name="committime" th:value="${score.committime}" />
+					<form th:action="@{/send/edit}" method="post">
+						<input type="submit" name="form" th:value="#{html.scores.list.btn.edit}" />
+						<input type="hidden" name="username" th:value="${score.username}" /> 
+						<input type="hidden" name="committime" th:value="${score.committime}" />
 					</form>
 				</td>
 				<td>
-					<form th:action="@{/scores/delete}" method="post">
-						<input type="submit" name="form" th:value="#{html.scores.list.btn.delete}" /> <input
-							type="hidden" name="username" th:value="${score.username}" /> <input
-							type="hidden" name="committime" th:value="${score.committime}" />
+					<form th:action="@{/send/delete}" method="post">
+						<input type="submit" name="form" th:value="#{html.scores.list.btn.delete}" /> 
+						<input type="hidden" name="username" th:value="${score.username}" />
+						<input type="hidden" name="committime" th:value="${score.committime}" />
 					</form>
 				</td>
 			</tr>
 		</table>
-		<form class="form-horizontal" th:action="@{/databases}" method="get" th:object="${gameForm}">
+		<form class="form-horizontal" th:action="@{/send/postrank}" method="post">
 			<div class="form-group">
 				<div class="col-sm-offset-9 col-sm-3">
 					<input class="btn btn-lg btn-primary btn-block" type="submit"

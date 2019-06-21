@@ -74,4 +74,10 @@ public class ScoreForm {
 	 */
 	@JsonIgnore
 	private String inputtimeView;	
-}
+	
+	/**
+	 * ゲーム区分
+	 */
+	private String gamecode;
+	
+}	

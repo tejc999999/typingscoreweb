@@ -103,7 +103,11 @@ public class ScoreService {
 			scoreBean.setPoint((scoreForm.getInputtimeMin() * 60) + scoreForm.getInputtimeSec() + (scoreForm.getMisstype() * 2));
 			
 			//ゲーム区分
-			scoreBean.setGamecode(parameterPropaties.getActiveGameCode());
+			if(scoreForm.getGamecode() == null) {
+				scoreBean.setGamecode(parameterPropaties.getActiveGameCode());
+			}else {
+				scoreBean.setGamecode(scoreForm.getGamecode());
+			}
 			scoreBean = scoreRepository.save(scoreBean);
 
 			scoreForm.setCommittime(scoreBean.getId().getCommittime());
@@ -179,7 +183,9 @@ public class ScoreService {
 
 			// スコア＝入力時間＋（ミスタイプ数×２）
 			scoreBean.setPoint((newScoreForm.getInputtimeMin() * 60) + newScoreForm.getInputtimeSec() + (newScoreForm.getMisstype() * 2));
-
+			
+			//ゲーム区分登録
+			scoreBean.setGamecode(newScoreForm.getGamecode());
 			scoreRepository.save(scoreBean);
 		}
 
@@ -247,21 +253,20 @@ public class ScoreService {
 			}
 		} else {
 			// DBがH2データベースの場合
-			List<ScoreBean> beanlist = scoreRepository.findAll();
-			beanlist.removeIf(score -> score.getGamecode().equals(parameterPropaties.getActiveGameCode()) == false);
 			for (ScoreBean scoreBean : scoreRepository.findAll()) {
 				ScoreForm scoreForm = new ScoreForm();
 				scoreForm.setUsername(scoreBean.getId().getUsername());
 				scoreForm.setCommittime(scoreBean.getId().getCommittime());
 				scoreForm.setInputtimeMin(scoreBean.getInputtime() / 60);
 				scoreForm.setInputtimeSec(scoreBean.getInputtime() % 60);
+				scoreForm.setGamecode(scoreBean.getGamecode());
 				BeanUtils.copyProperties(scoreBean, scoreForm);
 				formList.add(scoreForm);
 			}
 		}
 		return formList;
 	}
-
+	
 	/**
 	 * 登録日時順に並んだ全てのスコアを取得する
 	 * 
@@ -296,6 +301,7 @@ public class ScoreService {
 				scoreForm.setCommittime(scoreBean.getId().getCommittime());
 				scoreForm.setInputtimeMin(scoreBean.getInputtime() / 60);
 				scoreForm.setInputtimeSec(scoreBean.getInputtime() % 60);
+				scoreForm.setGamecode(scoreBean.getGamecode());
 				BeanUtils.copyProperties(scoreBean, scoreForm);
 				formList.add(scoreForm);
 			}
@@ -336,6 +342,7 @@ public class ScoreService {
 				scoreForm.setCommittime(scoreBean.getId().getCommittime());
 				scoreForm.setInputtimeMin(scoreBean.getInputtime() / 60);
 				scoreForm.setInputtimeSec(scoreBean.getInputtime() % 60);
+				scoreForm.setGamecode(scoreBean.getGamecode());
 				BeanUtils.copyProperties(scoreBean, scoreForm);
 				formList.add(scoreForm);
 			}
@@ -411,6 +418,7 @@ public class ScoreService {
 				highScoreForm.setCommittime(highScoreBean.getId().getCommittime());
 				highScoreForm.setInputtimeMin(highScoreBean.getInputtime() / 60);
 				highScoreForm.setInputtimeSec(highScoreBean.getInputtime() % 60);
+				highScoreForm.setGamecode(highScoreBean.getGamecode());
 				BeanUtils.copyProperties(highScoreBean, highScoreForm);
 			}
 		}
@@ -454,10 +462,10 @@ public class ScoreService {
 			}
 		} else {
 			// DBがH2データベースの場合
-			List<ScoreBean> pointNot0List = scoreRepository.findAllByOrderByPoint();
-			pointNot0List.removeIf(score -> score.getPoint() == 0);
-			pointNot0List.removeIf(score -> score.getGamecode().equals(parameterPropaties.getActiveGameCode()) == false);
-			for (ScoreBean scoreBean : pointNot0List) {
+			List<ScoreBean> beanlist = scoreRepository.findAllByOrderByPoint();
+			beanlist.removeIf(score -> score.getPoint() == 0);
+			beanlist.removeIf(score -> score.getGamecode().equals(parameterPropaties.getActiveGameCode()) == false);
+			for (ScoreBean scoreBean : beanlist) {
 	
 				if(formMap.containsKey(scoreBean.getId().getUsername())) {
 					if(formMap.get(scoreBean.getId().getUsername()).getPoint() > scoreBean.getPoint()) {
@@ -466,6 +474,7 @@ public class ScoreService {
 						scoreForm.setCommittime(scoreBean.getId().getCommittime());
 						scoreForm.setInputtimeMin(scoreBean.getInputtime() / 60);
 						scoreForm.setInputtimeSec(scoreBean.getInputtime() % 60);
+						scoreForm.setGamecode(scoreBean.getGamecode());
 						BeanUtils.copyProperties(scoreBean, scoreForm);
 						formMap.put(scoreForm.getUsername(), scoreForm);
 					}
@@ -475,6 +484,7 @@ public class ScoreService {
 					scoreForm.setCommittime(scoreBean.getId().getCommittime());
 					scoreForm.setInputtimeMin(scoreBean.getInputtime() / 60);
 					scoreForm.setInputtimeSec(scoreBean.getInputtime() % 60);
+					scoreForm.setGamecode(scoreBean.getGamecode());
 					BeanUtils.copyProperties(scoreBean, scoreForm);
 					formMap.put(scoreForm.getUsername(), scoreForm);
 				}
@@ -482,7 +492,7 @@ public class ScoreService {
 		}
 		return  new ArrayList<ScoreForm>(formMap.values());
 	}
-
+	
 	/**
 	 * スコアを削除する
 	 * 
