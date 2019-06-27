@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title th:text="#{html.scores.edit.pagetitle}">score edit page</title>
+<title th:text="#{html.send.edit.pagetitle}">score edit page</title>
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
@@ -28,12 +28,12 @@
 		</div>
 	</header>
 	<div class="content">
-		<h2 class="form-signin-heading" th:text="#{html.scores.edit.title}">score edit page</h2>
+		<h2 class="form-signin-heading" th:text="#{html.send.edit.title}">score edit page</h2>
 
 		<form class="form-horizontal" th:action="@{/send/editprocess}"
 			th:object="${scoreForm}" method="post">
 			<div class="form-group">
-				<label class="control-label col-sm-2" th:text="#{html.scores.edit.item.username}">user name</label>
+				<label class="control-label col-sm-2" th:text="#{html.send.edit.item.username}">user name</label>
 				<div class="col-sm-4">
 					<input class="form-control" type="text" name="username"
 						th:field="*{username}" th:errorclass="error-input" />
@@ -42,7 +42,7 @@
 					th:errors="*{username}" class="error-messages">error!</span>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" th:text="#{html.scores.edit.item.inputtimemin}">input time（min）</label>
+				<label class="control-label col-sm-2" th:text="#{html.send.edit.item.inputtimemin}">input time（min）</label>
 				<div class="col-sm-4">
 					<input class="form-control" type="number" name="inputtimeMin"
 						th:field="*{inputtimeMin}" th:errorclass="error-input" />
@@ -51,7 +51,7 @@
 					th:errors="*{inputtimeMin}" class="error-messages">error!</span>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" th:text="#{html.scores.edit.item.inputtimesec}">input time（sec）</label>
+				<label class="control-label col-sm-2" th:text="#{html.send.edit.item.inputtimesec}">input time（sec）</label>
 				<div class="col-sm-4">
 					<input class="form-control" type="number" name="inputtimeSec"
 						th:field="*{inputtimeSec}" th:errorclass="error-input" />
@@ -60,7 +60,7 @@
 					th:errors="*{inputtimeSec}" class="error-messages">error!</span>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" th:text="#{html.scores.edit.item.typemiss}">type miss(times)</label>
+				<label class="control-label col-sm-2" th:text="#{html.send.edit.item.typemiss}">type miss(times)</label>
 				<div class="col-sm-4">
 					<input class="form-control" type="number" name="misstype"
 						th:field="*{misstype}" th:errorclass="error-input" />
@@ -71,12 +71,12 @@
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-4">
 					<input class="btn btn-lg btn-primary btn-block" type="submit"
-						th:value="#{html.scores.edit.btn.edit}" />
+						th:value="#{html.send.edit.btn.edit}" />
 				</div>
 			</div>
-			<input type="hidden" name="committime" th:field="*{committime}"
-				th:value="*{committime}" /> <input type="hidden" name="oldusername"
-				th:value="${username}" />
+			<input type="hidden" name="committime" th:field="*{committime}" th:value="*{committime}" />
+			<input type="hidden" name="gamecode" th:field="*{gamecode}" th:value="*{gamecode}" />
+			<input type="hidden" name="oldusername" th:value="${username}" />
 		</form>
 	</div>
 </body>

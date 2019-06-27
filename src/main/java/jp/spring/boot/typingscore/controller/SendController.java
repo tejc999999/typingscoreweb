@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.spring.boot.typingscore.db.ScoreId;
 import jp.spring.boot.typingscore.form.ScoreForm;
@@ -41,26 +42,36 @@ public class SendController {
 		List<SendForm> totalranklist = sendService.getTotalRankingList();
 		List<SendForm> japaneseranklist = sendService.getJapaneseRankingList();
 		List<SendForm> englishranklist = sendService.getEnglishRankingList();
+		String message = "";
+		if(totalranklist.size() > 1) {
+			message = "総合ランキング";
+		}
+		if(sendService.checkedRankingTie(japaneseranklist)) {
+			if(message.length() > 0) message += ", ";
+			message += "日本語ランキング";
+		}
+		if(sendService.checkedRankingTie(englishranklist)) {
+			if(message.length() > 0) message += ", ";
+			message += "英語ランキング";
+		}
+		if(message.length() > 0) {
+			message += "に同順位のデータがあります。";
+		}
 		
 		model.addAttribute("totalrank", totalranklist);
 		model.addAttribute("japaneserank", japaneseranklist);
 		model.addAttribute("englishrank", englishranklist);
+		model.addAttribute("tiechecked", message);
 		return "send/list";
 	}
 	
 	@PostMapping(value = "postrank")
-	public String postRank(Model model) {
+	public String postRank(RedirectAttributes attributes) {
 		List<SendForm> sendranklist = sendService.getTotalRankingList();
 		sendranklist.addAll(sendService.getJapaneseRankingList());
 		sendranklist.addAll(sendService.getEnglishRankingList());
 		
-		if(sendService.postRanking(sendranklist)) {
-			System.out.println("Send RankingData Success");
-		}
-		else {
-			System.out.println("Send RankingData Failed");
-		}
-		
+		attributes.addFlashAttribute("result", sendService.postRanking(sendranklist));
 		return "redirect:/send";
 	}
 	

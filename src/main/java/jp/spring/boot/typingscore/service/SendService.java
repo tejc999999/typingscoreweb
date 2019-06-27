@@ -257,9 +257,10 @@ public class SendService {
 	 * @param sendFormList
 	 * @return
 	 */
-	public Boolean postRanking(List<SendForm> sendFormList) {
+	public String  postRanking(List<SendForm> sendFormList) {
 		HttpsURLConnection httpcon = null;
-		Boolean isSuccess;
+		int statusCode = -1;
+		String result;
 		try {
 			
 			URL url = new URL("https://tcc-typingranking.herokuapp.com/score");
@@ -278,22 +279,17 @@ public class SendService {
             out.close();
             
             //レスポンス表示
-            int statusCode = httpcon.getResponseCode();
-            System.out.println("HTTP STATUS : " + statusCode);
-            
-//         InputStream stream = httpcon.getInputStream();
-//         String line = "";
-//         BufferedReader br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
-//         while ((line = br.readLine()) != null) {
-//             System.out.println(line);
-//         }
-//         stream.close();
-//            
-            isSuccess = true;
+            statusCode = httpcon.getResponseCode();
+            if(statusCode == 200) {
+                result = "送信しました。";
+            }
+            else {
+            	result = "送信失敗しました。　HTTP STATUS : " + statusCode;
+            }
 			
 		}catch(Exception e) {
 			e.printStackTrace();
-			isSuccess = false;
+			result = "送信失敗しました。　HTTP STATUS : " + statusCode;
 		}finally {
             if (httpcon != null) {
                 //7.コネクションを閉じる。
@@ -301,7 +297,17 @@ public class SendService {
             }
 		}
 		
-		return isSuccess;
+		return result;
 	}
-
+	
+	public Boolean checkedRankingTie(List<SendForm> sendFormlist) {
+		Boolean isChecked = false;
+		for(int i=0; i<sendFormlist.size(); i++) {
+			if(sendFormlist.get(i).getRank() != i+1) {
+				isChecked = true;
+			}
+		}
+		
+		return isChecked;
+	}
 }

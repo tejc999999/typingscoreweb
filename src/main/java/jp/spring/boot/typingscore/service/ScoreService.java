@@ -221,6 +221,7 @@ public class ScoreService {
 				form.setCommittime(scoreBean.getId().getCommittime());
 				form.setInputtimeMin(scoreBean.getInputtime() / 60);
 				form.setInputtimeSec(scoreBean.getInputtime() % 60);
+				form.setGamecode(scoreBean.getGamecode());
 				BeanUtils.copyProperties(scoreBean, form);
 			});
 		}
