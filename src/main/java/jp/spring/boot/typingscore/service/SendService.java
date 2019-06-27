@@ -300,6 +300,11 @@ public class SendService {
 		return result;
 	}
 	
+	/**
+	 * 同順位の存在判定　あり：true
+	 * @param sendFormlist
+	 * @return
+	 */
 	public Boolean checkedRankingTie(List<SendForm> sendFormlist) {
 		Boolean isChecked = false;
 		for(int i=0; i<sendFormlist.size(); i++) {
