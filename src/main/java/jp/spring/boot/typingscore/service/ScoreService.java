@@ -94,8 +94,6 @@ public class ScoreService {
 			ScoreBean scoreBean = new ScoreBean();
 			// 複合主キーを設定
 			scoreBean.setId(scoreId);
-			scoreBean.setUsernamedepartment(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
-			scoreBean.setUsernamename(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));
 			scoreBean.setInputtime((scoreForm.getInputtimeMin() * 60) + scoreForm.getInputtimeSec());
 			scoreBean.setMisstype(scoreForm.getMisstype());
 
@@ -108,7 +106,17 @@ public class ScoreService {
 			}else {
 				scoreBean.setGamecode(scoreForm.getGamecode());
 			}
+			
+			//登録したゲーム区分が日本語か英語の場合、学科名と名前を分割
+			if(scoreBean.getGamecode().equals("JA") || scoreBean.getGamecode().equals("EN")) {
+				scoreBean.setUsernamedepartment(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
+				scoreBean.setUsernamename(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));	
+			}
+			
 			scoreBean = scoreRepository.save(scoreBean);
+			if(scoreBean.getUsernamedepartment().length() > 0) {
+				return new ScoreForm();
+			}
 
 			scoreForm.setCommittime(scoreBean.getId().getCommittime());
 			scoreForm.setPoint(scoreBean.getPoint());
@@ -176,8 +184,6 @@ public class ScoreService {
 
 			// 複合主キーを登録
 			scoreBean.setId(scoreId);
-			scoreBean.setUsernamedepartment(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
-			scoreBean.setUsernamename(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));
 			scoreBean.setInputtime((newScoreForm.getInputtimeMin() * 60) + newScoreForm.getInputtimeSec());
 			scoreBean.setMisstype(newScoreForm.getMisstype());
 
@@ -186,7 +192,16 @@ public class ScoreService {
 			
 			//ゲーム区分登録
 			scoreBean.setGamecode(newScoreForm.getGamecode());
+			
+			//登録したゲーム区分が日本語か英語の場合、学科名と名前を分割
+			if(scoreBean.getGamecode().equals("JA") || scoreBean.getGamecode().equals("EN")) {
+
+				scoreBean.setUsernamedepartment(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
+				scoreBean.setUsernamename(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));	
+			}
+			
 			scoreRepository.save(scoreBean);
+			
 		}
 
 		return newScoreForm;

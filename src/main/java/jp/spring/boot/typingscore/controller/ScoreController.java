@@ -30,6 +30,7 @@ import jp.spring.boot.typingscore.db.ScoreId;
 import jp.spring.boot.typingscore.form.ScoreForm;
 import jp.spring.boot.typingscore.form.ScoreRankForm;
 import jp.spring.boot.typingscore.form.ScoreResultForm;
+import jp.spring.boot.typingscore.repository.ScoreRepository;
 import jp.spring.boot.typingscore.security.RoleName;
 import jp.spring.boot.typingscore.service.ScoreService;
 
@@ -108,6 +109,10 @@ public class ScoreController {
 		form.setCommittime(new Timestamp(DateUtils.truncate(new Date(), Calendar.SECOND).getTime()));
 
 		ScoreForm createScoreForm = scoreService.create(form);
+		
+		if(createScoreForm.getUsername() == null) {
+			return "redirect:/scores";
+		}
 
 		ScoreForm highScoreForm =  scoreService.findHighScore(createScoreForm.getUsername());
 	
