@@ -48,7 +48,7 @@ public class SendService {
 	public List<SendForm> getTotalRankingList(){
 		Map<String, SendForm> sendMap = new LinkedHashMap<String, SendForm>();
 		
-		if(VCAPHelper.VCAP_SERVICES  != null) {
+		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
 			// DBがIBM Cloudの場合
 
 
@@ -97,7 +97,7 @@ public class SendService {
 	public List<SendForm> getJapaneseRankingList(){
 		Map<String, SendForm> sendMap = new LinkedHashMap<String, SendForm>();
 		
-		if(VCAPHelper.VCAP_SERVICES  != null) {
+		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
 			// DBがIBM Cloudの場合
 
 
@@ -165,7 +165,7 @@ public class SendService {
 	public List<SendForm> getEnglishRankingList(){
 		Map<String, SendForm> sendMap = new LinkedHashMap<String, SendForm>();
 		
-		if(VCAPHelper.VCAP_SERVICES  != null) {
+		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
 			// DBがIBM Cloudの場合
 
 
