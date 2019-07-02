@@ -50,7 +50,7 @@ public class UserService {
 
 		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
 			// DBがIBM Cloudの場合
-			
+			System.out.println("DEBUG:" + VCAPHelper.VCAP_SERVICES);
 			UserStore userStore = UserStoreFactory.getInstance();
 			User existUser = null;
 			existUser = userStore.get(userForm.getUsername());
