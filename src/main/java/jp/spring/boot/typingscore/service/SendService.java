@@ -264,8 +264,9 @@ public class SendService {
 		try {
 			
 			URL url = new URL("https://tcc-typingranking.herokuapp.com/score");
-			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("172.17.0.2", 80));
-			httpcon = (HttpsURLConnection) url.openConnection(proxy);
+//			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("172.17.0.2", 80));
+//            httpcon = (HttpsURLConnection) url.openConnection(proxy);
+			httpcon = (HttpsURLConnection) url.openConnection();
 			httpcon.setRequestMethod("POST");
 			httpcon.setRequestProperty("Content-Type", "application/json");
 			httpcon.setDoOutput(true);
