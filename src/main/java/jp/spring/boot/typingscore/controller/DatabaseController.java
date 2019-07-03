@@ -172,7 +172,7 @@ public class DatabaseController {
 					scoreService.create(form);
 					
 					// IBM・ライトアカウントの場合は制限があるため、間隔をあける
-					if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+					if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 						try {
 							Thread.sleep(200);
 						} catch (InterruptedException e) {

@@ -52,7 +52,7 @@ public class ScoreService {
 	 */
 	public ScoreForm create(ScoreForm scoreForm) {
 
-		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
@@ -135,7 +135,7 @@ public class ScoreService {
 	 */
 	public ScoreForm update(String oldUserName, ScoreForm newScoreForm) {
 
-		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
@@ -218,7 +218,7 @@ public class ScoreService {
 
 		ScoreForm form = new ScoreForm();
 
-		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 			Score score = scoreStore.get(id.getUsername() + id.getCommittime());
@@ -253,7 +253,7 @@ public class ScoreService {
 
 		List<ScoreForm> formList = new ArrayList<ScoreForm>();
 
-		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
@@ -292,7 +292,7 @@ public class ScoreService {
 
 		List<ScoreForm> formList = new ArrayList<ScoreForm>();
 
-		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
@@ -334,7 +334,7 @@ public class ScoreService {
 
 		List<ScoreForm> formList = new ArrayList<ScoreForm>();
 
-		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
@@ -376,7 +376,7 @@ public class ScoreService {
 
 		int usernameOverlapCnt = 0;
 
-		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 			usernameOverlapCnt = scoreStore.findByUsernameOverlapCnt(username);
@@ -399,7 +399,7 @@ public class ScoreService {
 
 		ScoreForm highScoreForm = new ScoreForm();
 
-		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
@@ -450,7 +450,7 @@ public class ScoreService {
 	public List<ScoreForm> findHighScoreList() {
 		Map<String, ScoreForm> formMap = new LinkedHashMap<String, ScoreForm>();
 
-		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
@@ -518,7 +518,7 @@ public class ScoreService {
 
 		ScoreBean scoreBean = new ScoreBean();
 		scoreBean.setId(id);
-		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 			
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
@@ -537,7 +537,7 @@ public class ScoreService {
 	 */
 	public void deleteAll() {
 
-		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 			
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
@@ -556,7 +556,7 @@ public class ScoreService {
 	 * インデックスを作成する
 	 */
 	public void init() {
-		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("")) {
+		if (VCAPHelper.VCAP_SERVICES != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 			
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
