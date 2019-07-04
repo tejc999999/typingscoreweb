@@ -14,7 +14,7 @@
 	th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
 <link rel="stylesheet" type="text/css" href="../../static/css/style.css"
 	th:href="@{/css/style.css}" />
-<link rel="stylesheet" type="text/css" href="../../static/css/style.css"
+<link rel="stylesheet" type="text/css" href="../../static/css/databasestyle.css"
 	th:href="@{/css/databasestyle.css}" />
 <script type="text/javascript" th:src="@{/js/confirmdialog.js}"></script>
 </head>
@@ -61,6 +61,19 @@
  				<form th:action="@{/databases/initdbscore}" method="get" onSubmit="return confirmdialog('init DB（score）？', 'DB（score） initialized', 'DB（score） init canceled');">
 					<input class="btn btn-lg btn-danger btn-block" type="submit" th:value="#{html.database.manage.btn.scoredb.init}" />
 				</form>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-3 col-sm-offset-1">
+				<form th:action="@{/databases/game}" method="post">
+					<input class="btn btn-lg btn-success btn-block" type="submit" th:value="${activegamecode}"/>
+				</form>		
+			</div>
+			<div class="col-sm-3">
+				<form th:action="@{/send}">
+					<input class="btn btn-lg btn-success btn-block" type="submit" th:value="#{html.database.manage.btn.sendranking}"/>
+				</form>		
 			</div>
 		</div>
 		<br>

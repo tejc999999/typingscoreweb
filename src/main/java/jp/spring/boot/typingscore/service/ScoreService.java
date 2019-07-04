@@ -103,7 +103,7 @@ public class ScoreService {
 			//ゲーム区分
 			if(scoreForm.getGamecode() == null) {
 				scoreBean.setGamecode(parameterPropaties.getActiveGameCode());
-			}else {
+			} else {
 				scoreBean.setGamecode(scoreForm.getGamecode());
 			}
 			
