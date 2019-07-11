@@ -41,60 +41,69 @@ public class SendService {
 	@Autowired
 	ParameterProperties parameterPropaties;
 	
+	//総合ランキング取得済み判定
+	Boolean isCallFromTotalRank;
+	
 	/**
 	 * 総合1位取得
 	 * @return
 	 */
 	public List<SendForm> getTotalRankingList(){
-		Map<String, SendForm> sendMap = new LinkedHashMap<String, SendForm>();
+		List<SendForm> sendlist = new ArrayList<SendForm>();
 		
 		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 
 		} else {
-			List<ScoreBean> beanlist = scoreRepository.findAllByOrderByPoint();
-			beanlist.removeIf(score -> score.getPoint() == 0);
+			isCallFromTotalRank = true;
+			List<SendForm> totallist = this.getJapaneseRankingList(-1); 
+			List<SendForm> englishlist = this.getEnglishRankingList(-1);
+			isCallFromTotalRank = false;
 			
-			//総合1位取得
-			int beforePoint = (beanlist.size() > 0) ? beanlist.get(0).getPoint() : 0;
-			for (ScoreBean scoreBean : beanlist) {
-				if(beforePoint == scoreBean.getPoint()) {
-					SendForm sendForm = new SendForm();
-					if(sendMap.containsKey(scoreBean.getId().getUsername())) {
-						if(sendMap.get(scoreBean.getId().getUsername()).getPoint() > scoreBean.getPoint()) {
-							sendForm.setUsername(scoreBean.getId().getUsername());
-							sendForm.setDepartment(scoreBean.getUsernamedepartment());
-							sendForm.setUsernamename(scoreBean.getUsernamename());
-							sendForm.setGamecode("TOTAL");
-							sendForm.setRank(1);
-							sendForm.setPoint(scoreBean.getPoint());
-							sendForm.setCommittime(scoreBean.getId().getCommittime());
-							sendMap.put(scoreBean.getId().getUsername(), sendForm);
-						}
-					} else {
-						sendForm.setUsername(scoreBean.getId().getUsername());
-						sendForm.setDepartment(scoreBean.getUsernamedepartment());
-						sendForm.setUsernamename(scoreBean.getUsernamename());
+			int min = -1;
+			//日本語ランキングに英語のポイントを足していく
+			for(SendForm sendForm : totallist) {
+				for(SendForm ensendForm : englishlist) {
+					if(sendForm.getUsername().equals(ensendForm.getUsername())) {
 						sendForm.setGamecode("TOTAL");
 						sendForm.setRank(1);
-						sendForm.setPoint(scoreBean.getPoint());
-						sendForm.setCommittime(scoreBean.getId().getCommittime());
-						sendMap.put(scoreBean.getId().getUsername(), sendForm);
+						sendForm.setJppoint(sendForm.getPoint());
+						sendForm.setEnpoint(ensendForm.getPoint());
+						sendForm.setPoint(sendForm.getPoint() + ensendForm.getPoint());
+						sendForm.setEnusername(ensendForm.getUsername());
+						sendForm.setEncommittime(ensendForm.getCommittime());
+						if(min >= sendForm.getPoint() || min == -1) {
+							//先頭に１位のデータが来るように追加
+							sendlist.add(0,sendForm);
+							min = sendForm.getPoint();
+						}
 					}
-					beforePoint = scoreBean.getPoint();
 				}
 			}
+			
+			//スコアが最小ではない要素の先頭の要素番号取得
+			int cnt = 0;
+			for(SendForm sendForm : sendlist) {
+				if(sendForm.getPoint() == min) {
+					cnt++;
+				}
+				else {
+					break;
+				}
+			}
+			sendlist.subList(cnt, sendlist.size()).clear();
 		}
 		
-		return new ArrayList<SendForm>(sendMap.values());
+		return sendlist;
 	}
 	
 	/**
-	 * 日本語部門１～５位取得
+	 * 日本語部門1～rank位まで取得
+	 * @param rank 何位まで取得するか 　-1で全順位
 	 * @return
 	 */
-	public List<SendForm> getJapaneseRankingList(){
+	public List<SendForm> getJapaneseRankingList(int rank){
 		Map<String, SendForm> sendMap = new LinkedHashMap<String, SendForm>();
 		
 		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
@@ -105,8 +114,10 @@ public class SendService {
 			List<ScoreBean> beanlist = scoreRepository.findAllByOrderByPoint();
 			beanlist.removeIf(score -> score.getPoint() == 0);
 			
-			for(SendForm sendForm : getTotalRankingList()) {
-				beanlist.removeIf(score -> score.getId().getUsername().equals(sendForm.getUsername()));
+			if(!isCallFromTotalRank) {
+				for(SendForm sendForm : getTotalRankingList()) {
+					beanlist.removeIf(score -> score.getId().getUsername().equals(sendForm.getUsername()));
+				}	
 			}
 			
 			//日本語部門１～５位
@@ -125,7 +136,7 @@ public class SendService {
 						overlapRankNum = 0;
 					}
 					
-					if(rankNum > 5) {
+					if(rankNum > rank && rank != -1) {
 						break;
 					}
 					SendForm sendForm = new SendForm();
@@ -159,10 +170,11 @@ public class SendService {
 	}
 	
 	/**
-	 * 英語部門１～５位取得
+	 * 英語部門1～rank位まで取得
+	 * 	@param rank 何位まで取得するか 　-1で全順位
 	 * @return
 	 */
-	public List<SendForm> getEnglishRankingList(){
+	public List<SendForm> getEnglishRankingList(int rank){
 		Map<String, SendForm> sendMap = new LinkedHashMap<String, SendForm>();
 		
 		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
@@ -173,14 +185,17 @@ public class SendService {
 			List<ScoreBean> beanlist = scoreRepository.findAllByOrderByPoint();
 			beanlist.removeIf(score -> score.getPoint() == 0);
 			
-			for(SendForm sendForm : getTotalRankingList()) {
-				beanlist.removeIf(score -> score.getId().getUsername().equals(sendForm.getUsername()));
+			if(!isCallFromTotalRank) {
+				for(SendForm sendForm : getTotalRankingList()) {
+					beanlist.removeIf(score -> score.getId().getUsername().equals(sendForm.getUsername()));
+				}
+				
+				for(SendForm sendForm : getJapaneseRankingList(5)) {
+					beanlist.removeIf(score -> score.getId().getUsername().equals(sendForm.getUsername()));
+				}
+				
 			}
-			
-			for(SendForm sendForm : getJapaneseRankingList()) {
-				beanlist.removeIf(score -> score.getId().getUsername().equals(sendForm.getUsername()));
-			}
-			
+
 			
 			//日本語部門１～５位
 			int rankNum = 0;
@@ -198,7 +213,7 @@ public class SendService {
 						overlapRankNum = 0;
 					}
 					
-					if(rankNum > 5) {
+					if(rankNum > 5 && rank != -1) {
 						break;
 					}
 					SendForm sendForm = new SendForm();

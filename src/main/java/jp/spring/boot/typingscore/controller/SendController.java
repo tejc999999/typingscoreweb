@@ -40,8 +40,8 @@ public class SendController {
 	@GetMapping
 	public String list(Model model) {
 		List<SendForm> totalranklist = sendService.getTotalRankingList();
-		List<SendForm> japaneseranklist = sendService.getJapaneseRankingList();
-		List<SendForm> englishranklist = sendService.getEnglishRankingList();
+		List<SendForm> japaneseranklist = sendService.getJapaneseRankingList(5);
+		List<SendForm> englishranklist = sendService.getEnglishRankingList(5);
 		String message = "";
 		if(totalranklist.size() > 1) {
 			message = "総合ランキング";
@@ -68,8 +68,8 @@ public class SendController {
 	@PostMapping(value = "postrank")
 	public String postRank(RedirectAttributes attributes) {
 		List<SendForm> sendranklist = sendService.getTotalRankingList();
-		sendranklist.addAll(sendService.getJapaneseRankingList());
-		sendranklist.addAll(sendService.getEnglishRankingList());
+		sendranklist.addAll(sendService.getJapaneseRankingList(5));
+		sendranklist.addAll(sendService.getEnglishRankingList(5));
 		
 		attributes.addFlashAttribute("result", sendService.postRanking(sendranklist));
 		return "redirect:/send";
