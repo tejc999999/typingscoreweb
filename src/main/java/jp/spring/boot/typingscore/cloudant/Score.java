@@ -22,6 +22,16 @@ public class Score extends CloudantObject {
 	 */
 	private String username = null;
 	
+	   /**
+     * ユーザー名から分割した学科名
+     */
+    private String usernamedepartment = null;
+    
+    /**
+     * ユーザー名から分割した名前
+     */
+    private String usernamesplit = null;
+	
 	/**
 	 * 登録日時
 	 * 複合主キーの一部
@@ -44,6 +54,11 @@ public class Score extends CloudantObject {
 	 */
 	private Integer point = null;
 	
+	   /**
+     * ゲーム区分
+     */
+    private String  gamecode = null;
+    
 	/**
 	 * コンストラクタ
 	 */

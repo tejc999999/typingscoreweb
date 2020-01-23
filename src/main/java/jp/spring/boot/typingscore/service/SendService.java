@@ -144,7 +144,7 @@ public class SendService {
 						if(sendMap.get(scoreBean.getId().getUsername()).getPoint() > scoreBean.getPoint()) {
 							sendForm.setUsername(scoreBean.getId().getUsername());
 							sendForm.setDepartment(scoreBean.getUsernamedepartment());
-							sendForm.setUsernamename(scoreBean.getUsernamename());
+							sendForm.setSplitusername(scoreBean.getUsernamesplit());
 							sendForm.setGamecode(scoreBean.getGamecode());
 							sendForm.setRank(rankNum);
 							sendForm.setPoint(scoreBean.getPoint());
@@ -154,7 +154,7 @@ public class SendService {
 					} else {
 						sendForm.setUsername(scoreBean.getId().getUsername());
 						sendForm.setDepartment(scoreBean.getUsernamedepartment());
-						sendForm.setUsernamename(scoreBean.getUsernamename());
+						sendForm.setSplitusername(scoreBean.getUsernamesplit());
 						sendForm.setGamecode(scoreBean.getGamecode());
 						sendForm.setRank(rankNum);
 						sendForm.setPoint(scoreBean.getPoint());
@@ -197,7 +197,7 @@ public class SendService {
 			}
 
 			
-			//日本語部門１～５位
+			//英語部門１～５位
 			int rankNum = 0;
 			int overlapRankNum = 0;
 			int beforePoint = -1;
@@ -221,7 +221,7 @@ public class SendService {
 						if(sendMap.get(scoreBean.getId().getUsername()).getPoint() > scoreBean.getPoint()) {
 							sendForm.setUsername(scoreBean.getId().getUsername());
 							sendForm.setDepartment(scoreBean.getUsernamedepartment());
-							sendForm.setUsernamename(scoreBean.getUsernamename());
+							sendForm.setSplitusername(scoreBean.getUsernamesplit());
 							sendForm.setGamecode(scoreBean.getGamecode());
 							sendForm.setRank(rankNum);
 							sendForm.setPoint(scoreBean.getPoint());
@@ -231,7 +231,7 @@ public class SendService {
 					} else {
 						sendForm.setUsername(scoreBean.getId().getUsername());
 						sendForm.setDepartment(scoreBean.getUsernamedepartment());
-						sendForm.setUsernamename(scoreBean.getUsernamename());
+						sendForm.setSplitusername(scoreBean.getUsernamesplit());
 						sendForm.setGamecode(scoreBean.getGamecode());
 						sendForm.setRank(rankNum);
 						sendForm.setPoint(scoreBean.getPoint());
@@ -259,7 +259,7 @@ public class SendService {
 							+ "\", \"rank\": " + sendForm.getRank()
 							+ ", \"score\": " + sendForm.getPoint() 
 							+ ", \"course\": \"" + sendForm.getDepartment()
-							+ "\", \"name\": \"" + sendForm.getUsernamename()
+							+ "\", \"name\": \"" + sendForm.getSplitusername()
 							+ "\"},";
 		}
 		json = json.substring(0,json.length() - 1);

@@ -72,6 +72,18 @@ public class ScoreService {
 			// スコア＝入力時間＋（ミスタイプ数×２）
 			score.setPoint((scoreForm.getInputtimeMin() * 60) + scoreForm.getInputtimeSec() + (scoreForm.getMisstype() * 2));
 
+	         //ゲーム区分
+            if(scoreForm.getGamecode() == null) {
+                score.setGamecode(parameterPropaties.getActiveGameCode());
+            } else {
+                // CSVインポート対応
+                score.setGamecode(scoreForm.getGamecode());
+            }
+			
+            score.setUsernamedepartment(scoreForm.getUsername().substring(0, scoreForm.getUsername().indexOf("科") + 1));
+            score.setUsernamesplit(scoreForm.getUsername().substring(scoreForm.getUsername().indexOf("科") + 1,scoreForm.getUsername().length()).trim().replaceFirst("　", ""));    
+
+            
 			scoreStore.persist(score);
 
 			scoreForm.setCommittime(score.getCommittime());
@@ -104,19 +116,22 @@ public class ScoreService {
 			if(scoreForm.getGamecode() == null) {
 				scoreBean.setGamecode(parameterPropaties.getActiveGameCode());
 			} else {
+			    // CSVインポート対応
 				scoreBean.setGamecode(scoreForm.getGamecode());
 			}
 			
-			//登録したゲーム区分が日本語か英語の場合、学科名と名前を分割
-			if(scoreBean.getGamecode().equals("JA") || scoreBean.getGamecode().equals("EN")) {
-				scoreBean.setUsernamedepartment(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
-				scoreBean.setUsernamename(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));	
-			}
+			//TODO：不要
+	         //登録したゲーム区分が日本語か英語の場合、学科名と名前を分割
+//			if(scoreBean.getGamecode().equals("JA") || scoreBean.getGamecode().equals("EN")) {
+			scoreBean.setUsernamedepartment(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
+			scoreBean.setUsernamesplit(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));	
+//			}
 			
 			scoreBean = scoreRepository.save(scoreBean);
-			if(scoreBean.getUsernamedepartment().length() > 0) {
-				return new ScoreForm();
-			}
+            //TODO：不要
+//			if(scoreBean.getUsernamedepartment().length() > 0) {
+//				return new ScoreForm();
+//			}
 
 			scoreForm.setCommittime(scoreBean.getId().getCommittime());
 			scoreForm.setPoint(scoreBean.getPoint());
@@ -156,6 +171,13 @@ public class ScoreService {
 			// スコア＝入力時間＋（ミスタイプ数×２）
 			score.setPoint((newScoreForm.getInputtimeMin() * 60) + newScoreForm.getInputtimeSec() + (newScoreForm.getMisstype() * 2));
 
+	         //ゲーム区分登録
+			score.setGamecode(newScoreForm.getGamecode());
+            
+            // 学科名と名前を分割
+			score.setUsernamedepartment(newScoreForm.getUsername().substring(0, newScoreForm.getUsername().indexOf("科") + 1));
+			score.setUsernamesplit(newScoreForm.getUsername().substring(newScoreForm.getUsername().indexOf("科") + 1,newScoreForm.getUsername().length()).trim().replaceFirst("　", ""));
+			
 			if (!oldUserName.equals(newScoreForm.getUsername())) {
 				scoreStore.persist(score);
 			} else {
@@ -193,12 +215,12 @@ public class ScoreService {
 			//ゲーム区分登録
 			scoreBean.setGamecode(newScoreForm.getGamecode());
 			
+			// TODO: 不要
 			//登録したゲーム区分が日本語か英語の場合、学科名と名前を分割
-			if(scoreBean.getGamecode().equals("JA") || scoreBean.getGamecode().equals("EN")) {
-
-				scoreBean.setUsernamedepartment(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
-				scoreBean.setUsernamename(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));	
-			}
+//			if(scoreBean.getGamecode().equals("JA") || scoreBean.getGamecode().equals("EN")) {
+			scoreBean.setUsernamedepartment(scoreId.getUsername().substring(0, scoreId.getUsername().indexOf("科") + 1));
+			scoreBean.setUsernamesplit(scoreId.getUsername().substring(scoreId.getUsername().indexOf("科") + 1,scoreId.getUsername().length()).trim().replaceFirst("　", ""));	
+//			}
 			
 			scoreRepository.save(scoreBean);
 			

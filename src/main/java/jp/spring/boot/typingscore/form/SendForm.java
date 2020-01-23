@@ -23,7 +23,7 @@ public class SendForm {
 		/**
 		 * ユーザーの名前
 		 */
-		private String usernamename;
+		private String splitusername;
 		
 		/**
 		 *　ゲーム区分

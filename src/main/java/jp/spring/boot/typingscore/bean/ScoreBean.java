@@ -39,7 +39,7 @@ public class ScoreBean {
 	/**
 	 * ユーザー名から分割した名前
 	 */
-	private String usernamename;
+	private String usernamesplit;
 	
 	/**
 	 * 入力時間（秒）

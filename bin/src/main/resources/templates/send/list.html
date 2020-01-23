@@ -45,7 +45,7 @@
 			<tr th:each="score : ${totalrank}">
 				<td th:text="${score.rank}">0</td>
 				<td th:text="${score.department}">0</td>
-				<td th:text="${score.usernamename}">user</td>				
+				<td th:text="${score.username}">user</td>				
 				<td th:text="${score.point}">0</td>
 				<td>
 					<form th:action="@{/send/edit}" method="post">
@@ -77,7 +77,7 @@
 			<tr th:each="score : ${japaneserank}">
 				<td th:text="${score.rank}">0</td>
 				<td th:text="${score.department}">0</td>
-				<td th:text="${score.usernamename}">user</td>				
+				<td th:text="${score.username}">user</td>				
 				<td th:text="${score.point}">0</td>
 				<td>
 					<form th:action="@{/send/edit}" method="post">
@@ -109,7 +109,7 @@
 			<tr th:each="score : ${englishrank}">
 				<td th:text="${score.rank}">0</td>
 				<td th:text="${score.department}">0</td>
-				<td th:text="${score.usernamename}">user</td>				
+				<td th:text="${score.username}">user</td>				
 				<td th:text="${score.point}">0</td>
 				<td>
 					<form th:action="@{/send/edit}" method="post">
