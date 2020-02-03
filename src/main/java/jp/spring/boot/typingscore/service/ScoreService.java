@@ -477,6 +477,14 @@ public class ScoreService {
 
 			ScoreStore scoreStore = ScoreStoreFactory.getInstance();
 	        for (Score score : scoreStore.getAllOrderByPoint()) {
+	        	// スコアが0の場合はスルーする。
+	        	if (score.getPoint() == 0)
+	        		continue;
+	        	
+	        	// レコードが現在のゲーム区分のものでない場合、スルーする。
+	        	// GameCodeがないレコードはNullPointerExceptionを発生させるので、念の為確認を行う。
+	        	if (score.getGamecode() != null && !score.getGamecode().equals(parameterPropaties.getActiveGameCode()))
+	        		continue;
 	
 				if(formMap.containsKey(score.getUsername())) {
 					if(formMap.get(score.getUsername()).getPoint() > score.getPoint()) {
