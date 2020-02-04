@@ -21,8 +21,8 @@ public interface ScoreRepository extends JpaRepository<ScoreBean, ScoreId> {
 	 * 
 	 * @return ユーザ名の重複数
 	 */
-	@Query(value = "select COUNT(*)  from ScoreBean s where s.id.username = :username")
-	int findUsernameOverlapCnt(String username);
+	@Query(value = "select COUNT(*)  from ScoreBean s where s.id.username = :username AND s.gamecode = :gamecode")
+	int findUsernameOverlapCnt(String username, String gamecode);
 
 	/**
 	 * 登録日時で並んだ全てのスコアを取得する

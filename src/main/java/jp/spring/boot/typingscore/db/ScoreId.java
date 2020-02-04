@@ -30,7 +30,7 @@ public class ScoreId implements Serializable {
 	/**
 	 * ユーザ名
 	 */
-	@Embedded
+	//@Embedded
 	private String username;
 	
 	/**

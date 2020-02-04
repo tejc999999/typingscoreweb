@@ -14,7 +14,7 @@
 	th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
 <link rel="stylesheet" type="text/css" href="../../static/css/style.css"
 	th:href="@{/css/style.css}" />
-<link rel="stylesheet" type="text/css" href="../../static/css/style.css"
+<link rel="stylesheet" type="text/css" href="../../static/css/addcompstyle.css"
 	th:href="@{/css/addcompstyle.css}" />
 <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c"
 	rel="stylesheet">
@@ -44,11 +44,11 @@
 					<!-- class="table table-striped table-responsive" -->
 					<thead>
 						<tr>
-							<th class="col-sm-1 numalign tablehead">rank</th>
-							<th class="col-sm-3 stralign tablehead">user name</th>
-							<th class="col-sm-2 numalign tablehead">score</th>
-							<th class="col-sm-2 numalign tablehead">input time</th>
-							<th class="col-sm-2 numalign tablehead">miss type</th>
+							<th class="col-sm-2 numalign tablehead"　th:text="#{html.scores.view.rank.title.rank}">rank</th>
+							<th class="col-sm-4 stralign tablehead"　th:text="#{html.scores.view.rank.title.username}">user name</th>
+							<th class="col-sm-2 numalign tablehead"　th:text="#{html.scores.view.rank.title.score}">score</th>
+							<th class="col-sm-2 numalign tablehead"　th:text="#{html.scores.view.rank.title.inputtime}">input time</th>
+							<th class="col-sm-2 numalign tablehead"　th:text="#{html.scores.view.rank.title.misstype}">miss type</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -59,12 +59,11 @@
 							<td class="stralign rank"><p
 									th:text="${resultform.username}"
 									style="font-family: 'M PLUS Rounded 1c';">〇〇</p></td>
-							<td class="numalign score"><p th:text="${resultform.point}"
-									class="score-p"></td>
+							<td class="numalign score"><p th:text="${resultform.point}"></td>
 							<td class="numalign score-time"><p
-									th:text="${resultform.inputtime}" class="score-time-p"></td>
+									th:text="${resultform.inputtimeView}"></td>
 							<td class="numalign score-miss"><p
-									th:text="${resultform.misstype}" class="score-miss-p"></td>
+									th:text="${resultform.misstype}"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -75,11 +74,11 @@
 					<!-- class="table table-striped table-responsive" -->
 					<thead>
 						<tr>
-							<th class="col-sm-1 numalign tablehead">rank</th>
-							<th class="col-sm-3 stralign tablehead">user name</th>
-							<th class="col-sm-2 numalign tablehead">score</th>
-							<th class="col-sm-2 numalign tablehead">input time</th>
-							<th class="col-sm-2 numalign tablehead">miss type</th>
+							<th class="col-sm-2 numalign tablehead"　th:text="#{html.scores.view.rank.title.rank}">rank</th>
+							<th class="col-sm-4 stralign tablehead"　th:text="#{html.scores.view.rank.title.username}">user name</th>
+							<th class="col-sm-2 numalign tablehead"　th:text="#{html.scores.view.rank.title.score}">score</th>
+							<th class="col-sm-2 numalign tablehead"　th:text="#{html.scores.view.rank.title.inputtime}">input time</th>
+							<th class="col-sm-2 numalign tablehead"　th:text="#{html.scores.view.rank.title.misstype}">miss type</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -89,11 +88,11 @@
 							<td class="stralign rank"><p
 									th:text="${resultform.username}">〇〇</p></td>
 							<td class="numalign score"><p
-									th:text="${resultform.maxPoint}" class="score-p"></td>
+									th:text="${resultform.maxPoint}"></td>
 							<td class="numalign score-time"><p
-									th:text="${resultform.maxInputtime}" class="score-time-p"></td>
+									th:text="${resultform.maxInputtimeView}"></td>
 							<td class="numalign score-miss"><p
-									th:text="${resultform.maxMisstype}" class="score-miss-p"></td>
+									th:text="${resultform.maxMisstype}"></td>
 						</tr>
 					</tbody>
 				</table>

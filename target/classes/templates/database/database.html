@@ -65,6 +65,19 @@
 		</div>
 		<br>
 		<div class="row">
+			<div class="col-sm-3 col-sm-offset-1">
+				<form th:action="@{/databases/game}" method="post">
+					<input class="btn btn-lg btn-success btn-block" type="submit" th:value="${activegamecode}"/>
+				</form>		
+			</div>
+			<div class="col-sm-3">
+				<form th:action="@{/send}">
+					<input class="btn btn-lg btn-success btn-block" type="submit" th:value="#{html.database.manage.btn.sendranking}"/>
+				</form>		
+			</div>
+		</div>
+		<br>
+		<div class="row">
 			<div class="col-sm-10 bg-danger">
 				<h3 th:text="#{html.database.manage.subtitle.database.user}">database(user)</h3>
 			</div>

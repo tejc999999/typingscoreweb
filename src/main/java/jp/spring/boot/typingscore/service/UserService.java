@@ -48,9 +48,9 @@ public class UserService {
 		UserBean userBean = new UserBean();
 		BeanUtils.copyProperties(userForm, userBean);
 
-		if(VCAPHelper.VCAP_SERVICES  != null) {
+		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
-			
+			System.out.println("DEBUG:" + VCAPHelper.VCAP_SERVICES);
 			UserStore userStore = UserStoreFactory.getInstance();
 			User existUser = null;
 			existUser = userStore.get(userForm.getUsername());
@@ -88,7 +88,7 @@ public class UserService {
 		UserBean userBean = new UserBean();
 		BeanUtils.copyProperties(userForm, userBean);
 
-		if(VCAPHelper.VCAP_SERVICES  != null) {
+		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 			UserStore userStore = UserStoreFactory.getInstance();
@@ -120,7 +120,7 @@ public class UserService {
 	 */
 	public void delete(String username) {
 
-		if(VCAPHelper.VCAP_SERVICES  != null) {
+		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 			UserStore userStore = UserStoreFactory.getInstance();
@@ -143,7 +143,7 @@ public class UserService {
 	 */
 	public UserForm getDBUserForm(String username)  {
 		UserForm userForm = null;
-		if(VCAPHelper.VCAP_SERVICES  != null) {
+		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 			UserStore userStore = UserStoreFactory.getInstance();
@@ -174,7 +174,7 @@ public class UserService {
 	 */
 	public UserForm setDBUserForm(UserForm userForm) {
 
-		if(VCAPHelper.VCAP_SERVICES  != null) {
+		if(VCAPHelper.VCAP_SERVICES  != null && !VCAPHelper.VCAP_SERVICES.equals("{}")) {
 			// DBがIBM Cloudの場合
 
 			UserStore userStore = UserStoreFactory.getInstance();

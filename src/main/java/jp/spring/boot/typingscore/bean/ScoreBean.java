@@ -32,6 +32,16 @@ public class ScoreBean {
 	private ScoreId id;
 	
 	/**
+	 * ユーザー名から分割した学科名
+	 */
+	private String usernamedepartment;
+	
+	/**
+	 * ユーザー名から分割した名前
+	 */
+	private String usernamesplit;
+	
+	/**
 	 * 入力時間（秒）
 	 */
 	private int inputtime;
@@ -40,11 +50,16 @@ public class ScoreBean {
 	 * ミスタイプ数
 	 */
 	private int misstype;
-	
+
 	/**
 	 * スコア
 	 * 計算方法 = 入力時間 + (ミスタイプ数 * 2)
 	 */
 	private int point;
+	
+	/**
+	 * ゲーム区分
+	 */
+	private String  gamecode;
 	
 }

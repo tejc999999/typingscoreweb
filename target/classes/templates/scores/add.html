@@ -14,6 +14,7 @@
 	th:href="@{/webjars/bootstrap/3.3.7/bootstrap-theme.min.css}" />
 <link rel="stylesheet" type="text/css" href="../../static/css/style.css"
 	th:href="@{/css/style.css}" />
+<script type="text/javascript" src="../js/scoreadd.js"></script>
 </head>
 <body>
 	<header>
@@ -43,9 +44,15 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-2" th:text="#{html.scores.add.item.username}">user name</label>
-				<div class="col-sm-4">
+				<div class="col-sm-3">
 					<input class="form-control" type="text" name="username"
 						th:field="*{username}" th:errorclass="error-input" />
+				</div>
+				<div class="col-sm-1">
+					<select class="form-control" name="scores" onChange="getSelectUserName()">
+						<option th:each="score : ${scores}" th:value="${score.username}"
+							th:text="${score.username}">pull down</option>
+					</select>
 				</div>
 				<span th:if="${#fields.hasErrors('username')}"
 					th:errors="*{username}" class="error-messages">error!</span>

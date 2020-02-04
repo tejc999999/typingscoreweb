@@ -30,6 +30,7 @@ import jp.spring.boot.typingscore.db.ScoreId;
 import jp.spring.boot.typingscore.form.ScoreForm;
 import jp.spring.boot.typingscore.form.ScoreRankForm;
 import jp.spring.boot.typingscore.form.ScoreResultForm;
+import jp.spring.boot.typingscore.repository.ScoreRepository;
 import jp.spring.boot.typingscore.security.RoleName;
 import jp.spring.boot.typingscore.service.ScoreService;
 
@@ -71,7 +72,12 @@ public class ScoreController {
 	 * @return 遷移先ビュー
 	 */
 	@GetMapping(path = "add")
-	public String add() {
+	public String add(Model model) {
+		
+		List<ScoreForm> list = scoreService.findAllOrderByCommittime();
+		list.removeIf(score -> score.getPoint() != 0);
+		list.add(0,new ScoreForm());
+		model.addAttribute("scores", list);
 		return "scores/add";
 	}
 
@@ -103,6 +109,10 @@ public class ScoreController {
 		form.setCommittime(new Timestamp(DateUtils.truncate(new Date(), Calendar.SECOND).getTime()));
 
 		ScoreForm createScoreForm = scoreService.create(form);
+		
+		if(createScoreForm.getUsername() == null) {
+			return "redirect:/scores";
+		}
 
 		ScoreForm highScoreForm =  scoreService.findHighScore(createScoreForm.getUsername());
 	
@@ -123,6 +133,8 @@ public class ScoreController {
 			// 今回スコアをリストに追加（スコア順の該当箇所に挿入）
 			list = addHighScoreFormList(createScoreForm, list);
 		}
+		
+		
 		
 		// 全ユーザ数
 		int rankNum  = list.size();
@@ -191,7 +203,6 @@ public class ScoreController {
 	public String view(Model model) {
 
 		List<ScoreForm> list = scoreService.findAllOrderByPoint();
-
 		model.addAttribute("scores", list);
 
 		return "scores/view";
@@ -207,7 +218,7 @@ public class ScoreController {
 	public String scoreLoad() {
 
 		List<ScoreForm> list = scoreService.findHighScoreList();
-
+		
 		Gson gson = new Gson();
 		List<ScoreRankForm> rankList = new ArrayList<ScoreRankForm>();
 		int rankNum = 0;
