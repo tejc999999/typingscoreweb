@@ -1,5 +1,5 @@
 $(function() {
-  var POLLLING_INVERVAL_TIME_IN_MILLIS = 10000;// 10s
+  var POLLLING_INVERVAL_TIME_IN_MILLIS = 20000;// 20s
   (function polling() {
 	    if(!document.hidden) {
 	    	test();
